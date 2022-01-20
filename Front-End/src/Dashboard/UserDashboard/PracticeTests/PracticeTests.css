@@ -1,0 +1,91 @@
+.my-table .ant-table-title  {
+    padding:15px 5px 15px 5px;
+  }
+  .my-table1:hover{
+    cursor: pointer;
+  }
+  .ant-btn-text{
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px !important;
+    border-color: #b1b1b1;
+    color:#6C6C6C
+}
+  .ant-btn-text:hover{
+    background-color: #e8f2f3 !important;
+    color:#5BCAD6
+}
+.btnreview{
+  border-color: #5BCAD6 !important;
+    color:#5BCAD6
+}
+.btnreview:hover{
+  border-color: #e8f2f3 !important;
+  background-color: #e8f2f3 !important;
+    color:#5BCAD6
+}
+.tagNotStarted{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:30px;
+  width: 115px;
+  border-style: none;
+  padding: 0px 10px 0px 10px;
+  border-radius: 200px;
+}
+.tagPassed{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:30px;
+  width: 95px;
+  border-style: none;
+  padding: 0px 10px 0px 10px;
+  border-radius: 200px;
+  background-color: #e7ffe7;
+}
+.tagNotPassed{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:30px;
+  width: 108px;
+  border-style: none;
+  padding: 0px 10px 0px 10px;
+  border-radius: 200px;
+  background-color: #ffe7e7;
+}
+.tagProcessing{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:30px;
+  width: 115px;
+  border-style: none;
+  padding: 0px 10px 0px 10px;
+  border-radius: 200px;
+  background-color: #e7efff;
+}
+.table-row{
+  background: linear-gradient(45deg,white,#ebebeb, white);
+  background-size: 150% 150%;
+  animation: gradient 1.5s linear infinite;
+  animation-direction: alternate;
+}
+.table-row:hover{
+  background: #ebebeb !important;
+}
+@keyframes gradient {
+  0% {background-position: 0%}
+  100% {background-position: 100%}
+}
+
+.bar>*>*>*{
+  border-radius: 0;
+  height: 20px !important;
+}
+.bar>*>*{
+  border-radius: 0;
+  height: 20px !important;
+}

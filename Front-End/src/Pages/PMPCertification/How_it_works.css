@@ -1,0 +1,21 @@
+.icon1{
+    width: clamp(65px, 11vw, 90px);
+    height: clamp(65px, 11vw, 90px);
+    color: #3CA9E7;
+}
+.subTitle1{
+font-size:clamp(21px, 3vw, 25px);
+font-weight: 600;
+text-align: center;
+color: #444444;
+}
+.subDiscription{
+    font-size:clamp(17px, 2vw, 20px);
+    font-weight: 300;
+    text-align: center;
+    color: #444444;
+    width: 400px;
+    height: 52px;
+
+    }
+    

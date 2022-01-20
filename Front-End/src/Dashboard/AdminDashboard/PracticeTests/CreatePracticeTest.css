@@ -1,0 +1,4 @@
+.form {
+    background-color: white!important;
+width: clamp(400px, 40vw, 40vw);
+}

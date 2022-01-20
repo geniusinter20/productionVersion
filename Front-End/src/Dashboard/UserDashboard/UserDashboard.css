@@ -1,0 +1,98 @@
+.mainContainer{
+    height: 100vh;
+    width: 100%;
+    margin:0;
+
+}
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F8F8F8;
+    height: 10vh;
+    padding: 3vw;
+}
+
+.footer{
+    background-color: #F8F8F8;
+    display: flex;
+    justify-content: center;
+    color: #6C6C6C;
+}
+.siderHeader{
+    margin: 30px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+}
+.trigger{
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+}
+.trigger>*{
+    width:100%;
+    height: 100%;
+}
+.iconContainer{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1vw;
+}
+.vl {
+    border-left: 2px solid rgb(161, 161, 161, 0.6);
+    height: 7vh;
+  }
+  .victoryarea{
+    width: 40vw ;
+     height: 40vh ;
+     border-style: solid;
+     padding:0
+  }
+
+.menuItem >* {
+    fill:#6C6C6C;
+    color:#6C6C6C;
+    font-weight: 600;
+}
+.menuItem:hover >* {
+      animation: mymove 0.5s;
+      animation-fill-mode: forwards;
+      
+}
+.ant-menu-item-selected >* {
+    fill:#5BCAD6 !important;
+    color: #5BCAD6 !important;
+
+    font-weight: 600;
+  }
+.ant-menu-item-selected  {
+    background:none ;
+    animation: mymove1 0.5s;
+    animation-fill-mode: forwards;
+  }
+@keyframes mymove {
+     0% {
+         fill:#6C6C6C;
+        color:#6C6C6C
+;
+    }
+      
+    100% {
+        fill:#5BCAD6;
+        color: #5BCAD6;
+    }
+}
+@keyframes mymove1 {
+     0% {
+         background: none;
+    }
+      
+    100% {
+background-color: #F8F8F8;
+    }
+}

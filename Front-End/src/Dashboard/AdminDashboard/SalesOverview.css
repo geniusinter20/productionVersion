@@ -1,0 +1,16 @@
+.content{
+    background-color: #F8F8F8;
+}
+.victoryarea{
+    width: 35vw ;
+     border-style: solid;
+     padding:0;
+     min-width: 600px;
+  }
+  .item-appear {
+    opacity: 0;
+  }
+  .item-appear.item-appear-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }

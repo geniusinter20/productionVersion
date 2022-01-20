@@ -1,0 +1,54 @@
+.button2{
+    background-color: #30b8c7 ;
+    border-color:#30b8c7;
+}
+.button3{
+    background-color: #969696 ;
+    border-color:#969696;
+}
+
+.option:hover{
+    animation: qqq 0.5s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}
+.optionClicked{
+    animation: qqqq 0.4s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}
+
+@keyframes qqq {
+    0% {
+        background-color: none;
+        color:#444444
+   }
+     
+   100% {
+       background-color: #94D8FF ;
+       border-color: #94D8FF;
+       color: #444444;
+   }
+}
+@keyframes qqqq {
+    0% {
+        background-color: #94D8FF ;
+       border-color: #94D8FF;
+       color: #444444;
+   }
+     
+   100% {
+    background-color: #49a9ee;
+    color: white ;
+    border-color: #49a9ee;
+   }
+}
+.list1 .correctAnswer{
+    background-color: #bcffc2!important;
+}
+.list1 .Mui-selected{
+    background-color: white !important;
+}
+ .Mui-selected{
+    background-color: #bcdbff!important;
+}

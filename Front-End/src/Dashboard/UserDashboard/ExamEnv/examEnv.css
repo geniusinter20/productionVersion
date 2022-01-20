@@ -1,0 +1,25 @@
+.pageBackground{
+    width:100vmax;
+    z-index: -1;
+}
+.pageBackground .gradient{
+    width:100%;
+    height: 100%;
+    background-image: linear-gradient(to right, #3c3c3c , #5bcad6);
+    mix-blend-mode: multiply;
+    opacity: 0.83;
+}
+.pageBackground > img{
+    width:102%;
+    height: 102%;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    right: -9999px;
+    bottom: -9999px;
+    margin: auto;
+    object-fit: cover;
+    object-position: 50% 0;
+    z-index: -1;
+    filter: grayscale(100%) blur(5px);
+}

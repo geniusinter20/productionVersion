@@ -1,0 +1,8 @@
+.rating  *{ 
+ width: 15px;
+ height: 25px;
+}
+.rating{
+    padding: 0;
+    height: 30px;
+}

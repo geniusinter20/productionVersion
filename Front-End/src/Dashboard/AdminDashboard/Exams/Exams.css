@@ -1,0 +1,57 @@
+.ant-input >*>*{
+    border-style: dashed;
+    border-radius: 200px;
+    
+}
+.ant-btn-primary{
+    background-color: #5BCAD6;
+    border-color:#5BCAD6;
+}
+.menuItemd:hover >* {
+    color: #F14A4A !important;
+}
+.menuItemda:hover >* {
+    color: #AC9D16 !important;
+}
+.menuItema:hover >* {
+    color: #5BCAD6 !important;
+}
+.icon{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+}
+.icon>*{
+    width:16px;
+    height: 100%;
+}
+.tag{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:30px;
+    width: 85px;
+    background-color: #5BCAD6;
+    border-style: none;
+    padding: 0px 10px 0px 10px;
+    border-radius: 200px;
+}
+.tag>*{
+    color:white;
+}
+.tag1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:30px;
+    width: 98px;
+    background-color: #F8FFAA;
+    border-style: none;
+    padding: 0px 10px 0px 10px;
+    border-radius: 200px;
+}
+.tag1>*{
+    color:#AC9D16;
+}
