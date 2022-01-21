@@ -29,7 +29,7 @@ export const clearCart = (productType, product) => {
 export const loadCart = (clientID) => {
     return (dispatch) => {
         axios
-            .get(`http://localhost:5000/cart/${clientID}`)
+            .get(`http://92.205.62.248:5000/cart/${clientID}`)
             .then(({ data }) => {
                 //console.log("data", data)
                     dispatch({

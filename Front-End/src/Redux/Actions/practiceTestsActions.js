@@ -5,7 +5,7 @@ import axios from "axios";
 const fetchPracticeTests = () => {
 
     // return async(dispatch) => {
-    //     const response = await axios.get("http://localhost:5000/practicetests");
+    //     const response = await axios.get("http://92.205.62.248:5000/practicetests");
     //     dispatch
     return ({
         type: PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST,
@@ -17,7 +17,7 @@ export const fetchPracticeTestsSuccess = () => {
     return (dispatch) => {
         dispatch(fetchPracticeTests());
         axios
-            .get("http://localhost:5000/practicetests")
+            .get("http://92.205.62.248:5000/practicetests")
             .then(({ data }) => {
                 setTimeout(() => {
                     dispatch({
@@ -49,7 +49,7 @@ export const createPracticeTest = (test) => {
     console.log("adding:", test)
     return (
         dispatch => {
-            axios.post("http://localhost:5000/practicetests/add"
+            axios.post("http://92.205.62.248:5000/practicetests/add"
                 , test)
                 .then(res =>
                     dispatch({
@@ -73,7 +73,7 @@ export const selectedPracticeTest = (id) => {
     return (
         dispatch => {
     axios
-        .get(`http://localhost:5000/practicetests/${id}`)
+        .get(`http://92.205.62.248:5000/practicetests/${id}`)
         .then(({ data }) => {
             setTimeout(() => {
                 dispatch({

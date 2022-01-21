@@ -59,7 +59,7 @@ export default function Cart() {
             case "practiceTest":
                 return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image><img alt="example" src={`http://localhost:5000/image/${product.testImageID?product.testImageID:"61d598a898174d129df2f778"}`} /></Image>
+                        <Image><img alt="example" src={`http://92.205.62.248:5000/image/${product.testImageID?product.testImageID:"61d598a898174d129df2f778"}`} /></Image>
 
                         <Information>
                             <ProductName>{product.testTitle}</ProductName>

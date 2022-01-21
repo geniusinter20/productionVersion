@@ -8,7 +8,7 @@ export const signUp = (user) => {
       type: "SIGN_UP",
     });
     axios
-      .post(`http://localhost:5000/client/register`, user)
+      .post(`http://92.205.62.248:5000/client/register`, user)
       .then((token) => {
         if (token.data.msg) {
           dispatch({
@@ -42,7 +42,7 @@ export const signIn = (email, password, remembered) => {
     dispatch({
       type: "SIGN_IN",
     });
-    let promiseA = axios.post(`http://localhost:5000/client/login`, { email, password })
+    let promiseA = axios.post(`http://92.205.62.248:5000/client/login`, { email, password })
     let promiseB = promiseA.then(({ data }) => {
       if (data.msg) {
         message.error({ content: data.msg, className: "message" });
@@ -72,7 +72,7 @@ export const signIn = (email, password, remembered) => {
 export const changePassword = (currentPassword, newPassword, email, userID) => {
   localStorage.removeItem("userToken")
   return (dispatch) => {
-    let promiseA = axios.post(`http://localhost:5000/changepassword/${userID}`, { currentPassword, newPassword })
+    let promiseA = axios.post(`http://92.205.62.248:5000/changepassword/${userID}`, { currentPassword, newPassword })
     let promiseB = promiseA.then(({ data }) => {
       //console.log("firstResponse:",data)
       console.log(data);
@@ -82,7 +82,7 @@ export const changePassword = (currentPassword, newPassword, email, userID) => {
       }
       message.success({ content: "Password Changed", className: "message" });
       axios
-        .post(`http://localhost:5000/client/login`, { email: email, password: newPassword })
+        .post(`http://92.205.62.248:5000/client/login`, { email: email, password: newPassword })
         .then(({ data }) => {
           localStorage.setItem("userToken", data);
           
@@ -108,7 +108,7 @@ export const loadUser = () => {
     const token = getState().auth.token;
     if (token) {
       axios
-        .get(`http://localhost:5000/client/login`,
+        .get(`http://92.205.62.248:5000/client/login`,
           {
             headers: {
               'Authorization': `Bearer ${token}`

@@ -44,7 +44,7 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         case PracticeTestActionTypes.DELETE_PRACTICETEST: {
             const temp = state.practiceTests.filter((e) => e._id !== payload);
             //console.log(temp)
-            axios.delete(`http://localhost:5000/practicetests/delete/${payload}`)
+            axios.delete(`http://92.205.62.248:5000/practicetests/delete/${payload}`)
             return {
                 ...state,
                 practiceTests: temp
@@ -144,7 +144,7 @@ export const selectedPracticeTestReducer = (state = {loadingTest: true}, { type,
             });
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_UPDATE:
             console.log("payload:", payload)
-                axios.post(`http://localhost:5000/practicetests/update/${payload.key}`
+                axios.post(`http://92.205.62.248:5000/practicetests/update/${payload.key}`
                     ,
                     {
                         ...state,
