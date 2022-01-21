@@ -50,9 +50,9 @@ export default function Registreation() {
         setRegistering(auth.registering);
     }, [auth]);
     useEffect(() => {
-        if(auth.loggingIn) navigate("/")
+        //console.log(auth.loggedIn);
+        if(auth.loggedIn) navigate("/")
     }, [auth]);
-    console.log(loggingIn);
     const onFinish = () => {
         form.validateFields()
             .then(
