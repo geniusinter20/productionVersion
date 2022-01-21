@@ -17,16 +17,15 @@ import {
 } from 'antd';
 export default function Registreation() {
     const [remembered, setRemembered] = useState(false);
-    const [signingIn, setSigningIn] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const navigate= useNavigate();
-    const dataLoaded= useSelector(state => state.auth.loggedIn)
+    const [loggingIn, setLoggingIn] = useState(false);
+    const auth = useSelector(state => state.auth)
     //dispatch(signUp({}))
     //localStorage.removeItem("userToken")
     const onFinish = () => {
-
         form.validateFields()
             .then(
                 ({ email, password }) => {
@@ -35,11 +34,14 @@ export default function Registreation() {
 
                 })
             .catch((errorInfo) => { });
-            setSigningIn(true)
     };
     useEffect(() => {
-        if(dataLoaded) navigate("/")
-    }, [dataLoaded])
+        setLoggingIn(auth.loggingIn);
+        //console.log("logged:",auth.loggedIn);
+        //console.log("logging:",auth.loggingIn);
+        setLoggedIn(auth.loggedIn);
+        if(auth.loggedIn && !auth.loggingIn) navigate("/")
+    }, [auth])
     
     return (
         <MainContainer>
@@ -127,7 +129,7 @@ export default function Registreation() {
                                 </Form.Item>
 
                                 <Form.Item style={{ marginBottom: 5 }} >{
-                                    !signingIn ? <Button  style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                                    !loggingIn? <Button  style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
                                         Sign in
                                     </Button> :
                                         <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">

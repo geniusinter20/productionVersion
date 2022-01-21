@@ -6,6 +6,7 @@ import "./Product_Items.css";
 import { connect } from "react-redux";
 import { addProduct, removeProduct } from "../../Redux/Actions/CartActions";
 import PuffLoader from "react-spinners/PuffLoader"
+import noImage from "../../Images/noImage.png"
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -79,7 +80,7 @@ class Products extends Component {
                 <Card
                   hoverable
                   style={{ borderStyle: "solid", borderRadius: "5px", borderWidth: "2px", borderColor: "rgb(108, 108, 108, 0.3)", width: "240px", minHeight: "220px", height: "35.5vh", position: "relative" }}
-                  cover={<Image><img alt="example" src={`http://92.205.62.248:5000/image/${product.testImageID?product.testImageID:"61d598a898174d129df2f778"}`} /></Image>}
+                  cover={<Image><img alt="example" src={ product.testImageID?`http://localhost:5000/image/${product.testImageID}`:noImage} /></Image>}
                 >
                   <ProductDtails>
                     <PTitle>{product.testTitle}</PTitle>

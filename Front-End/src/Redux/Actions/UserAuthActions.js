@@ -4,56 +4,75 @@ import { message } from "antd";
 export const signUp = (user) => {
   //console.log(user)
   return (dispatch) => {
+    dispatch({
+      type: "SIGN_UP",
+    });
     axios
-      .post(`http://92.205.62.248:5000/client/register`, user)
+      .post(`http://localhost:5000/client/register`, user)
       .then((token) => {
         if (token.data.msg) {
+          dispatch({
+            type: "SIGN_UP_FAIL",
+          });
           message.error({ content: token.data.msg, className: "message" });
         }
         else {
           localStorage.setItem("userToken", token.data);
           dispatch({
-            type: "SIGN_UP",
+            type: "SIGNED_UP",
             payload: token.data,
           });
           message.success({ content: "Registration Completed", className: "message" });
+          dispatch(loadUser())
         }
         //console.log("token", token.data.msg)
       })
       .catch((error) => {
         console.log(error.response);
+        dispatch({
+          type: "SIGN_UP_FAIL",
+        });
       });
   };
 };
 
 export const signIn = (email, password, remembered) => {
+
   return (dispatch) => {
-    let promiseA = axios.post(`http://92.205.62.248:5000/client/login`, { email, password })
+    dispatch({
+      type: "SIGN_IN",
+    });
+    let promiseA = axios.post(`http://localhost:5000/client/login`, { email, password })
     let promiseB = promiseA.then(({ data }) => {
-      console.log(data)
       if (data.msg) {
         message.error({ content: data.msg, className: "message" });
       }
       //console.log("firstResponse:",data)
-      if(remembered) localStorage.setItem("userToken", data);
+      if (remembered) localStorage.setItem("userToken", data);
       dispatch({
         type: "SIGN_IN",
         payload: data,
       });
+    }).catch((error) => {
+      dispatch({
+        type: "SIGN_IN_FAIL",
+      });
     })
     return Promise.all([promiseA, promiseB]).then(function ([responseA, responseB]) {
       promiseB.then(() => {
-        setTimeout(() => {
-          dispatch(loadUser())
-        }, 3000);
+        dispatch(loadUser())
+      }).catch((error) => {
+        dispatch({
+          type: "SIGN_IN_FAIL",
+        });
       })
     });
   };
 }
-export const changePassword=(currentPassword, newPassword, email, userID)=>{
+export const changePassword = (currentPassword, newPassword, email, userID) => {
   localStorage.removeItem("userToken")
   return (dispatch) => {
-    let promiseA = axios.post(`http://92.205.62.248:5000/changepassword/${userID}`,{currentPassword, newPassword} )
+    let promiseA = axios.post(`http://localhost:5000/changepassword/${userID}`, { currentPassword, newPassword })
     let promiseB = promiseA.then(({ data }) => {
       //console.log("firstResponse:",data)
       console.log(data);
@@ -63,12 +82,13 @@ export const changePassword=(currentPassword, newPassword, email, userID)=>{
       }
       message.success({ content: "Password Changed", className: "message" });
       axios
-      .post(`http://92.205.62.248:5000/client/login`, { email: email, password:newPassword })
-      .then(({data})=>{
-        localStorage.setItem("userToken", data);
-      })
+        .post(`http://localhost:5000/client/login`, { email: email, password: newPassword })
+        .then(({ data }) => {
+          localStorage.setItem("userToken", data);
+          
+        })
     })
-    return Promise.all([promiseA, promiseB]).then(function ([responseA, responseB]) {});
+    return Promise.all([promiseA, promiseB]).then(function ([responseA, responseB]) { });
   };
 }
 
@@ -82,11 +102,13 @@ export const signOut = () => {
 
 export const loadUser = () => {
   return (dispatch, getState) => {
+    dispatch({
+      type: "USER_LOADING",
+    });
     const token = getState().auth.token;
-    //console.log("state",getState().auth )
     if (token) {
       axios
-        .get(`http://92.205.62.248:5000/client/login`,
+        .get(`http://localhost:5000/client/login`,
           {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -97,8 +119,17 @@ export const loadUser = () => {
               type: "USER_LOADED",
               payload: data[0],
             });
-            //console.log("state:", getState().auth)
+          }).catch((error) => {
+            console.log(error);
+            dispatch({
+              type: "SIGN_IN_FAIL",
+            });
           })
-    } else return null;
+    } else {
+      dispatch({
+        type: "SIGN_IN_FAIL",
+      });
+      return null
+    };
   };
 };

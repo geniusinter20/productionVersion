@@ -153,8 +153,11 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-
-          <Typography style={{ width: "180px", fontSize: "13px", fontWeight: "500" }} component="div" noWrap={true}>
+        {userLogged&&<MyAvatar style={{ borderStyle: "solid" }} size={35}
+                  >
+                    {userInfo.fullName.charAt(0).toUpperCase()}
+                  </MyAvatar>}
+          <Typography style={{ width: "175px", fontSize: "13px", fontWeight: "500" }} component="div" noWrap={true}>
             {loggedIn ? userInfo.email : ""}
           </Typography>
         </MyCon>
@@ -334,7 +337,7 @@ const MyAvatar = styled(Avatar)`
  justify-content: center;
  cursor: pointer;
  list-style-type: none;
- 
+ border-color: #6C6C6C
 `
 const MyLink = styled(Link)`
 text-decoration: none;

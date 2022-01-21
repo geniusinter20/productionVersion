@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchuserpracticetests = (IDs) => {
     return (dispatch) => {
         IDs.forEach(element => {
-            let promiseA = axios.get(`http://92.205.62.248:5000/practicetests/${element}`)
+            let promiseA = axios.get(`http://localhost:5000/practicetests/${element}`)
             let promiseB = promiseA.then(({ data }) => {
                 setTimeout(() => {
                     dispatch({
@@ -33,7 +33,7 @@ const fetchuserpracticetestExams = (IDs, testID) => {
         IDs.forEach(element => {
             //console.log("fetchingexam:", element)
             axios.
-            get(`http://92.205.62.248:5000/activityexamstate/exam/${element}/${testID}`)
+            get(`http://localhost:5000/activityexamstate/exam/${element}/${testID}`)
             .then(({data})=>{
                 //console.log("activity:", data[0])
                 if(data[0] !== undefined)
@@ -43,7 +43,7 @@ const fetchuserpracticetestExams = (IDs, testID) => {
                 })
             })
             axios
-                .get(`http://92.205.62.248:5000/exams/${element}`)
+                .get(`http://localhost:5000/exams/${element}`)
                 .then(({ data }) => {
                     //console.log("data[0]", data[0])
                     exams.push(data[0])
@@ -72,7 +72,7 @@ export const fetchUserExamInfo = (ID) => {
         dispatch({
             type: UserDashboardActionTypes.EXAMENV_LOADINGDATA_REQUESTED,
         })
-        let promiseA = axios.get(`http://92.205.62.248:5000/exams/${ID}`)
+        let promiseA = axios.get(`http://localhost:5000/exams/${ID}`)
         let promiseB = promiseA.then(({ data }) => {
             setTimeout(() => {
                 dispatch({
@@ -97,7 +97,7 @@ const fetchExamQuestions = (IDs) => {
     return (dispatch) => {
         IDs.forEach(element => {
             axios
-                .get(`http://92.205.62.248:5000/question/${element}`)
+                .get(`http://localhost:5000/question/${element}`)
                 .then(({ data }) => {
                     questions.push(data[0])
                     if (questions.length === IDs.length) {
@@ -129,7 +129,7 @@ export const questionSolved = (answithid, finished, time ) => {
 export const startExam = (activity) => {
     console.log("started:", activity)
     return (dispatch) => {
-        axios.post("http://92.205.62.248:5000/activityexamstate/add", activity)
+        axios.post("http://localhost:5000/activityexamstate/add", activity)
             .then(res => {
                 //console.log("res:", res.data)
                 dispatch({
@@ -143,7 +143,7 @@ export const startExam = (activity) => {
 export const fetchActivity = (examID, testID) => {
     //console.log(qid)
     return (dispatch) => {
-        axios.get(`http://92.205.62.248:5000/activityexamstate/exam/${examID}/${testID}`)
+        axios.get(`http://localhost:5000/activityexamstate/exam/${examID}/${testID}`)
             .then(res => {
                 //console.log("res:", res.data)
                  dispatch({

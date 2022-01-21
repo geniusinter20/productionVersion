@@ -16,6 +16,7 @@ import { BsPaypal } from "react-icons/bs"
 import { HiLockClosed } from "react-icons/hi"
 import { clearCart } from "../../Redux/Actions/CartActions"
 import { useNavigate } from 'react-router-dom';
+import noImage from "../../Images/noImage.png"
 
 export default function CheckOut() {
     const paypal = useRef();
@@ -223,8 +224,8 @@ export default function CheckOut() {
 
                                     }}
                                 >
-                                    <Image fallback="http://92.205.62.248:5000/image/61d598a898174d129df2f778" width={39} height={24}
-                                        src={`http://92.205.62.248:5000/image/${getImageID(p.product)}`}></Image>
+                                    <Image fallback={noImage} width={39} height={24}
+                                        src={`http://localhost:5000/image/${getImageID(p.product)}`}></Image>
                                     <ListItemText sx={{
                                         '& .MuiListItemText-primary': {
                                             fontSize: 17,

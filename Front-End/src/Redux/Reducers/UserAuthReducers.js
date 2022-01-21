@@ -4,7 +4,9 @@ import jwtDecode from "jwt-decode";
 const initialState = {
   token: localStorage.getItem("userToken"),
   userData: null,
-  loggedIn: false
+  loggedIn: false,
+  registering: false,
+  loggingIn: false,
 };
 
 const authReducer = (state = initialState, { type, payload }) => {
@@ -13,12 +15,35 @@ const authReducer = (state = initialState, { type, payload }) => {
       //console.log("signing in:", payload)
       return {
         ...initialState,
-        token: payload
+        loggingIn: true,
+        token: payload,
       };
     case "SIGN_UP":
       return {
         ...initialState,
-        token: payload
+        registering: true,
+      };
+    case "SIGNED_UP":
+      return {
+        ...initialState,
+        token: payload,
+        registering: false,
+      };
+    case "SIGN_UP_FAIL":
+      return {
+        ...initialState,
+        registering: false,
+      };
+    case "SIGN_IN_FAIL":
+      return {
+        ...initialState,
+        loggingIn: false,
+      };
+    case "USER_LOADING":
+      //console.log("dfsdfsfs")
+      return {
+        ...initialState,
+        loggingIn: true,
       };
     case "USER_LOADED":
       //console.log("dfsdfsfs")
@@ -26,6 +51,7 @@ const authReducer = (state = initialState, { type, payload }) => {
         ...initialState,
         userData: payload,
         loggedIn: true,
+        loggingIn: false,
       };
     case "SIGN_OUT":
       localStorage.removeItem("userToken");

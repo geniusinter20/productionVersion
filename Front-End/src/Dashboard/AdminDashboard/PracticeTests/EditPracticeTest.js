@@ -125,7 +125,7 @@ export default function AddPracticeTests(props) {
                     uid: '-1',
                     name: 'image.png',
                     status: 'done',
-                    url: `http://92.205.62.248:5000/image/${data.testImageID}`,
+                    url: `http://localhost:5000/image/${data.testImageID}`,
                 },
             ])
         }
@@ -211,12 +211,12 @@ export default function AddPracticeTests(props) {
     }
     const handleRemove = (imageID) => {
         console.log(imageID)
-        axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+        axios.post(`http://localhost:5000/image/delete/${imageID}`)
         setFileList([])
         setImageID(null)
     }
     const beforeUpload = () => {
-        if (imageID) axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+        if (imageID) axios.post(`http://localhost:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -314,7 +314,7 @@ export default function AddPracticeTests(props) {
                             <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                                     <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                        name="file" onPreview={onPreview} action='http://92.205.62.248:5000/image/upload' accept=".jpg, .jpeg, .png"
+                                        name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png"
                                         fileList={fileList} beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />

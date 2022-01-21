@@ -1,23 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import examEnvBackground from "../../Images/examEnvBackground.jpg"
 import { CloseCircleTwoTone } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Registration.css"
 import { signUp } from '../../Redux/Actions/UserAuthActions';
-import { useDispatch } from "react-redux"
-import {
-    Form,
-    Input,
-    InputNumber,
-    Cascader,
-    Select,
-    Row,
-    Col,
-    Checkbox,
-    Button,
-    AutoComplete,
-} from 'antd';
+import { useDispatch, useSelector } from "react-redux"
+import { Form, Input, Select, Row, Col, Checkbox, Button, } from 'antd';
 const { Option } = Select;
 const tailFormItemLayout = {
     wrapperCol: {
@@ -52,7 +41,18 @@ const formItemLayout = {
 export default function Registreation() {
     const [form] = Form.useForm();
     const dispatch = useDispatch()
-    //dispatch(signUp({}))
+    const [loggingIn, setLoggingIn] = useState(false);
+    const [registering, setRegistering] = useState(false);
+    const auth = useSelector(state => state.auth)
+    const navigate= useNavigate();
+    useEffect(() => {
+        setLoggingIn(auth.loggingIn);
+        setRegistering(auth.registering);
+    }, [auth]);
+    useEffect(() => {
+        if(auth.loggingIn) navigate("/")
+    }, [auth]);
+    console.log(loggingIn);
     const onFinish = () => {
         form.validateFields()
             .then(
@@ -68,6 +68,23 @@ export default function Registreation() {
             .catch((errorInfo) => { });
     };
     //console.log(localStorage.getItem("userToken"))
+    const renderButton = () => {
+        if (!registering && !loggingIn) return (
+            <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                Register now
+            </Button>
+        )
+        else if (registering && !loggingIn) return (
+            <Button loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                Registering...
+            </Button>
+        )
+        else if (!registering && loggingIn) return (
+            <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                Signing in...
+            </Button>
+        )
+    }
     return (
         <MainContainer>
             <div className='pageBackground'>
@@ -189,9 +206,7 @@ export default function Registreation() {
                                 </Checkbox>
                             </Form.Item>
                             <Form.Item style={{ marginBottom: 5 }} >
-                                <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
-                                    Register now
-                                </Button>
+                                {renderButton()}
                             </Form.Item>
                         </Form>
                     </div>

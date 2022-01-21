@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { deletePracticeTest, togglePracticeTestStatus, selectedPracticeTest } from "../../../Redux/Actions/practiceTestsActions";
 import { useNavigate } from 'react-router-dom';
 import { fetchPracticeTestsSuccess } from '../../../Redux/Actions/practiceTestsActions';
+import noImage from "../../../Images/noImage.png"
 
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
@@ -54,7 +55,7 @@ class PracticeTests extends Component {
     this.columns = [
       {
         dataIndex: 'testImageID',
-        render: id=><Image fallback="http://92.205.62.248:5000/image/61d598a898174d129df2f778" width={80} height={45} src={`http://92.205.62.248:5000/image/${id}`}></Image>
+        render: id=><Image fallback={noImage} width={80} height={45} src={`http://localhost:5000/image/${id}`}></Image>
       },
       {
         title: 'PracticeTest',

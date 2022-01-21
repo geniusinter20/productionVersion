@@ -16,7 +16,9 @@ import CheckOut from "./Pages/Cart/CheckOut"
 import { loadCart } from './Redux/Actions/CartActions';
 import PuffLoader from "react-spinners/PuffLoader"
 import Profile from './Pages/Registration/Profile';
-
+import styled from 'styled-components';
+import Unauthorized from "./Images/401Unauthorized.svg";
+import NotFound from './NotFound';
 
 const mapStateToProps = (state) => {
   const { allPracticeTests } = state;
@@ -76,6 +78,10 @@ class App extends Component {
     //   console.log("dashboards")
     // }
     //console.log(this.props.cart)
+    const CheckLogInAuthorization=(component)=> {
+      if (this.state.loggedIn) return (component)
+      else return (<Image><object data={Unauthorized} type="image/svg+xml" /></Image>)
+  }
     return (
       <div>
         {this.state.spinnerOn ? <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -87,12 +93,13 @@ class App extends Component {
             <Route path="/login" element={<LogIn />} />
             <Route path="/practicetests" element={<PracticeTests />} />
             <Route path='/pmpcertificate' element={<PMP_Certificate />} />
-            <Route exact path='/dashboard/*' element={<AdminDashboard />} />
-            <Route exact path='/mydashboard/*' element={<UserDashboard />} />
+            <Route exact path='/dashboard/*' element={CheckLogInAuthorization(<AdminDashboard />)} />
+            <Route exact path='/mydashboard/*' element={CheckLogInAuthorization(<UserDashboard />)} />
             <Route exact path='/examenv/:id' element={<ExamEnv />} />
             <Route exact path='/cart' element={<Cart />} />
             <Route exact path='/cart/checkout' element={<CheckOut/>} />
             <Route exact path='/profile' element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         }
       </div>
@@ -100,3 +107,14 @@ class App extends Component {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+const Image = styled.div`
+display: flex; 
+align-items: center;
+justify-content: center;
+border: solid;
+height: 100vh;
+width: 100vw;
+&>object{
+  width: 50%;
+}
+`
