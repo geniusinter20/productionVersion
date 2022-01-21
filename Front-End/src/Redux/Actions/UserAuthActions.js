@@ -110,7 +110,7 @@ export const loadUser = (tok) => {
     if (token) {
       //console.log("user loading");
       axios
-        .get(`http://localhost:5000/client/login`,
+        .get(`http://92.205.62.248:5000/client/login`,
           {
             headers: {
               'Authorization': `Bearer ${token}`
