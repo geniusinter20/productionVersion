@@ -116,7 +116,7 @@ export const examActivityReducer = (state = examActivityInitialState, { type, pa
             tempStateQ.splice(ind, 1, payload.answithid)
         }
         
-            axios.post(`http://localhost:5000/activityexamstate/update/${state.examID}/${state.testID}`, 
+            axios.post(`https://localhost:5000/activityexamstate/update/${state.examID}/${state.testID}`, 
             {
                 ...state,
                 finished: payload.finished,

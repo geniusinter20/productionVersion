@@ -6,7 +6,7 @@ export const fetchQuestions = () => {
     return (dispatch) => {
         
         axios
-            .get("http://localhost:5000/questions")
+            .get("https://localhost:5000/questions")
             .then(({ data }) => {
                 setTimeout(() => {
                     dispatch({

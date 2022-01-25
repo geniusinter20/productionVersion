@@ -86,7 +86,7 @@ function EditExam(props) {
             uid: '-1',
             name: 'image.png',
             status: 'done',
-            url: `http://localhost:5000/image/${data.examImageID}`,
+            url: `https://localhost:5000/image/${data.examImageID}`,
           },
         ])
       }
@@ -125,7 +125,7 @@ function EditExam(props) {
     else questions.forEach(async (question, index) => {
       //console.log("question:", question)
       const res = await axios
-        .post("http://localhost:5000/question/add", {
+        .post("https://localhost:5000/question/add", {
           qesText: question.qesText,
           qesType: question.qesType,
           options: question.options,
@@ -201,12 +201,12 @@ setValidQuestion(false)
   }
   const handleRemove = (imageID) => {
     console.log(imageID)
-    axios.post(`http://localhost:5000/image/delete/${imageID}`)
+    axios.post(`https://localhost:5000/image/delete/${imageID}`)
     setFileList([])
     setImageID(null)
   }
   const beforeUpload = () => {
-    if (imageID && imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
+    if (imageID && imageID!=="no image") axios.post(`https://localhost:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -347,7 +347,7 @@ setValidQuestion(false)
               <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                   <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                    name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png"
+                    name="file" onPreview={onPreview} action='https://localhost:5000/image/upload' accept=".jpg, .jpeg, .png"
                     fileList={fileList} beforeUpload={beforeUpload}>
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />

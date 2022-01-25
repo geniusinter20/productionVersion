@@ -80,7 +80,7 @@ class Products extends Component {
                 <Card
                   hoverable
                   style={{ borderStyle: "solid", borderRadius: "5px", borderWidth: "2px", borderColor: "rgb(108, 108, 108, 0.3)", width: "240px", minHeight: "220px", height: "35.5vh", position: "relative" }}
-                  cover={<Image><img alt="example" src={ product.testImageID?`http://localhost:5000/image/${product.testImageID}`:noImage} /></Image>}
+                  cover={<Image><img alt="example" src={ product.testImageID?`https://localhost:5000/image/${product.testImageID}`:noImage} /></Image>}
                 >
                   <ProductDtails>
                     <PTitle>{product.testTitle}</PTitle>
