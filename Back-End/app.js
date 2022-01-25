@@ -7,11 +7,12 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-//const https = require('https');
-//const fs = require('fs');
+const https = require('https');
+const fs = require('fs');
 const helmet = require('helmet');
 var cors = require('cors')
 const methodOverride = require('method-override');
+require('dotenv/config');
 /*const Activity = require('./DB/models/Activity');
 const ActivityCourseState = require('./DB/models/ActivityCourseState');
 const ActivityExamState = require('./DB/models/ActivityExamState');
@@ -32,7 +33,7 @@ const Score = require('./DB/models/Score');
 const Session = require('./DB/models/Session');
 const Video = require('./DB/models/Video');
 */
-const DBURL = 'mongodb://localhost:27017/newDB';
+const DBURL = process.env.MONGO_URL;
 mongoose.createConnection(DBURL);
 
 const app = express();
@@ -128,12 +129,19 @@ app.use(cors()) // Use this after the variable declaration
 app.get('/secret', (req, res) => {
     return res.send('Your personal secret value is 42!');
 });*/
+
 app.get('/', (req, res) => {
   res.send('Hello');
 });
 
+const privateKey = fs.readFileSync('./key.pem').toString();
+const certificate = fs.readFileSync('./cert.pem').toString();
+const ca = fs.readFileSync('./CABUNDLE.pem');
+const credentials = {key: privateKey, cert: certificate, ca:ca};
 
-app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
+const server = https.createServer(credentials, app).listen(PORT, () => console.log(`Server is running on https://localhost:${PORT}`));
+
+//app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
 
 /*
 https.createServer({
