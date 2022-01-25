@@ -1,11 +1,27 @@
 import { PracticeTestActionTypes } from "../Constants/practiceTestsActionTypes"
 import axios from "axios";
+import { message } from "antd";
 
+
+export const resetTest = () => {
+
+    return ({
+        type: PracticeTestActionTypes.TEST_RESET,
+    })
+
+}
+export const resetSelectedTest = () => {
+
+    return ({
+        type: PracticeTestActionTypes.SELECTED_PRACTICETEST_RESET
+    })
+
+}
 
 const fetchPracticeTests = () => {
 
     // return async(dispatch) => {
-    //     const response = await axios.get("http://92.205.62.248:5000/practicetests");
+    //     const response = await axios.get("http://localhost:5000/practicetests");
     //     dispatch
     return ({
         type: PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST,
@@ -17,7 +33,7 @@ export const fetchPracticeTestsSuccess = () => {
     return (dispatch) => {
         dispatch(fetchPracticeTests());
         axios
-            .get("http://92.205.62.248:5000/practicetests")
+            .get("http://localhost:5000/practicetests")
             .then(({ data }) => {
                 setTimeout(() => {
                     dispatch({
@@ -46,17 +62,30 @@ export const deletePracticeTest = (id) => {
 }
 
 export const createPracticeTest = (test) => {
-    console.log("adding:", test)
+    //console.log("adding:", test)
+
     return (
         dispatch => {
-            axios.post("http://92.205.62.248:5000/practicetests/add"
+            dispatch({
+                type: PracticeTestActionTypes.CREATE_PRACTICETEST_START,
+            })
+            axios.post("http://localhost:5000/practicetests/add"
                 , test)
-                .then(res =>
-                    dispatch({
-                        type: PracticeTestActionTypes.CREATE_PRACTICETEST,
-                        payload: res.data
-                    })
-                )
+                .then(res => {
+                    if (res.data.msg === "test created") {
+                        dispatch({
+                            type: PracticeTestActionTypes.CREATE_PRACTICETEST,
+                            payload: res.data
+                        })
+                        message.success({ content: "Test Created", className: "message" });
+                    }
+                    else {
+                        message.error({ content: res.data.msg === 408 ? "Request time out try again" : res.data.msg, className: "message" });
+                        dispatch({
+                            type: PracticeTestActionTypes.CREATE_PRACTICETEST_FAIL,
+                        })
+                    }
+                })
         }
     )
 }
@@ -72,20 +101,49 @@ export const selectedPracticeTest = (id) => {
     //console.log("fetching:", id)
     return (
         dispatch => {
-    axios
-        .get(`http://92.205.62.248:5000/practicetests/${id}`)
-        .then(({ data }) => {
-            setTimeout(() => {
-                dispatch({
-                    type: PracticeTestActionTypes.SELECTED_PRACTICETEST,
-                    payload: {...data[0], loadingTest: false}
+            axios
+                .get(`http://localhost:5000/practicetests/${id}`)
+                .then(({ data }) => {
+                    //console.log(data);
+                    setTimeout(() => {
+                        dispatch({
+                            type: PracticeTestActionTypes.SELECTED_PRACTICETEST,
+                            payload: data[0],
+                        })
+                    }, 1000)
+                    //console.log("fetched:",data[0])
                 })
-            }, 1000)
-            //console.log("fetched:",data[0])
-        })
-        .catch(function (error) {
-        })
+                .catch(function (error) {
+                })
 
-    })
+        })
 }
-    
+export const editSelectedPracticeTest = (test) => {
+    //console.log("fetching:", id)
+    return (
+        dispatch => {
+            dispatch({
+                type: "SELECTED_PRACTICETEST_UPDATE_START",
+            })
+            console.log(test);
+            axios.post(`http://localhost:5000/practicetests/update/${test.key}`, test)
+                .then(res => {
+                    if (res.data.msg === "test updated") {
+                        message.success({ content: "Test Updated", className: "message" });
+                        dispatch({
+                            type: "SELECTED_PRACTICETEST_UPDATE",
+                            payload: test
+                        })
+                    }
+                    else {
+                        message.error({ content: res.data.msg === 408 ? "Request time out try again" : res.data.msg, className: "message" });
+                        dispatch({
+                            type: "SELECTED_PRACTICETEST_UPDATE_FAIL",
+                        })
+                    }
+                })
+
+        }
+    )
+}
+

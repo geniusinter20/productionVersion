@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 import image from "../../Images/PMPpage_Header.jpeg";
 import {Row, Col,Button } from "antd";
+import { useNavigate } from 'react-router-dom';
 
 
-class Segment extends Component {
-    render() {
+export default function Segment() {
+    const navigate= useNavigate();
         return (
                 <HomeSection>
                     <Fill>
@@ -17,7 +18,7 @@ class Segment extends Component {
                             <div style={{color:"white",fontSize:'30%', fontWeight:"400"}}>Earn the New PMP Certification</div>
                             <Buttons gutter={[20, 20]}>
                                 <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 4, offset: 0 }}>
-                                <Button1 type="primary">Practice Tests</Button1>
+                                <Button1 onClick={()=>navigate("/practicetests")} type="primary">Practice Tests</Button1>
                                 </Col1>
                                 <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 4, offset: 0 }}>
                                 <Button1 type="primary">Our Courses</Button1>
@@ -28,7 +29,6 @@ class Segment extends Component {
                     </Fill>
                  </HomeSection>
         )
-    }
 }
 
 const Button1 = styled(Button)`
@@ -119,6 +119,3 @@ const HomeDesc = styled.p`
     color: white;
     margin-bottom: 5px
 `
-
-
-export default Segment;

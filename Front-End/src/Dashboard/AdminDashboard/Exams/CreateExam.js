@@ -7,12 +7,13 @@ import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
 import FetchedQuestions from "./fetchedQuestions";
-import { createExam } from "../../../Redux/Actions/ExamsActions";
+import { createExam, resetExams } from "../../../Redux/Actions/ExamsActions";
 import axios from 'axios';
 import ImgCrop from 'antd-img-crop';
 import Options from "./Options";
 import OrderingOptions from "./OrderingOptions";
 import MatchingOptions from "./MatchingOptions";
+import { uuid } from 'uuidv4';
 
 const { Option } = Select;
 
@@ -49,8 +50,10 @@ function EditExam(props) {
   const [deleteChanged, setDeleteChanged] = useState(false);
   const [qCount, setQCOunt] = useState(0);
   const [deletedQuestionIDs, setDeletedQuestionIDs] = useState([]);
-  const [imageID, setImageID] = useState(null);
+  const [imageID, setImageID] = useState("no image");
   const [validQuestion, setValidQuestion]= useState(false);
+  const creating= useSelector(state=> state.allExams.creating);
+  const created= useSelector(state=> state.allExams.created);
   
   if (data !== undefined) {
     form.setFieldsValue({
@@ -62,23 +65,18 @@ function EditExam(props) {
       period: data.examPeriod,
       examCategory: data.examCategory,
     })
-
-
-    //
-
   }
-
-
+  
   const onUploadChange = (event) => {
     //console.log(event.file.response)
     if (event.file.response) setImageID(event.file.response.id)
   }
   const handleRemove = (imageID) => {
     console.log(imageID)
-    axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+    axios.post(`http://localhost:5000/image/delete/${imageID}`)
   }
   const beforeUpload=()=>{
-    if(imageID) axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+    if(imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -127,13 +125,13 @@ function EditExam(props) {
     }
     if (i === 0) {
       onExamEditFinish(deleteChanged || orderChanged ? examQuestionsIDs : ids)
-      navigate("/dashboard/exams")
-      window.location.reload(true);
+      //navigate("/dashboard/exams")
+      //window.location.reload(true);
     }
     else questions.forEach(async (question, index) => {
       //console.log("question:", question)
       const res = await axios
-        .post("http://92.205.62.248:5000/question/add", {
+        .post("http://localhost:5000/question/add", {
           qesText: question.qesText,
           qesType: question.qesType,
           options: question.options,
@@ -146,10 +144,9 @@ function EditExam(props) {
 
         onExamEditFinish(deleteChanged || orderChanged ? examQuestionsIDs : ids)
 
-        navigate("/dashboard/exams")
-
-        window.location.reload();
-        message.success('Submit success!');
+        //navigate("/dashboard/exams")
+        //window.location.reload();
+        //message.success('Submit success!');
       }
 
     })
@@ -171,6 +168,7 @@ function EditExam(props) {
             options: options,
             ansExp: question.answerExplination,
             number: qCount + 1,
+            key:uuid(),
           }])
           setQCOunt(qCount + 1)
         }
@@ -228,17 +226,42 @@ function EditExam(props) {
         break;
     }
   }
-  console.log(questions)
-  return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "center" }}>
-        <div style={{ fontSize: "28px", fontWeight: "600" }}> Create exam </div>
-        <Button type="primary"
+  const renderCreationButton=()=>{
+    if(!creating&&!created) return(
+      <Button type="primary"
           onClick={() => onFinish()}
           shape="round"
           style={
             { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
           }>Create Exam</Button >
+    )
+    if(creating && !created) return(
+      <Button type="primary"
+          loading
+          shape="round"
+          style={
+            { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+          }>Creating</Button >
+    )
+    if(!creating && created) return(
+      <Button type="primary"
+          onClick={() => {
+            dispatch(resetExams())
+            navigate("/dashboard/exams")
+            window.location.reload();
+          }}
+          shape="round"
+          style={
+            { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+          }>Go Back</Button >
+    )
+  }
+  //console.log(questions)
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "center" }}>
+        <div style={{ fontSize: "28px", fontWeight: "600" }}> Create exam </div>
+        {renderCreationButton()}
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "flex-start" }}>
         <FormContainer>
@@ -298,7 +321,7 @@ function EditExam(props) {
               <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                 <ImgCrop aspect={16 / 9} minZoom={0.5} quality={1} grid>
                   <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                    name="file" onPreview={onPreview} action='http://92.205.62.248:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
+                    name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
@@ -496,7 +519,7 @@ padding:25px;
 //         }
 //          else questions.forEach(async (question, index) => {
 //             const res = await axios
-//                 .post("http://92.205.62.248:5000/question/add", {
+//                 .post("http://localhost:5000/question/add", {
 //                     qesText: question.questionText,
 //                     qesType: question.questionType,
 //                     options: question.options,

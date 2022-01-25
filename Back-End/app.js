@@ -31,10 +31,10 @@ const Review = require('./DB/models/Review');
 const Score = require('./DB/models/Score');
 const Session = require('./DB/models/Session');
 const Video = require('./DB/models/Video');
-
+*/
 const DBURL = 'mongodb://localhost:27017/newDB';
 mongoose.createConnection(DBURL);
-*/
+
 const app = express();
 app.use((req, res, next) => {
   //Enabling CORS
@@ -68,7 +68,7 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
-app.set('view engine', 'ejs');
+
 
 
 // Express session
@@ -76,7 +76,7 @@ app.use(
   session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false
   })
 );
 
@@ -88,33 +88,35 @@ app.use(passport.session());
 app.use(flash());
 
 // Global variables
-app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.locals.success_msg = req.flash('success_msg');
+//   res.locals.error_msg = req.flash('error_msg');
+//   res.locals.error = req.flash('error');
+//   next();
+// });
 
 
 const examRouter = require('./routes/examRouter');
 app.use('/exams', examRouter);
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000
 
-const PracticetestsRouter = require('./routes/PracticetestsRouter');
-const questionRouter = require('./routes/questionRouter');
-const activityExamRouter = require('./routes/activityExamRouter');
-const clientRouter = require('./routes/clientRouter');
-const cartRouter = require('./routes/cartRouter');
-const changePasswordRouter = require('./routes/changePasswordRouter');
+ const PracticetestsRouter = require('./routes/PracticetestsRouter');
+ const questionRouter = require('./routes/questionRouter');
+ const activityExamRouter = require('./routes/activityExamRouter');
+ const clientRouter = require('./routes/clientRouter');
+ const cartRouter = require('./routes/cartRouter');
+ const changePasswordRouter = require('./routes/changePasswordRouter');
 const imageRouter = require('./routes/imageRouter');
-app.use('/image', imageRouter);
-app.use('/practicetests', PracticetestsRouter);
-app.use('/question', questionRouter);
-app.use('/activityexamstate', activityExamRouter);
-app.use('/client', clientRouter);
-app.use('/cart', cartRouter);
-app.use('/changepassword', changePasswordRouter);
+// const answerRouter = require('./routes/answerRouter')
+// app.use('/answer',answerRouter);
+ app.use('/image', imageRouter);
+ app.use('/practicetests', PracticetestsRouter);
+ app.use('/question', questionRouter);
+ app.use('/activityexamstate', activityExamRouter);
+ app.use('/client', clientRouter);
+ app.use('/cart', cartRouter);
+ app.use('/changepassword', changePasswordRouter);
 app.use(helmet());
 
 

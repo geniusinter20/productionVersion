@@ -3,41 +3,47 @@ import axios from "axios";
 const cartInitialState = {
     cartLoaded: false,
     clientID: "",
+    productsWithID: JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")).productsWithID:[],
     products: [],
 }
 export const cartReducer = (state = cartInitialState, { type, payload }) => {
     switch (type) {
         case CartActionTypes.CART_ADDPRODUCT: {
             //console.log([...state.products, payload])
-            axios.post(`http://92.205.62.248:5000/cart/update/${state.clientID}`, {
-                products: [...state.products, payload]
-            })
+            localStorage.setItem("cart", JSON.stringify({
+                ...state,
+                productsWithID: [...state.productsWithID, payload]
+            }))
             return {
                 ...state,
-                products: [...state.products, payload]
+                productsWithID: [...state.productsWithID, payload]
             }
         }
         case CartActionTypes.CART_REMOVEPRODUCT: {
             //console.log([...state.products, payload])
-            const temp = state.products.filter(x => x.product.key !== payload.productID)
-            //console.log("temp", temp)
-            axios.post(`http://92.205.62.248:5000/cart/update/${state.clientID}`, {
-                products: temp
-            })
-            return {
+            const newProducts = state.products.filter(x => x.product.key !== payload.productID)
+            const newProductsWithID = state.productsWithID.filter(x => x.productID !== payload.productID)
+            localStorage.setItem("cart", JSON.stringify({
                 ...state,
-                products: temp
-            }
+                productsWithID: newProductsWithID
+            }))
+            //console.log(newProducts);
+            return (
+                {
+                    cartLoaded: true,
+                    productsWithID: newProductsWithID,
+                    products: newProducts
+                }
+            )
         }
-        case CartActionTypes.CART_LOADPRODUCTS: {
+        case CartActionTypes.CART_LOADCART_FINISH: {
+            //console.log(payload);
             return {
-                ...payload
+                ...payload,
+                cartLoaded: true,
             }
         }
         case CartActionTypes.CART_CLEAR: {
-            axios.post(`http://92.205.62.248:5000/cart/update/${state.clientID}`, {
-                products: []
-            })
             return {
                 ...state,
                 products: [],

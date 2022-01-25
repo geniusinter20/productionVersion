@@ -7,9 +7,9 @@ import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
-import { selectedPracticeTest } from '../../../Redux/Actions/practiceTestsActions';
+import { editSelectedPracticeTest, resetSelectedTest, selectedPracticeTest } from '../../../Redux/Actions/practiceTestsActions';
 import { fetchExamsSuccess } from '../../../Redux/Actions/ExamsActions';
-
+import { useNavigate } from 'react-router-dom';
 const { Paragraph, Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -72,19 +72,21 @@ export default function AddPracticeTests(props) {
     const [existedExamsIds, setExistedExamsIds] = useState([]);
     const [testType, setTestType] = useState(null);
     const [testCategory, setTestCategory] = useState(null);
-    const [imageID, setImageID] = useState(null);
+    const [imageID, setImageID] = useState("no image");
     const [fileList, setFileList] = useState([]);
     const [loadingTest, setLoadingTest] = useState(true)
     const { state } = useLocation();
     const { id } = state;
+    const navigate = useNavigate();
     const allExams = useSelector(state => state.allExams.exams)
     const exams = useSelector(state => state.allExams.exams
-        .filter(item => !existedExamsIds.includes(item._id))
+        .filter(item => !existedExamsIds.includes(item.key))
     );
     const existedExams = useSelector(state => state.allExams.exams
         .filter(item => existedExamsIds.includes(item._id))
     );
     const data = useSelector(state => state.selectedPracticeTest)
+
     useEffect(() => {
         dispatch(selectedPracticeTest(id))
     }, [])
@@ -98,14 +100,15 @@ export default function AddPracticeTests(props) {
         })
     }
     useEffect(() => {
-        if (data.testExamsIDs !== undefined) {
+        if (data && data.testExamsIDs) {
             //console.log("data1", data)
+            //console.log(data.testExamsIDs);
             setExistedExamsIds(data.testExamsIDs)
         }
         if (data.whatStudentWillPractice !== undefined) {
             setAddedWSWL(data.whatStudentWillPractice)
         }
-
+        //console.log(data);
     }, [existedExamsIds, data])
 
     useEffect(() => {
@@ -118,14 +121,15 @@ export default function AddPracticeTests(props) {
             setTestType(data.testType)
             setTestCategory(data.testCategory)
         }
-        if (data.testImageID) {
+        if (data.testImageID && data.testImageID !== "no image") {
+            //console.log(data.testImageID);
             setImageID(data.testImageID)
             setFileList([
                 {
                     uid: '-1',
                     name: 'image.png',
                     status: 'done',
-                    url: `http://92.205.62.248:5000/image/${data.testImageID}`,
+                    url: `http://localhost:5000/image/${data.testImageID}`,
                 },
             ])
         }
@@ -145,7 +149,7 @@ export default function AddPracticeTests(props) {
         setVisible(true);
     };
     const handleDelete = (key) => {
-        console.log("key", key)
+        //console.log("key", key)
         const temp = addedExamsIDs.filter(e => e !== key)
         setAddedExamsIDs(temp)
         dispatch({ type: "REMOVE_SELECTED_PRACTICETEST_EXAM", payload: key })
@@ -181,12 +185,12 @@ export default function AddPracticeTests(props) {
         dispatch({ type: "SELECTED_PRACTICETEST_ADDWSWP", payload: tempWSWL })
     }
     const onFinish = () => {
-        message.success('Update success!');
+        //message.success('Update success!');
         form.validateFields()
             .then(
                 ({ testTitle, brief, price, validationPeriod, description }) => {
-                    dispatch({
-                        type: "SELECTED_PRACTICETEST_UPDATE", payload: {
+                    dispatch(editSelectedPracticeTest(
+                        {
                             key: id,
                             testTitle: testTitle,
                             testPrice: price,
@@ -196,9 +200,11 @@ export default function AddPracticeTests(props) {
                             testImageID: imageID,
                             testType: testType,
                             testCategory: testCategory,
-                            whatStudentWillPractice: addedWSWL
+                            whatStudentWillPractice: addedWSWL,
+                            testExamsIDs: existedExamsIds,
                         }
-                    })
+                    ))
+
                 }
             )
             .catch((errorInfo) => { });
@@ -207,16 +213,19 @@ export default function AddPracticeTests(props) {
     const onUploadChange = (event) => {
         //console.log(event)
         setFileList(event.fileList)
-        if (event.file.response) setImageID(event.file.response.id)
+        if (event.file.response) {
+            console.log(event.file.response.id);
+            setImageID(event.file.response.id)
+        }
     }
     const handleRemove = (imageID) => {
         console.log(imageID)
-        axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+        axios.post(`http://localhost:5000/image/delete/${imageID}`)
         setFileList([])
-        setImageID(null)
+        setImageID("no image")
     }
     const beforeUpload = () => {
-        if (imageID) axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+        if (imageID !== "no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -237,16 +246,50 @@ export default function AddPracticeTests(props) {
         const imgWindow = window.open(src);
         imgWindow.document.write(image.outerHTML);
     }
+    const { editing, edited } = data;
+    const renderCreationButton = () => {
+        //const { editing, edited } = data;
+        if (!editing && !edited) return (
+            <Button type="primary"
+                onClick={() => onFinish()}
+                shape="round"
+                style={
+                    { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                }>Save Changes</Button >
+        )
+        if (editing && !edited) return (
+            <Button type="primary"
+                loading
+                shape="round"
+                style={
+                    { height: "40px", width: "125px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                }>editing..</Button >
+        )
+        if (!editing && edited) return (
+            <div style={{display: "flex", gap: "20px"}}>
+                <Button type="primary"
+                    onClick={() => {
+                        navigate("/dashboard/practicetests")
+                        window.location.reload();
+                        dispatch(resetSelectedTest())
+                    }}
+                    shape="round"
+                    style={
+                        { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                    }>Go Back</Button >
+                <Button shape="round" style={{ height: "40px", width: "110px", display: "flex", alignItems: "center", 
+                justifyContent: "Space-evenly", padding: "5px" }} onClick={() => {
+                    dispatch(resetSelectedTest())
+                }}>Keep Editing</Button>
+            </div>
+        )
+    }
+    //console.log(imageID);
     return (
         loadingTest ? <div style={{ display: "flex", justifyContent: "center", margin: "4vh 4vw 2vh 4vw", alignItems: "center", width: "90%", height: "90%" }}><Spin size="large" /></div> : <div>
             <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "center" }}>
                 <div style={{ fontSize: "28px", fontWeight: "600" }}> Edit Test </div>
-                <Button type="primary"
-                    onClick={() => onFinish()}
-                    shape="round"
-                    style={
-                        { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-                    }>Save Changes</Button >
+                {renderCreationButton()}
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "flex-start" }}>
                 <FormContainer>
@@ -257,6 +300,7 @@ export default function AddPracticeTests(props) {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
+                        <fieldset disabled={!editing && edited?"disabled":null}>
                         <Form.Item
 
                             name="testTitle"
@@ -278,7 +322,7 @@ export default function AddPracticeTests(props) {
                         >
                             <Input placeholder="input placeholder" />
                         </Form.Item>
-                        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "20px", marginBottom:"17px" }}>
+                        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "20px", marginBottom: "17px" }}>
                             <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "7px" }}>
                                 <div>Test Type</div>
                                 <Select onChange={(v) => setTestType(v)} value={testType}>
@@ -314,7 +358,7 @@ export default function AddPracticeTests(props) {
                             <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                                     <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                        name="file" onPreview={onPreview} action='http://92.205.62.248:5000/image/upload' accept=".jpg, .jpeg, .png"
+                                        name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png"
                                         fileList={fileList} beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
@@ -326,6 +370,7 @@ export default function AddPracticeTests(props) {
                                 </ImgCrop>
                             </Form.Item>
                         </Form.Item>
+                        </fieldset>
                     </Form>
                 </FormContainer>
                 <FormContainer>
@@ -336,6 +381,7 @@ export default function AddPracticeTests(props) {
                                 onClick={showModal}
                                 type="primary"
                                 shape="round"
+                                disabled={!editing && edited}
                                 style={
                                     { height: "35px", width: "75px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "8px" }
                                 }
@@ -407,7 +453,7 @@ export default function AddPracticeTests(props) {
                                                         {item.examDescription}
                                                     </Text>}
                                             />
-                                            <Button onClick={() => handleDelete(item.key)} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" danger>
+                                            <Button disabled={!editing && edited} onClick={() => handleDelete(item.key)} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" danger>
                                                 Delete
                                             </Button>
                                         </List.Item>
@@ -422,6 +468,7 @@ export default function AddPracticeTests(props) {
                             <div style={{ fontSize: "18px", fontWeight: "600" }}> What Student Will learn </div>
                             <Button
                                 onClick={() => setAddNew(true)}
+                                disabled={!editing && edited}
                                 type="primary"
                                 shape="round"
                                 style={

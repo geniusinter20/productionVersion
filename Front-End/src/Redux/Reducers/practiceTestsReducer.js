@@ -4,11 +4,20 @@ const initialState = {
     practiceTests: [],
     loading: true,
     error: '',
+    creating: false,
+    creadted: false,
 }
 
 export const practiceTestsReducer = (state = initialState, { type, payload }) => {
 
     switch (type) {
+        case PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST: {
+            return {
+                ...state,
+                creating: false,
+                created: false,
+            };
+        }
         case PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST: {
             return {
                 ...state,
@@ -44,10 +53,23 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         case PracticeTestActionTypes.DELETE_PRACTICETEST: {
             const temp = state.practiceTests.filter((e) => e._id !== payload);
             //console.log(temp)
-            axios.delete(`http://92.205.62.248:5000/practicetests/delete/${payload}`)
+            axios.delete(`http://localhost:5000/practicetests/delete/${payload}`)
             return {
                 ...state,
                 practiceTests: temp
+            }
+        }
+        case PracticeTestActionTypes.EDIT_PRACTICETEST_START: {
+            return {
+                ...state,
+                editing: true,
+            }
+        }
+        case PracticeTestActionTypes.EDIT_PRACTICETEST_FAIL: {
+            return {
+                ...state,
+                creating: false,
+                created: false,
             }
         }
         case PracticeTestActionTypes.EDIT_PRACTICETEST: {
@@ -57,17 +79,34 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
             //console.log(temp)
             return {
                 ...state,
-                practiceTests: temp
+                practiceTests: temp,
+                creating: false,
+                created: false,
+            }
+        }
+        case PracticeTestActionTypes.CREATE_PRACTICETEST_START: {
+            return {
+                ...state,
+                creating: true,
+            }
+        }
+        case PracticeTestActionTypes.CREATE_PRACTICETEST_FAIL: {
+            return {
+                ...state,
+                creating: false,
+                created: false,
             }
         }
         case PracticeTestActionTypes.CREATE_PRACTICETEST: {
             const temp = [...state.practiceTests];
             temp.push(payload);
             //console.log("payload", payload)
-            console.log("temp", temp)
+            //console.log("temp", temp)
             return {
                 ...state,
-                practiceTests: temp
+                practiceTests: temp,
+                creating: false,
+                created: true,
             }
         }
         default:
@@ -75,50 +114,28 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
     }
 }
 
-
-export const selectedPracticeTestReducer = (state = {loadingTest: true}, { type, payload }) => {
+const selectedPracticeTestInitialState={
+    testExamsIDs:[],
+    loadingTest: true,
+    editing: false,
+    edited: false
+}
+export const selectedPracticeTestReducer = (state = selectedPracticeTestInitialState, { type, payload }) => {
     switch (type) {
-        case PracticeTestActionTypes.SELECTED_PRACTICETEST:
-            const {
-                testTitle,
-                testType,
-                testCategory,
-                testImageID,
-                testPrice,
-                testRate,
-                testValidationPeriod,
-                testDescription,
-                testExamsIDs,
-                testBrief,
-                testInstructorID,
-                whatStudentWillPractice,
-                testNo,
-                testStatus,
-                testExamsNumber,
-                testCreatedDate,
-                loadingTest,
-            } = payload
-            return (
-                {
-                    testTitle,
-                    testType,
-                    testCategory,
-                    testImageID,
-                    testPrice,
-                    testRate,
-                    testValidationPeriod,
-                    testDescription,
-                    testExamsIDs,
-                    testBrief,
-                    testInstructorID,
-                    whatStudentWillPractice,
-                    testNo,
-                    testStatus,
-                    testExamsNumber,
-                    testCreatedDate,
-                    loadingTest
-                }
-            );
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_RESET: 
+            return ({
+                ...state,
+                editing: false, 
+                edited: false
+            });
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST:{ 
+            //console.log(payload);
+            return ({
+                ...payload,
+                loadingTest: false,
+                editing: false, 
+                edited: false
+            });}
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_ADDEXAM:
             const temp = state.testExamsIDs
             temp.push(payload)
@@ -130,7 +147,7 @@ export const selectedPracticeTestReducer = (state = {loadingTest: true}, { type,
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_ADDWSWP:
             const wswp = state.whatStudentWillPractice
             wswp.push(payload)
-            console.log("ids:", wswp)
+            //console.log("ids:", wswp)
             return ({
                 ...state,
                 whatStudentWillPractice: [...wswp]
@@ -142,38 +159,27 @@ export const selectedPracticeTestReducer = (state = {loadingTest: true}, { type,
                 ...state,
                 testExamsIDs: [...temp1]
             });
-        case PracticeTestActionTypes.SELECTED_PRACTICETEST_UPDATE:
-            console.log("payload:", payload)
-                axios.post(`http://92.205.62.248:5000/practicetests/update/${payload.key}`
-                    ,
-                    {
-                        ...state,
-                        key: payload.key,
-                        testTitle: payload.testTitle,
-                        testPrice: payload.testPrice,
-                        testType: payload.testType,
-                        testCategory: payload.testCategory,
-                        testImageID: payload.testImageID,
-                        testValidationPeriod: payload.testValidationPeriod,
-                        testDescription: payload.testDescription,
-                        testBrief: payload.testBrief,
-                        whatStudentWillPractice: payload.whatStudentWillPractice
-                    }
-                )
-           
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_UPDATE_START:
             return (
                 {
                     ...state,
-                    key: payload.key,
-                    testTitle: payload.testTitle,
-                    testPrice: payload.testPrice,
-                    testType: payload.testType,
-                    testCategory: payload.testCategory,
-                    testImageID: payload.testImageID,
-                    testValidationPeriod: payload.testValidationPeriod,
-                    testDescription: payload.testDescription,
-                    testBrief: payload.testBrief,
-                    whatStudentWillPractice: payload.whatStudentWillPractice
+                    editing: true,
+                }
+            )
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_UPDATE_FAIL:
+            return (
+                {
+                    ...state,
+                    editing: false,
+                    edited: false,
+                }
+            )
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_UPDATE:
+            return (
+                {
+                    ...payload,
+                    editing: false,
+                    edited: true,
                 }
             )
 

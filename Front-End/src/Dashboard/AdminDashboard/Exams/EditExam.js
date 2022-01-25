@@ -7,12 +7,13 @@ import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
 import FetchedQuestions from "./fetchedQuestions";
-import { updateExam } from "../../../Redux/Actions/ExamsActions";
+import { resetExams, updateExam } from "../../../Redux/Actions/ExamsActions";
 import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import Options from "./Options";
 import OrderingOptions from "./OrderingOptions";
 import MatchingOptions from "./MatchingOptions";
+import { uuid } from 'uuidv4';
 
 
 const { Option } = Select;
@@ -52,9 +53,11 @@ function EditExam(props) {
   const [deleteChanged, setDeleteChanged] = useState(false);
   const [qCount, setQCOunt] = useState(0);
   const [deletedQuestionIDs, setDeletedQuestionIDs] = useState([]);
-  const [imageID, setImageID] = useState(null);
+  const [imageID, setImageID] = useState("no image");
   const [fileList, setFileList] = useState([]);
   const [validQuestion, setValidQuestion]= useState(false);
+  const editing= useSelector(state=> state.allExams.creating);
+  const edited= useSelector(state=> state.allExams.created);
 
   if (data !== undefined) {
     form.setFieldsValue({
@@ -76,14 +79,14 @@ function EditExam(props) {
       setTimeout(() => {
         setLoading(false)
       }, 1000);
-      if (data.examImageID) {
+      if (data.examImageID && data.examImageID!=="no image") {
         setImageID(data.examImageID)
         setFileList([
           {
             uid: '-1',
             name: 'image.png',
             status: 'done',
-            url: `http://92.205.62.248:5000/image/${data.examImageID}`,
+            url: `http://localhost:5000/image/${data.examImageID}`,
           },
         ])
       }
@@ -117,12 +120,12 @@ function EditExam(props) {
     }
     if (i === 0) {
       onExamEditFinish(deleteChanged || orderChanged ? examQuestionsIDs : ids)
-      message.success('Changes Saved!');
+      //message.success('Changes Saved!');
     }
     else questions.forEach(async (question, index) => {
       //console.log("question:", question)
       const res = await axios
-        .post("http://92.205.62.248:5000/question/add", {
+        .post("http://localhost:5000/question/add", {
           qesText: question.qesText,
           qesType: question.qesType,
           options: question.options,
@@ -134,7 +137,7 @@ function EditExam(props) {
       if (i === 0) {
 
         onExamEditFinish(deleteChanged || orderChanged ? examQuestionsIDs : ids)
-        message.success('Changes Saved!');
+        //message.success('Changes Saved!');
       }
 
     })
@@ -143,7 +146,7 @@ function EditExam(props) {
   const onQuestionCreateFinish = () => {
     setDeleteChanged(false)
     //console.log("options", options)
-    message.success('Question Adding success!');
+    //message.success('Question Adding success!');
     QuestionForm.validateFields()
       .then(
         (question) => {
@@ -154,6 +157,7 @@ function EditExam(props) {
             options: options,
             ansExp: question.answerExplination,
             number: qCount + 1,
+            key:uuid(),
           }])
           setQCOunt(qCount + 1)
         }
@@ -165,6 +169,7 @@ function EditExam(props) {
         })
       })
 setOptions([])
+setValidQuestion(false)
   }
   const onExamEditFinish = (qids) => {
     form.validateFields(["examTitle", "passingRate", "period", "description", "brief"])
@@ -190,18 +195,18 @@ setOptions([])
         })
   }
   const onUploadChange = (event) => {
-    console.log(event)
+    //console.log(event)
     setFileList(event.fileList)
     if (event.file.response) setImageID(event.file.response.id)
   }
   const handleRemove = (imageID) => {
     console.log(imageID)
-    axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+    axios.post(`http://localhost:5000/image/delete/${imageID}`)
     setFileList([])
     setImageID(null)
   }
   const beforeUpload = () => {
-    if (imageID) axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+    if (imageID && imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -240,17 +245,48 @@ setOptions([])
         break;
     }
   }
+  const renderCreationButton=()=>{
+    if(!editing&&!edited) return(
+      <Button type="primary"
+          onClick={() => onFinish()}
+          shape="round"
+          style={
+            { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+          }>save Changes</Button >
+    )
+    if(editing && !edited) return(
+      <Button type="primary"
+          loading
+          shape="round"
+          style={
+            { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+          }>Saving..</Button >
+    )
+    if(!editing && edited) return(
+      <div style={{display: "flex", gap: "20px"}}>
+                <Button type="primary"
+                    onClick={() => {
+                        navigate("/dashboard/exams")
+                        window.location.reload();
+                        dispatch(resetExams())
+                    }}
+                    shape="round"
+                    style={
+                        { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                    }>Go Back</Button >
+                <Button shape="round" style={{ height: "40px", width: "110px", display: "flex", alignItems: "center", 
+                justifyContent: "Space-evenly", padding: "5px" }} onClick={() => {
+                    dispatch(resetExams())
+                }}>Keep Editing</Button>
+            </div>
+    )
+  }
   //console.log(loading)
   return (
     loading ? <div style={{ display: "flex", justifyContent: "center", margin: "4vh 4vw 2vh 4vw", alignItems: "center", width: "90%", height: "90%" }}><Spin size="large" /></div> : <div>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "center" }}>
         <div style={{ fontSize: "28px", fontWeight: "600" }}> Edit exam </div>
-        <Button type="primary"
-          onClick={() => onFinish()}
-          shape="round"
-          style={
-            { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>Save Changes</Button >
+        {renderCreationButton()}
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "flex-start" }}>
         <FormContainer>
@@ -261,6 +297,7 @@ setOptions([])
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
+            <fieldset disabled={!editing && edited?"disabled":null}>
             <Form.Item
 
               name="examTitle"
@@ -310,7 +347,7 @@ setOptions([])
               <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                   <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                    name="file" onPreview={onPreview} action='http://92.205.62.248:5000/image/upload' accept=".jpg, .jpeg, .png"
+                    name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png"
                     fileList={fileList} beforeUpload={beforeUpload}>
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
@@ -322,6 +359,7 @@ setOptions([])
                 </ImgCrop>
               </Form.Item>
             </Form.Item>
+            </fieldset>
           </Form>
         </FormContainer>
         <FormContainer>
@@ -330,6 +368,7 @@ setOptions([])
               <div style={{ fontSize: "18px", fontWeight: "600" }}> Questions </div>
               <Button
                 onClick={() => setAddNew(true)}
+                disabled={!editing && edited}
                 type="primary"
                 shape="round"
                 style={

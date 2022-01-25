@@ -9,6 +9,7 @@ import { CheckCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { deleteExam, toggleExamStatus } from "../../../Redux/Actions/ExamsActions";
 import { fetchExamsSuccess } from '../../../Redux/Actions/ExamsActions';
+import noImage from "../../../Images/noImage.png"
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
@@ -50,7 +51,7 @@ class Exams extends Component {
     this.columns = [
       {
         dataIndex: 'examImageID',
-        render: id => <Image width={80} height={45} src={`http://92.205.62.248:5000/image/${id}`}></Image>
+        render: id => <Image width={80} height={45} src={id?`http://localhost:5000/image/${id}`:noImage}></Image>
       },
       {
         title: 'Exam',
@@ -59,9 +60,7 @@ class Exams extends Component {
       {
         title: 'Category',
         dataIndex: 'examCategory',
-        sorter: {
-          compare: (a, b) => a.category.charAt(0) - b.category.charAt(0),
-        },
+        
         filters: [
           {
             text: 'PMP',
@@ -72,7 +71,7 @@ class Exams extends Component {
             value: 'CAPM',
           },
         ],
-        onFilter: (value, record) => record.category.indexOf(value) === 0,
+        onFilter: (value, record) => record.examCategory.indexOf(value) === 0,
       },
       {
         title: 'CreatedDate',
@@ -193,6 +192,7 @@ class Exams extends Component {
   }
 
   render() {
+    //console.log(this.props.data);
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,

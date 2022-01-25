@@ -168,6 +168,7 @@ class EditableTable extends React.Component {
       answerKey: [index]
     });
     this.props.setOptions(newData)
+    console.log(newData);
   };
 
 
@@ -188,7 +189,9 @@ class EditableTable extends React.Component {
     if(props.Options.length===0){
         //console.log("cvxvcxvcxvx")
         return{
-            dataSource: []
+            dataSource: [],
+            count: 0,
+            answerKey: [],
         }
     }
 }

@@ -8,7 +8,7 @@ import { signIn } from '../../Redux/Actions/UserAuthActions';
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux'
-import {useNavigate} from "react-router-dom"
+import {useNavigate, useLocation} from "react-router-dom"
 import {
     Form,
     Input,
@@ -23,6 +23,7 @@ export default function Registreation() {
     const navigate= useNavigate();
     const [loggingIn, setLoggingIn] = useState(false);
     const auth = useSelector(state => state.auth)
+    const { state } = useLocation();
     //dispatch(signUp({}))
     //localStorage.removeItem("userToken")
     const onFinish = () => {
@@ -37,10 +38,14 @@ export default function Registreation() {
     };
     useEffect(() => {
         setLoggingIn(auth.loggingIn);
-        //console.log("logged:",auth.loggedIn);
-        //console.log("logging:",auth.loggingIn);
+        console.log("logged:",auth.loggedIn);
+        console.log("logging:",auth.loggingIn);
         setLoggedIn(auth.loggedIn);
-        if(auth.loggedIn && !auth.loggingIn) navigate("/")
+        if(auth.loggedIn && !auth.loggingIn){
+            //console.log(state);
+            if(state) navigate(state.previousPage)
+            else navigate("/")
+        } 
     }, [auth])
     
     return (

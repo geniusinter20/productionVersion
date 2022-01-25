@@ -30,7 +30,7 @@ class FetchedQuestions extends Component {
     fetchQuestion = (e) => {
         var number = 0;
         e.forEach(async element => {
-            var res = await axios.get(`http://92.205.62.248:5000/question/${element}`)
+            var res = await axios.get(`http://localhost:5000/question/${element}`)
             number++;
             this.addQuestion({ ...res.data[0], number: number })
             this.props.setQCOunt(number)
@@ -109,10 +109,10 @@ class FetchedQuestions extends Component {
                     }
                     if (this.state.selectedQuestion !== {}) {
                         var k = this.state.selectedQuestion.key
-                        console.log("key ", k)
-                        var temp = this.state.fetchedQuestions.filter(e => e.key !== k)
+                        //console.log("key ", k)
+                        var temp = this.state.fetchedQuestions
                         var index = this.state.fetchedQuestions.findIndex(e => e.key === k)
-                        temp.splice(index, 0, newQ)
+                        temp.splice(index, 1, newQ)
                         console.log("questions:", temp)
                         this.setState({
                             ...this.state,
@@ -120,13 +120,14 @@ class FetchedQuestions extends Component {
                             fetchedQuestions: temp,
                         })
                         //console.log("key", this.state.selectedQuestion.key)
-                        axios.post(`http://92.205.62.248:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
+                        axios.post(`http://localhost:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
                     }
                 })
     }
     showModal = (question, options) => {
         this.setState({ showModal: true, selectedQuestion: question, questionAnswer: question.qesAns, questionType: question.qesType })
         //console.log("selectedQuestion:",question)
+        console.log(this.state.fetchedQuestions);
         QuestionForm.setFieldsValue({
             questionText: question.qesText,
             answerExplination: question.ansExp,

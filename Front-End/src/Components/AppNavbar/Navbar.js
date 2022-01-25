@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { navItems } from "./NavItems";
 import "./Navbar.css";
 import "./Buttons.css";
@@ -39,6 +39,7 @@ function NavBar() {
   const products = useSelector(state => state.cart.products)
   const auth = useSelector(state => state.auth)
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  const location = useLocation();
   //localStorage.removeItem("userToken")
   useEffect(() => {
     function handleResize() {
@@ -235,16 +236,21 @@ function NavBar() {
         </ul>
         {
           !userLogged ? <ul className="Nav-batns">
-            <li key="1" className="Navbatn">
-              <Link to="/login">Log in</Link>
+            <li key="1" className="cartIcon">
+                <Badge count={JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")).productsWithID.length:0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
+                  <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
+                </Badge>
+              </li>
+            <li key="2" className="Navbatn">
+              <Link to="/login" state={{previousPage: location.pathname}}>Log in</Link>
             </li>
-            <li key="2" className="Navbatn1">
+            <li key="3" className="Navbatn1">
               <Link to="/register">Get started</Link>
             </li>
           </ul> :
             <ul className="Nav-batns-logged">
               <li key="1" className="cartIcon">
-                <Badge count={products.length} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
+                <Badge count={JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")).productsWithID.length:0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
                   <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
                 </Badge>
               </li>

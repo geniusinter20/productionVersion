@@ -11,41 +11,44 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import { removeProduct } from '../../Redux/Actions/CartActions';
+import { loadCart, removeProduct } from '../../Redux/Actions/CartActions';
 import Grow from '@mui/material/Grow';
 import { Typography } from '@mui/material';
 import emptyCart from "../../Images/emptyCart.png"
 import { Navigate, useNavigate } from 'react-router-dom';
+import PuffLoader from "react-spinners/PuffLoader";
+import noImage from "../../Images/noImage.png";
+import { useLocation } from 'react-router-dom'
 
 const { Search } = Input;
 
 export default function Cart() {
     const dispatch = useDispatch()
-    const products = useSelector(state => state.cart.products)
+    const location = useLocation();
+    const cart = useSelector(state => state.cart)
+    const auth= useSelector(state=>state.auth)
     const [show, setShow] = useState([])
     const [total, setTotal] = useState(0)
-    const navigate =useNavigate()
-
+    const [products, setProducts] = useState([])
+    const navigate = useNavigate()
     useEffect(() => {
-        setShow(new Array(products.length).fill(true))
-        //if(products !==null && products.length>0)
-        //console.log(Object.keys(products[0]))
-        //console.log("products", show
-        if (products.length >= 0) calculateTotal(products)
-        console.log(products)
-    }, [products])
+        dispatch(loadCart())
+    }, []);
+    useEffect(() => {
+        if (cart.cartLoaded) {
+            setShow(new Array(cart.productsWithID.length).fill(true))
+            setProducts(cart.products)
+            if (cart.productsWithID.length >= 0) calculateTotal(cart.products)
+        }
+        console.log("cart", cart.products)
+    }, [cart])
     const calculateTotal = (products) => {
-        var temp = 0;
+        var total = 0;
         products.forEach(p => {
-            switch (p.productType) {
-                case "practiceTest":
-                    temp += p.product.testPrice;
-                    break;
-                default:
-                    break;
-            }
+            total += getproductPrice(p.product)
+            //console.log(getproductPrice(p.product));
         })
-        setTotal(temp)
+        setTotal(total)
     }
     const getproductPrice = (product) => {
         var Priceprefix = null;
@@ -59,7 +62,7 @@ export default function Cart() {
             case "practiceTest":
                 return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image><img alt="example" src={`http://92.205.62.248:5000/image/${product.testImageID?product.testImageID:"61d598a898174d129df2f778"}`} /></Image>
+                        <Image><img alt="example" src={product.testImageID?`http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>
 
                         <Information>
                             <ProductName>{product.testTitle}</ProductName>
@@ -77,7 +80,7 @@ export default function Cart() {
                             </Info>
                         </Information>
                         <Price>
-                            <div>{product.testPrice>0?`$${product.testPrice-1}.99`:0}</div>
+                            <div>{product.testPrice > 0 ? `$${product.testPrice - 1}.99` : 0}</div>
                         </Price>
                     </div>
                 )
@@ -86,73 +89,75 @@ export default function Cart() {
         }
     }
     return (
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap:"5vh" }}>
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap: "5vh" }}>
             <NavBar></NavBar>
-            <Row style={{ margin: "3vh 4vw 3vh 4vw", flexWrap: " wrap-reverse", justifyContent:"space-around" }} >
+            <Row style={{ margin: "3vh 4vw 3vh 4vw", flexWrap: " wrap-reverse", justifyContent: "space-around" }} >
                 <Col xs={{ span: 24, offset: 0 }} lg={{ span: 16, offset: 0 }}>
-                <div style={{ fontSize: "38px",fontWeight:"300", color: "#444444" }}>
-                            Cart
-                        </div>
+                    <div style={{ fontSize: "38px", fontWeight: "300", color: "#444444" }}>
+                        Cart
+                    </div>
                     {
-                    !products.length?
-                    <SEmpty
-                    image={emptyCart}
-                    imageStyle={{
-                        height: 300,
-                      }}
-                        description={
-                            <div>
-                                
-                            </div>
-                        }
-                    >
-                        {/* <Button type="primary">Create Now</Button> */}
-                    </SEmpty>
-                    :<List style={{ minWidth: "500px" }}>
-                        {
-                            products.map((item, ind) => {
-                                return (
-                                    <Grow
-                                        in={show[ind]}
-                                        style={{ transformOrigin: '0 0 0' }}
-                                        {...(show[ind] ? { timeout: 1000 + ind * 500 } : {})}
-                                    >
-                                        <Listitem
-                                            secondaryAction={
-                                                <Tooltip title="Remove from Cart">
-                                                    <IconButton onClick={() => {
-                                                        var temp = [...show]
-                                                        temp[ind] = false
-                                                        setShow(temp)
-                                                        setTimeout(() => {
-                                                            calculateTotal(products.filter(p=>p.product.key===item.product.key))
-                                                            dispatch(removeProduct(item.productType, item.product))
-                                                        }, 500);
+                        !cart.cartLoaded ? <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <PuffLoader css={"display: block; margin: 0 0 0 0;"} size={75} />
+                        </div>
+                            :
+                            products.length ?
+                                <List style={{ minWidth: "500px" }}>
+                                    {
+                                        products.map((item, ind) => {
+                                            return (
+                                                <Grow
+                                                    in={show[ind]}
+                                                    style={{ transformOrigin: '0 0 0' }}
+                                                    {...(show[ind] ? { timeout: 1000 + ind * 500 } : {})}
+                                                >
+                                                    <Listitem
+                                                        secondaryAction={
+                                                            <Tooltip title="Remove from Cart">
+                                                                <IconButton onClick={() => {
+                                                                    var temp = [...show]
+                                                                    temp[ind] = false
+                                                                    setShow(temp)
+                                                                    setTimeout(() => {
+                                                                        calculateTotal(products.filter(p => p.product.key === item.product.key))
+                                                                        dispatch(removeProduct(item.productType, item.product.key))
+                                                                    }, 500);
 
-                                                    }} className='hi' edge="end" aria-label="delete">
-                                                        <DeleteIcon />
-                                                    </IconButton></Tooltip>
-                                            }
-                                            divider={true} alignItems="flex-start" key={1}>
-                                            {drawComponent(item.productType, item.product)}
-                                        </Listitem>
-                                    </Grow>
-                                )
-                            }
-                            )
+                                                                }} className='hi' edge="end" aria-label="delete">
+                                                                    <DeleteIcon />
+                                                                </IconButton></Tooltip>
+                                                        }
+                                                        divider={true} alignItems="flex-start" key={1}>
+                                                        {drawComponent(item.productType, item.product)}
+                                                    </Listitem>
+                                                </Grow>
+                                            )
+                                        }
+                                        )
 
-                        }
-                        {/* <Divider variant="inset" component="li" /> */}
-                    </List>}
+                                    }
+                                    {/* <Divider variant="inset" component="li" /> */}
+                                </List>
+                                : <SEmpty
+                                    image={emptyCart}
+                                    imageStyle={{
+                                        height: 300,
+                                    }}
+                                    description={
+                                        <div></div>
+                                    }
+                                >
+                                    {/* <Button type="primary">Create Now</Button> */}
+                                </SEmpty>}
                 </Col>
 
                 <Col xs={{ span: 24, offset: 0 }} lg={{ span: 7, offset: 1 }} style={{ marginBottom: "20px" }} >
-                    <div style={{ display: "flex", flexDirection: "column", padding:"25px", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.16)" }}>
+                    <div style={{ display: "flex", flexDirection: "column", padding: "25px", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.16)" }}>
                         <div style={{ fontSize: "22px", color: "#6c6c6c" }}>
                             Total:
                         </div>
                         <div style={{ fontSize: "35px", fontWeight: "600", color: "#444444" }}>
-                            {total>0?`$${total-1}.99`:0}
+                            {total > 0 ? `$${total - 1}.99` : 0}
                         </div>
                         <div style={{ fontSize: "17px", fonWeight: "400", color: "#969696", marginBottom: "30px" }}>
                             0% off
@@ -171,8 +176,12 @@ export default function Cart() {
                         <div style={{ fontSize: "13px", fonWeight: "300", color: "#969696", alignSelf: "center", marginBottom: "10px" }}>
                             30-Day Money-Back Guarantee
                         </div>
-                        {products.length >0&&<Button1 onClick={()=>{
-                            navigate("checkout")
+                        {products.length > 0 && <Button1 onClick={() => {
+                            auth.loggedIn?navigate("checkout"):navigate("/login",{
+                                state:{
+                                    previousPage: location.pathname,
+                                }
+                            })
                         }} type="primary" size="large">
                             Checkout
                         </Button1>}
@@ -182,7 +191,7 @@ export default function Cart() {
         </div>
     )
 }
-const SEmpty= styled(Empty)`
+const SEmpty = styled(Empty)`
 display: flex ; 
 flex-direction: column-reverse ;
 align-items: center ;

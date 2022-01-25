@@ -18,7 +18,7 @@ import EditPracticeTest from './PracticeTests/EditPracticeTest';
 import Logo_H_B from "./../../Images/Logo_H_B.svg";
 import { Link, Route, Routes, useParams, useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchExamsSuccess } from '../../Redux/Actions/ExamsActions';
 
 
@@ -31,7 +31,7 @@ function AdminDashboard(props) {
     const params = useParams()
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
-
+    const userInfo = useSelector(state => state.auth.userData)
     const breadcrumbNameMap = {
         "/dashboard": 'Dasboard',
         '/dashboard/exams': 'exams',
@@ -90,7 +90,7 @@ function AdminDashboard(props) {
                         </Menu>
                     </Affix>
                 </Sider>
-                <Layout>
+                <Layout style={{minHeight:"100vh"}} >
                     <Header className="header">
                         <div style={{
                             display: "flex",
@@ -105,18 +105,19 @@ function AdminDashboard(props) {
                             <Breadcrumb>{breadcrumbItems}</Breadcrumb>
                         </div>
                         <div className="iconContainer">
-                            <RiSettings3Fill color="#6C6C6C" style={{ height: "30px", width: "30px", }} />
-                            <Badge count={1} style={{ backgroundColor: "#5BCAD6" }}>
-                                <HiBell color="#6C6C6C" style={{ height: "30px", width: "30px", }} />
+                            <ARiSettings3Fill onClick={()=>navigate("/profile")} color="#6C6C6C" style={{ height: "30px", width: "30px", }} />
+                            <Badge count={0} style={{ backgroundColor: "#5BCAD6" }}>
+                                <IHiBell color="#6C6C6C" />
                             </Badge>
                             <div className="vl"></div>
-                            <div> Yazn Alsahyone</div>
-                            <Avatar size={45} style={{ backgroundColor: '#6C6C6C', display: "flex", alignItems: "center", justifyContent: "space-around" }}
-                                icon={<UserOutlined />}
-                            />
+                            <div> {userInfo.fullName.toUpperCase()}</div>
+                            <MyAvatar style={{ borderStyle: "solid" }} size={50}
+                            >
+                                {userInfo.fullName.charAt(0).toUpperCase()}
+                            </MyAvatar>
                         </div>
                     </Header>
-                    <Content className="content">
+                    <Content className="content" style={{height:"100%"}}>
                         {/* {
                             params.page === "salesoverview" && <SalesOverview />
                         }
@@ -158,6 +159,65 @@ align-items: center;
 height: 100%;
 &> object{
     height: 75%;
+}
+`
+const ARiSettings3Fill=styled(RiSettings3Fill)`
+height: 30px;
+width: 30px;
+cursor: pointer;
+&:hover{
+    animation:  spin 5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+`
+const IHiBell=styled(HiBell)`
+height: 30px;
+width: 30px;
+cursor: pointer;
+&:hover{
+    animation: hibell 0.6s;
+  animation-fill-mode: forwards;
+}
+@keyframes hibell {
+    0% {
+      color: #6C6C6C
+;
+   }
+     
+   100% {
+    color:#5BCAD6 ;
+   }
+}
+`
+const MyAvatar = styled(Avatar)`
+ background-color: #6C6C6C;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ list-style-type: none;
+ &:hover{
+  animation: mymove1555 0.6s;
+  animation-fill-mode: forwards;
+ }
+ @keyframes mymove1555 {
+    0% {
+      background-color: #6C6C6C
+;
+   }
+     
+   100% {
+    background-color:#5BCAD6 ;
+   }
 }
 `
 

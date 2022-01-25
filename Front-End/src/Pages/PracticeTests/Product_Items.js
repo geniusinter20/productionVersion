@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
   const userData = state.auth.userData;
   const { allPracticeTests } = state;
   const practiceTests = allPracticeTests.practiceTests
-  const productsInCart = state.cart.products.filter(x => x.productType === "practiceTest")
+  const productsInCart = state.cart.productsWithID.filter(x => x.productType === "practiceTest")
   const loggedIn = state.auth.loggedIn
   return {
     practiceTests,
@@ -80,7 +80,7 @@ class Products extends Component {
                 <Card
                   hoverable
                   style={{ borderStyle: "solid", borderRadius: "5px", borderWidth: "2px", borderColor: "rgb(108, 108, 108, 0.3)", width: "240px", minHeight: "220px", height: "35.5vh", position: "relative" }}
-                  cover={<Image><img alt="example" src={ product.testImageID?`http://92.205.62.248:5000/image/${product.testImageID}`:noImage} /></Image>}
+                  cover={<Image><img alt="example" src={ product.testImageID?`http://localhost:5000/image/${product.testImageID}`:noImage} /></Image>}
                 >
                   <ProductDtails>
                     <PTitle>{product.testTitle}</PTitle>
@@ -89,17 +89,14 @@ class Products extends Component {
                     <PPrice>{"$ "}{parseFloat(product.testPrice).toFixed(2)}</PPrice>
                   </ProductDtails>
                   {
-                    this.props.loggedIn ?
-                      this.props.productsInCart.findIndex(x => x.product.key === product.key) === -1 ?
+                    
+                      this.props.productsInCart.findIndex(x => x.productID === product.key) === -1 ?
                         <Tooltip title="Add to Cart">
-                          <Button onClick={() => this.addToCart("practiceTest", product)} style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineHeart />} />
+                          <Button onClick={() => this.addToCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineHeart />} />
                         </Tooltip> :
                         <Tooltip title="Remove from Cart">
-                          <Button onClick={() => this.removeFromCart("practiceTest", product)} style={{ position: "absolute", right: "20px", bottom: "13px", borderColor: "#303030" }} shape="circle" icon={<AiFillHeart />} />
-                        </Tooltip> :
-                      <Tooltip title="Add to Cart">
-                        <Button onClick={() => this.addToCart("practiceTest", product)} style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineHeart />} />
-                      </Tooltip>
+                          <Button onClick={() => this.removeFromCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px", borderColor: "#303030" }} shape="circle" icon={<AiFillHeart />} />
+                        </Tooltip> 
                   }
                 </Card>
               );

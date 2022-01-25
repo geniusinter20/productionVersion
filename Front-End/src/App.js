@@ -54,7 +54,7 @@ class App extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.auth.loggedIn && props.auth.loggedIn !== state.loggedIn) {
       //console.log("userlogged:", props.auth)
-      props.loadCart(props.auth.userData._id);
+      //props.loadCart(props.auth.userData._id);
       return {
         loggedIn: props.auth.loggedIn
       }
@@ -69,7 +69,7 @@ class App extends Component {
     if(this.state.spinnerOn) {
        setTimeout(() => {
          this.setState({ spinnerOn: false })
-       }, 1000);
+       }, 500);
     }
     //const location= this.props.location
     //console.log(location.pathname.match('/dashboard/*') )

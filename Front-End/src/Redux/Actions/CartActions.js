@@ -1,22 +1,22 @@
 import { CartActionTypes } from "../Constants/CartActionTypes";
 import axios from "axios";
-export const addProduct = (productType, product) => {
+export const addProduct = (productType, productID) => {
     return ({
         type: CartActionTypes.CART_ADDPRODUCT,
         payload: {
             productType: productType,
             addDate: new Date(),
-            product: product,
+            productID: productID,
         }
     })
 }
-export const removeProduct = (productType, product) => {
+export const removeProduct = (productType, productID) => {
     //console.log("sdfsdfsd")
     return ({
         type: CartActionTypes.CART_REMOVEPRODUCT,
         payload: {
             productType: productType,
-            productID: product.key,
+            productID: productID,
         }
     })
 }
@@ -26,22 +26,55 @@ export const clearCart = (productType, product) => {
         type: CartActionTypes.CART_CLEAR,
     })
 }
-export const loadCart = (clientID) => {
+export const loadCart = () => {
+    let products = []
+    var productsWithID = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).productsWithID : []
+    if (!productsWithID.length) {
+        return ({
+            type: CartActionTypes.CART_LOADCART_FINISH,
+            payload: {
+                products: [],
+                productsWithID: [],
+            }
+        })
+    }
     return (dispatch) => {
-        axios
-            .get(`http://92.205.62.248:5000/cart/${clientID}`)
-            .then(({ data }) => {
-                //console.log("data", data)
-                    dispatch({
-                        type: CartActionTypes.CART_LOADPRODUCTS,
-                        payload: {
-                            cartLoaded: true,
-                            clientID: clientID,
-                            products: data
-                        }
-                    })
-            })
-            .catch(function (error) {
-            });
+        productsWithID.forEach((p, i) => {
+            switch (p.productType) {
+                case "practiceTest": {
+                    //console.log(p);
+                    axios
+                        .get(`http://localhost:5000/practicetests/${p.productID}`)
+                        .then(({ data }) => {
+                            products.push({
+                                productType: p.productType,
+                                product: data[0],
+                            })
+                            //
+                            if (products.length === productsWithID.length) {
+                                //console.log(products);
+                                dispatch({
+                                    type: CartActionTypes.CART_LOADCART_FINISH,
+                                    payload: {
+                                        products: products,
+                                        productsWithID: productsWithID,
+                                    }
+                                })
+                            }
+                        })
+
+                    break;
+                }
+                case "test": {
+                    break;
+                }
+                case "course": {
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
     }
 }
+

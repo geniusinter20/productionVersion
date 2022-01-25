@@ -55,7 +55,9 @@ class PracticeTests extends Component {
     this.columns = [
       {
         dataIndex: 'testImageID',
-        render: id=><Image fallback={noImage} width={80} height={45} src={`http://92.205.62.248:5000/image/${id}`}></Image>
+        render: id=>{
+          //console.log(`imageID=${id}`)
+          return(<Image fallback={noImage} width={80} height={45} src={id?`http://localhost:5000/image/${id}`:noImage}></Image>)}
       },
       {
         title: 'PracticeTest',
@@ -64,17 +66,6 @@ class PracticeTests extends Component {
       {
         title: 'Category',
         dataIndex: 'category',
-        filters: [
-          {
-            text: 'PMP',
-            value: 'PMP',
-          },
-          {
-            text: 'CAPM',
-            value: 'CAPM',
-          },
-        ],
-        onFilter: (value, record) => record.category.indexOf(value) === 0,
       },
       {
         title: 'CreatedDate',
@@ -189,6 +180,7 @@ class PracticeTests extends Component {
 
   render() {
     //console.log(this.state.loading)
+    //console.log(this.props.data);
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -228,7 +220,7 @@ class PracticeTests extends Component {
       ],
     };
     return (
-      <div className="content">
+      <div className="content" >
         <Header>
           <Input style={{ width: "32vw" }} size="large" placeholder="Search" prefix={<BsSearch style={{ marginRight: "10px", color: "#303030" }} />} />
           <div
@@ -243,7 +235,7 @@ class PracticeTests extends Component {
           </div>
         </Header>
         <TableContainer>
-          <Table columns={this.columns} dataSource={this.props.data}
+          <Table  columns={this.columns} dataSource={this.props.data}
           loading={this.state.loading}
            onChange={onChange} pagination={{ pageSize: 6, size: "small", position: ['bottomCenter'] }} />
         </TableContainer>

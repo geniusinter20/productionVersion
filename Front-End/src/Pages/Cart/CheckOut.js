@@ -225,7 +225,7 @@ export default function CheckOut() {
                                     }}
                                 >
                                     <Image fallback={noImage} width={39} height={24}
-                                        src={`http://92.205.62.248:5000/image/${getImageID(p.product)}`}></Image>
+                                        src={`http://localhost:5000/image/${getImageID(p.product)}`}></Image>
                                     <ListItemText sx={{
                                         '& .MuiListItemText-primary': {
                                             fontSize: 17,

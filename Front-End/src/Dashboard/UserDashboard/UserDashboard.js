@@ -17,6 +17,7 @@ import PracticeTests from "./PracticeTests/PracticeTests";
 import { fetchuserpracticetests } from "../../Redux/Actions/UserDashboardActions";
 import { fetchExamsSuccess } from '../../Redux/Actions/ExamsActions';
 import { useSelector } from "react-redux"
+import { loadCart } from '../../Redux/Actions/CartActions';
 
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -26,6 +27,7 @@ function UserDashboard(props) {
     const params = useParams()
     const dispatch = useDispatch();
     const purchasedPracticeTests = useSelector(state => state.cart.products.filter(x => x.productType === "practiceTest"))
+    const cart= useSelector(state=>state.cart)
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
     const loggedIn = useSelector(state => state.auth.loggedIn)
@@ -56,10 +58,12 @@ function UserDashboard(props) {
 
     useEffect(() => {
         dispatch(fetchExamsSuccess())
+        dispatch(loadCart())
     }, [])
     useEffect(() => {
+        console.log(cart);
         if (purchasedPracticeTests) dispatch(fetchuserpracticetests(purchasedPracticeTests.map(x => x.product.key)))
-    }, [])
+    }, [cart])
 
     const toggle = () => {
         setCollapsed(!collapsed)
@@ -94,7 +98,7 @@ function UserDashboard(props) {
                         </Menu>
                     </Affix>
                 </Sider>
-                <Layout>
+                <Layout style={{ minHeight:"100vh"}}>
                     <Header className="header">
                         <div style={{
                             display: "flex",
@@ -121,7 +125,7 @@ function UserDashboard(props) {
                             </MyAvatar>
                         </div>
                     </Header>
-                    <Content className="content">
+                    <Content className="content" style={{ height:"100%"}}>
                         {/* {
                             params.page === "salesoverview" && <SalesOverview />
                         }

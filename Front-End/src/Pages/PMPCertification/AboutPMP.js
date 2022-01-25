@@ -39,14 +39,14 @@ class Aboutpmp extends Component {
                             hfdghfdhfhfhfhfdghgfdhfhfhfhfdgxcvxcbxvcbfdbcbxzdfbcxbcbcxvbggggggggggggggggggggggggggggggggggggggggg
                             ggggggggggggggggggggggggggggggggggg
                         </Paragraph>
-                        <MyButton type="primary"  onClick={this.toggle} >Read{this.state.toggled ? ' more' : ' less'}</MyButton>
+                        <MyButton   onClick={this.toggle} >Read{this.state.toggled ? ' more' : ' less'}</MyButton>
                     </TextContainer>
                     </Row>
                 <Row className="mainContainer1">
                     
                     <TextContainer xs={{ span: 24, offset: 0 }} lg={{ span: 11, offset: 0 }}>
                         <Header>What is PMP</Header>
-                        <Paragraph style={{ fontSize: "25px", transition: "width 2s, height 4s" }} ellipsis={this.state.toggled ? { rows: 5 } : false}>
+                        <Paragraph style={{ fontSize: "25px", transition: "width 2s, height 4s" }} ellipsis={this.state.toggled1 ? { rows: 5 } : false}>
                             The Project Management Professional (PMP)® is the world's leading project management certification.
                             Now including predictive, agile and hybrid approaches, the PMP® proves project leadership experience and
                             expertise in any way of working. It supercharges careers for project leaders across industries and helps
@@ -54,7 +54,7 @@ class Aboutpmp extends Component {
                             hfdghfdhfhfhfhfdghgfdhfhfhfhfdgxcvxcbxvcbfdbcbxzdfbcxbcbcxvbggggggggggggggggggggggggggggggggggggggggg
                             ggggggggggggggggggggggggggggggggggg
                         </Paragraph>
-                        <MyButton type="primary"  onClick={this.toggle} >Read{this.state.toggled ? ' more' : ' less'}</MyButton>
+                        <MyButton  onClick={this.toggle1} >Read{this.state.toggled1 ? ' more' : ' less'}</MyButton>
                     </TextContainer>
                     <Col className="pic1" xs={{ span: 24, offset: 0 }} lg={{ span: 11, offset: 0 }} ><img src={img2}/></Col>
                     </Row>
@@ -80,19 +80,24 @@ font-weight: 300;
 margin: 0px;
 `
 const MyButton= styled(Button)`
+height: 42px;
 width: 120px;
+font-weight: 600;
+color: #444444;
 &:hover{
-    animation: mymove0033 0.8s;
+    animation: mmm1333 0.5s;
     animation-fill-mode: forwards;
 }
-@keyframes mymove0033 {
+@keyframes mmm1333 {
     0% {
+        color: #444444;
+    background-color: white;
    }
      
-100% {
-    background: white;
-    color: #404040;
-    border-style: none;
+   100% {
+    color: white;
+    background-color: #444444;
+    border-color: #444444;
    }
 }
 `

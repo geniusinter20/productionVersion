@@ -5,8 +5,8 @@ import { BsPlusSquareDotted } from "react-icons/bs";
 import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { List, Select } from 'antd';
-import { createPracticeTest } from "../../../Redux/Actions/practiceTestsActions";
-import {useNavigate} from "react-router-dom"
+import { createPracticeTest, resetTest } from "../../../Redux/Actions/practiceTestsActions";
+import { useNavigate } from "react-router-dom"
 import axios from 'axios';
 import ImgCrop from 'antd-img-crop';
 
@@ -36,7 +36,7 @@ const ModalColumns = [
         title: 'Questions',
         width: "15%",
         dataIndex: 'examQuestionsIDs',
-        render: x=>x.length
+        render: x => x.length
     },
 ];
 
@@ -61,7 +61,7 @@ const normFile = (e) => {
 export default function AddPracticeTests(props) {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [addedExamsIDs, setAddedExamsIDs] = useState([]);
@@ -70,9 +70,11 @@ export default function AddPracticeTests(props) {
     const [selectedExams, setSelectedExams] = useState([]);
     const [addNew, setAddNew] = useState(false);
     const [tempWSWL, setTempWSWL] = useState('');
-    const [testType, setTestType]= useState(null);
-    const [testCategory, setTestCategory]= useState(null);
-    const [imageID, setImageID]= useState(null);
+    const [testType, setTestType] = useState(null);
+    const [testCategory, setTestCategory] = useState(null);
+    const [imageID, setImageID] = useState("no image");
+    const creating= useSelector(state=> state.allPracticeTests.creating);
+    const created= useSelector(state=> state.allPracticeTests.created);
     const exams = useSelector(state => state.allExams.exams
         .filter(item => !addedExamsIDs.includes(item._id))
     );
@@ -98,7 +100,7 @@ export default function AddPracticeTests(props) {
     const handleOk = e => {
         let temp = [];
         let tempids = [];
-        
+
         selectedExams.forEach(e => {
             temp = [...temp, e]
             tempids = [...tempids, e.key]
@@ -128,7 +130,7 @@ export default function AddPracticeTests(props) {
         setAddedWSWL(temp)
     }
     const onFinish = () => {
-        message.success('Submit success!');
+        //message.success('Submit success!');
         form.validateFields()
             .then(
                 ({ testTitle, price, validationPeriod, description, brief, uploadImage }) => {
@@ -148,53 +150,76 @@ export default function AddPracticeTests(props) {
                     }))
                 })
             .catch((errorInfo) => { });
-            navigate("/dashboard/practicetests")
-            window.location.reload(true);
+        //navigate("/dashboard/practicetests")
+        //window.location.reload(true);
     };
     //console.log("testType",testType)
-    const onUploadChange= (event)=>{
+    const onUploadChange = (event) => {
         //console.log(event.file.response)
-        if(event.file.response) setImageID(event.file.response.id)
+        if (event.file.response) setImageID(event.file.response.id)
     }
-    const handleRemove= (imageID)=>{
+    const handleRemove = (imageID) => {
         console.log(imageID)
-        axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+        axios.post(`http://localhost:5000/image/delete/${imageID}`)
     }
-    const beforeUpload=()=>{
-        if(imageID) axios.post(`http://92.205.62.248:5000/image/delete/${imageID}`)
+    const beforeUpload = () => {
+        if (imageID) axios.post(`http://localhost:5000/image/delete/${imageID}`)
         return true
-      }
+    }
     const onPreview = async file => {
         let src = file.url;
-        
+
         if (!src) {
-          src = await new Promise(resolve => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file.originFileObj);
-            reader.onload = () => {
-                resolve(reader.result);}
-          });
+            src = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file.originFileObj);
+                reader.onload = () => {
+                    resolve(reader.result);
+                }
+            });
         }
         const image = new Image();
-    image.src = src;
-    
-    const imgWindow = window.open(src);
-    imgWindow.document.write(image.outerHTML);
+        image.src = src;
+
+        const imgWindow = window.open(src);
+        imgWindow.document.write(image.outerHTML);
     }
+    const renderCreationButton = () => {
+        if (!creating && !created) return (
+            <Button type="primary"
+                onClick={() => onFinish()}
+                shape="round"
+                style={
+                    { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                }>Create Test</Button >
+        )
+        if (creating && !created) return (
+            <Button type="primary"
+                loading
+                shape="round"
+                style={
+                    { height: "40px", width: "125px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                }>Creating..</Button >
+        )
+        if (!creating && created) return (
+            <Button type="primary"
+                onClick={() => {
+                    navigate("/dashboard/practicetests")
+                    window.location.reload();
+                    dispatch(resetTest())
+                }}
+                shape="round"
+                style={
+                    { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+                }>Go Back</Button >
+        )
+    }
+    //console.log("creating", creating);
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "center" }}>
                 <div style={{ fontSize: "28px", fontWeight: "600" }}> Create Test </div>
-                <Button type="primary"
-                    onClick={() => onFinish()}
-                    shape="round"
-                    style={
-                        { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-                    }
-                    icon={< BsPlusSquareDotted style={
-                        { height: "75%", width: "30px" }
-                    }
-                    />}>Create Test</Button >
+                {renderCreationButton()}
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", margin: "4vh 4vw 2vh 4vw", alignItems: "flex-start" }}>
                 <FormContainer>
@@ -229,13 +254,13 @@ export default function AddPracticeTests(props) {
                             <Input placeholder="input placeholder" />
                         </Form.Item>
                         <Form.Item label="Test Type">
-                            <Select onChange={(v)=>setTestType(v)}>
+                            <Select onChange={(v) => setTestType(v)}>
                                 <Select.Option value="FP">Full Package</Select.Option>
                                 <Select.Option value="PTO">Practic Test Only</Select.Option>
                             </Select>
                         </Form.Item>
                         <Form.Item label="Test Category">
-                            <Select onChange={(v)=>setTestCategory(v)}>
+                            <Select onChange={(v) => setTestCategory(v)}>
                                 <Select.Option value="PMP">PMP</Select.Option>
                                 <Select.Option value="CAPM">CAPM</Select.Option>
                             </Select>
@@ -258,16 +283,16 @@ export default function AddPracticeTests(props) {
                         </Form.Item>
                         <Form.Item label="Upload Image">
                             <Form.Item name="uploadImage" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                            <ImgCrop aspect={2/1} minZoom={0.1} quality={1} grid>
-                                <Upload.Dragger onRemove={()=>handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1} 
-                                name="file" onPreview={onPreview} action='http://92.205.62.248:5000/image/upload' accept=".jpg, .jpeg, .png">
-                                    <p className="ant-upload-drag-icon">
-                                        <InboxOutlined />
-                                    </p>
-                                    <p className="ant-upload-hint">
-                                        Drag & drop Your Image
-                                        or Click to browse.</p>
-                                </Upload.Dragger>
+                                <ImgCrop aspect={2 / 1} minZoom={0.1} quality={1} grid>
+                                    <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
+                                        name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
+                                        <p className="ant-upload-drag-icon">
+                                            <InboxOutlined />
+                                        </p>
+                                        <p className="ant-upload-hint">
+                                            Drag & drop Your Image
+                                            or Click to browse.</p>
+                                    </Upload.Dragger>
                                 </ImgCrop>
                             </Form.Item>
                         </Form.Item>
