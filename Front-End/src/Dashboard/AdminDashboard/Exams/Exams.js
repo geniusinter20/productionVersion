@@ -51,7 +51,7 @@ class Exams extends Component {
     this.columns = [
       {
         dataIndex: 'examImageID',
-        render: id => <Image width={80} height={45} src={id?`https://localhost:5000/image/${id}`:noImage}></Image>
+        render: id => <Image width={80} height={45} src={id?`https://exporagenius.com:5000/image/${id}`:noImage}></Image>
       },
       {
         title: 'Exam',

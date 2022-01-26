@@ -53,7 +53,7 @@ export default function Profile() {
     const [editingPassword, setEditingPassword] = useState(false)
     const dispatch = useDispatch()
     const [imageID, setImageID] = useState(null);
-    const [imageUrl, setImageUrl]= useState(`https://localhost:5000/image/61d6e873a266163a5c944570`)
+    const [imageUrl, setImageUrl]= useState(`https://exporagenius.com:5000/image/61d6e873a266163a5c944570`)
     const onFinish = () => {
         form.validateFields()
             .then(({ currentPassword, newPassword }) => {
@@ -78,15 +78,15 @@ export default function Profile() {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`https://localhost:5000/image/${event.file.response.id}`)
+            setImageUrl(`https://exporagenius.com:5000/image/${event.file.response.id}`)
         }
     }
     const handleRemove = (imageID) => {
         console.log(imageID)
-        axios.post(`https://localhost:5000/image/delete/${imageID}`)
+        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID) axios.post(`https://localhost:5000/image/delete/${imageID}`)
+        if (imageID) axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -116,7 +116,7 @@ export default function Profile() {
                     </Pic>
                     <ImgCrop aspect={1 / 1} minZoom={0.1} quality={1} grid>
                         <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
+                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
                                 <BsFillCameraFill style={{ width: "35px", height: "35px", color:"white",  }}></BsFillCameraFill>
                         </CusUpload>
                     </ImgCrop>

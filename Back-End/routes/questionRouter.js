@@ -19,11 +19,11 @@ questionRouter.use(bodyParser.json());
 questionRouter.route('/').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
   savePost(req.body, (err, id) => {
     if (err) {
-      console.log('I in if err')
+      //console.log('I in if err')
       return next(err)
     }
     if (req.timedout) {
-      console.log('I in if req.timedout')
+      //console.log('I in if req.timedout')
       res.json({ "msg": 408 })
       process.exit(0);
     }
@@ -39,11 +39,11 @@ questionRouter.route('/').get(timeout('12s', { respond: false }), bodyParser.jso
 questionRouter.route('/:id').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
   savePost(req.body, (err, id) => {
     if (err) {
-      console.log('I in if err')
+      //console.log('I in if err')
       return next(err)
     }
     if (req.timedout) {
-      console.log('I in if req.timedout')
+      //console.log('I in if req.timedout')
       res.json({ "msg": 408 })
       process.exit(0);
     }
@@ -93,11 +93,11 @@ questionRouter.route('/add').post(timeout('12s', { respond: false }), bodyParser
 questionRouter.route('/update/:id').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
   savePost(req.body, (err, id) => {
     if (err) {
-      console.log('I in if err')
+      //console.log('I in if err')
       return next(err)
     }
     if (req.timedout) {
-      console.log('I in if req.timedout')
+      //console.log('I in if req.timedout')
       res.json({ "msg": 408 })
       process.exit(0);
     }

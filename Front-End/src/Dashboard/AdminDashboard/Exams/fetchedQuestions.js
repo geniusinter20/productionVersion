@@ -1,16 +1,25 @@
 import React, { Component } from "react";
-import { Typography, Upload, Form, Input, message, Button, Tooltip, Modal, Table, Select, List, Popconfirm } from 'antd';
+import { Typography, Form, Input, message, Button, Tooltip, Modal, Table, Select, List, Popconfirm } from 'antd';
 import axios from "axios";
 import Options from "./Options";
 import ReactDragListView from "react-drag-listview";
 import { FiMenu } from "react-icons/fi";
 import styled from "styled-components";
 import OrderingOptions from "./OrderingOptions";
-import MatchingOptions from "./MatchingOptions"
+import MatchingOptions from "./MatchingOptions";
+import { connect } from 'react-redux'
+import PuffLoader from "react-spinners/PuffLoader"
 
 const { Paragraph, Text } = Typography;
 var QuestionForm = null;
 const { Option } = Select;
+const mapStateToProps = (state) => {
+    const { creating, created } = state.allExams
+    return {
+        editing: creating,
+        edited: created,
+    }
+}
 class FetchedQuestions extends Component {
     state = {
         fetchedQuestions: [],
@@ -21,25 +30,55 @@ class FetchedQuestions extends Component {
         questionType: null,
         options: [],
         validQuestion: true,
-
+        editing: false,
+        edited: false,
+        loadingQuestions: true,
     }
+
     componentDidMount() {
         this.fetchQuestion(this.props.ids)
         QuestionForm = this.props.useForm;
     }
+    // fetchQuestion = (e) => {
+    //     var number = 0;
+    //     e.forEach(async element => {
+    //         var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
+    //         number++;
+    //         this.addQuestion({ ...res.data[0], number: number })
+    //         this.props.setQCOunt(number)
+    //         //console.log({ ...res.data[0], number: number })
+    //     });
+
+    // }
     fetchQuestion = (e) => {
         var number = 0;
-        e.forEach(async element => {
-            var res = await axios.get(`https://localhost:5000/question/${element}`)
+        e.every(async element => {
+            var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
+            if (res.data.msg) {
+                message.error({ content: `Error loading questions: ${res.data.msg}`, className: "message" });
+                this.setState({ loadingQuestions: false })
+                return
+            }
             number++;
-            this.addQuestion({ ...res.data[0], number: number })
+            this.setState(prevState => ({
+                fetchedQuestions: [...prevState.fetchedQuestions, { ...res.data[0], number: number }]
+            }))
             this.props.setQCOunt(number)
+            if (this.state.fetchedQuestions.length === e.length) {
+                this.setState({ loadingQuestions: false })
+            }
             //console.log({ ...res.data[0], number: number })
         });
 
     }
-    setValidQuestion=(e)=>{
-        this.setState({validQuestion: e})
+
+    // addQuestion = (q) => {
+    //     this.setState(prevState => ({
+    //         fetchedQuestions: [...prevState.fetchedQuestions, q]
+    //     }))
+    // }
+    setValidQuestion = (e) => {
+        this.setState({ validQuestion: e })
     }
     setOptions = (options) => {
         this.setState(
@@ -47,11 +86,7 @@ class FetchedQuestions extends Component {
                 selectedQuestion: { ...prevState.selectedQuestion, options: options }
             }))
     }
-    addQuestion = (q) => {
-        this.setState(prevState => ({
-            fetchedQuestions: [...prevState.fetchedQuestions, q]
-        }))
-    }
+
 
     handleAddOk = e => {
         this.onQuestionEditFinish();
@@ -120,7 +155,7 @@ class FetchedQuestions extends Component {
                             fetchedQuestions: temp,
                         })
                         //console.log("key", this.state.selectedQuestion.key)
-                        axios.post(`https://localhost:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
+                        axios.post(`https://exporagenius.com:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
                     }
                 })
     }
@@ -138,6 +173,11 @@ class FetchedQuestions extends Component {
     static getDerivedStateFromProps(props, state) {
         //console.log("state", state.Qid)
         //console.log("props",props.QID)
+        // if(state.edited!==props.edited || state.editing !==props.editing)
+        //     return{
+        //         editing: props.editing,
+        //         edited:props.edited,
+        //     }
         if (state.addedQuestions.length !== props.addedQuestions.length)
             return {
                 addedQuestions: props.addedQuestions,
@@ -191,6 +231,9 @@ class FetchedQuestions extends Component {
     render() {
         //console.log("eddd:",this.state.fetchedQuestions)
         const QuestionForm = this.props.useForm;
+        const { editing, edited } = this.props;
+        //console.log("editing", editing);
+        //console.log("edited", edited);
         return (
             <div>
                 <ReactDragListView
@@ -198,12 +241,12 @@ class FetchedQuestions extends Component {
                     onDragEnd={this.onDragEnd}
                 >
 
-                    <List
+                    {this.state.loadingQuestions ? <div style={{ width: "100%", height: "100%",marginTop:"30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <PuffLoader css={"display: block; margin: 0 0 0 0;"} size={80} />
+                    </div> : <List
                         dataSource={this.state.fetchedQuestions}
                         renderItem={
                             item => {
-                                const draggble =
-                                    item !== "Racing car sprays burning fuel into crowd.";
                                 return (
                                     <List.Item
 
@@ -213,12 +256,13 @@ class FetchedQuestions extends Component {
                                             onCancel={() => this.deleteCancel}
                                             okText="Yes"
                                             cancelText="No"
+                                            disabled={!editing && edited}
                                         >
-                                            <ActionItem color="red">Delete</ActionItem>
+                                            <ActionItem disabled={!editing && edited} color="red">Delete</ActionItem>
                                         </Popconfirm>,
-                                        <ActionItem onClick={() => this.showModal(item)} color="#5BCAD6">Edit</ActionItem>,
-                                        <FiMenu style={{ marginBottom: "3px", height: "20px", width: "20px", cursor: 'grab', color: '#999' }} />,]}
-                                        className={draggble ? "draggble" : ""}
+                                        <ActionItem disabled={!editing && edited} onClick={!(!editing && edited) ? () => this.showModal(item) : ""} color="#5BCAD6">Edit</ActionItem>,
+                                        <FiMenu style={{ marginBottom: "3px", height: "20px", width: "20px", cursor: !(!editing && edited)?'grab':"not-allowed", color: '#999' }} />,]}
+                                        className={!(!editing && edited) ? "draggble" : ""}
                                         key={item.key}
                                     >
                                         <List.Item.Meta
@@ -271,7 +315,7 @@ class FetchedQuestions extends Component {
                                                         <Input.TextArea />
                                                     </Form.Item>
                                                 </Form>
-                                                
+
                                                 {this.renderOptions(this.state.questionType)}
 
                                             </div>
@@ -279,7 +323,7 @@ class FetchedQuestions extends Component {
                                     </List.Item>
                                 )
                             }}
-                    />
+                    />}
 
                 </ReactDragListView>
             </div>
@@ -289,11 +333,16 @@ class FetchedQuestions extends Component {
 }
 
 const ActionItem = styled.div`
-cursor: pointer ;
+cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
 font-weight: 600;
+animation: ${props => props.disabled ? "fadeIn 1s " : ""} ;
+animation-fill-mode: forwards;
 &:hover{
-    color: ${props => props.color}
+    color: ${props => !props.disabled ? props.color : ""}
 }
-
+@keyframes fadeIn {
+  0% {opacity:1;}
+  100% {opacity:0.6;}
+}
 `
-export default FetchedQuestions;
+export default connect(mapStateToProps)(FetchedQuestions);
