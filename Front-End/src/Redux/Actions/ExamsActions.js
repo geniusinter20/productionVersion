@@ -84,7 +84,7 @@ export const updateExam = (exam) => {
                         message.success({ content: "Exam Updated", className: "message" });
                         dispatch({
                             type: ExamActionTypes.UPDATE_EXAM,
-                            payload: res.data
+                            payload: exam
                         })
                     }
 

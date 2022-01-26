@@ -48,6 +48,7 @@ function EditExam(props) {
   const [options, setOptions] = useState([]);
   const [questions, setQuestions] = useState([]);
   const data = useSelector(state => state.allExams.exams.filter(e => e.key === id)[0])
+  const data1 = useSelector(state => state.allExams.exams)
   const [examQuestionsIDs, setExamQuestionsIDs] = useState([]);
   const [orderChanged, setOrderChanged] = useState(false);
   const [deleteChanged, setDeleteChanged] = useState(false);
@@ -75,10 +76,11 @@ function EditExam(props) {
   }, [questionType])
 
   useEffect(() => {
+    console.log(data1);
     if (data) {
       setTimeout(() => {
         setLoading(false)
-      }, 1000);
+      }, 300);
       if (data.examImageID && data.examImageID!=="no image") {
         setImageID(data.examImageID)
         setFileList([
@@ -293,7 +295,7 @@ setValidQuestion(false)
           <Form
             form={form}
             layout="vertical"
-            onFinish={onExamEditFinish}
+            onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >

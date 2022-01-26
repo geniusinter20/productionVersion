@@ -34,7 +34,6 @@ class FetchedQuestions extends Component {
         edited: false,
         loadingQuestions: true,
     }
-
     componentDidMount() {
         this.fetchQuestion(this.props.ids)
         QuestionForm = this.props.useForm;
@@ -52,7 +51,8 @@ class FetchedQuestions extends Component {
     // }
     fetchQuestion = (e) => {
         var number = 0;
-        e.every(async element => {
+        if(!e) this.setState({ loadingQuestions: true })
+        else e.every(async element => {
             var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
             if (res.data.msg) {
                 message.error({ content: `Error loading questions: ${res.data.msg}`, className: "message" });
@@ -171,13 +171,7 @@ class FetchedQuestions extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        //console.log("state", state.Qid)
-        //console.log("props",props.QID)
-        // if(state.edited!==props.edited || state.editing !==props.editing)
-        //     return{
-        //         editing: props.editing,
-        //         edited:props.edited,
-        //     }
+        //console.log("state", state.edited)
         if (state.addedQuestions.length !== props.addedQuestions.length)
             return {
                 addedQuestions: props.addedQuestions,
