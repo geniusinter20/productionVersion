@@ -44,7 +44,7 @@ export const loadCart = () => {
                 case "practiceTest": {
                     //console.log(p);
                     axios
-                        .get(`http://exporagenius.com:5000/practicetests/${p.productID}`)
+                        .get(`https://exporagenius.com:5000/practicetests/${p.productID}`)
                         .then(({ data }) => {
                             products.push({
                                 productType: p.productType,
