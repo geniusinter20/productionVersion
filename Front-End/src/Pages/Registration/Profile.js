@@ -53,7 +53,7 @@ export default function Profile() {
     const [editingPassword, setEditingPassword] = useState(false)
     const dispatch = useDispatch()
     const [imageID, setImageID] = useState("no image");
-    const [imageUrl, setImageUrl]= useState(auth.userData.imageID?`http://localhost:5000/image/${auth.userData.imageID}`:profilePic)
+    const [imageUrl, setImageUrl]= useState(auth.userData.imageID?`http://exporagenius.com:5000/image/${auth.userData.imageID}`:profilePic)
     //console.log(userInfo);
     const onFinish = () => {
         form.validateFields()
@@ -80,17 +80,17 @@ export default function Profile() {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`http://localhost:5000/image/${event.file.response.id}`)
+            setImageUrl(`http://exporagenius.com:5000/image/${event.file.response.id}`)
             dispatch(updateImage(event.file.response.id))
-            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`,{imageID:event.file.response.id})
+            axios.post(`http://exporagenius.com:5000/client/updateimage/${auth.userData._id}`,{imageID:event.file.response.id})
         }
     }
     const handleRemove = (imageID) => {
         //console.log(imageID)
-        axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        axios.post(`http://exporagenius.com:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        if (imageID!=="no image") axios.post(`http://exporagenius.com:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -120,7 +120,7 @@ export default function Profile() {
                     </Pic>
                     <ImgCrop aspect={1 / 1} minZoom={0.1} quality={1} grid>
                         <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
+                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='http://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
                                 <BsFillCameraFill style={{ width: "35px", height: "35px", color:"white",  }}></BsFillCameraFill>
                         </CusUpload>
                     </ImgCrop>

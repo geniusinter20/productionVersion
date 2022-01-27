@@ -73,10 +73,10 @@ function EditExam(props) {
   }
   const handleRemove = (imageID) => {
     console.log(imageID)
-    axios.post(`http://localhost:5000/image/delete/${imageID}`)
+    axios.post(`http://exporagenius.com:5000/image/delete/${imageID}`)
   }
   const beforeUpload=()=>{
-    if(imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
+    if(imageID!=="no image") axios.post(`http://exporagenius.com:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -131,7 +131,7 @@ function EditExam(props) {
     else questions.forEach(async (question, index) => {
       //console.log("question:", question)
       const res = await axios
-        .post("http://localhost:5000/question/add", {
+        .post("http://exporagenius.com:5000/question/add", {
           qesText: question.qesText,
           qesType: question.qesType,
           options: question.options,
@@ -321,7 +321,7 @@ function EditExam(props) {
               <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                 <ImgCrop aspect={16 / 9} minZoom={0.5} quality={1} grid>
                   <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                    name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
+                    name="file" onPreview={onPreview} action='http://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
@@ -519,7 +519,7 @@ padding:25px;
 //         }
 //          else questions.forEach(async (question, index) => {
 //             const res = await axios
-//                 .post("http://localhost:5000/question/add", {
+//                 .post("http://exporagenius.com:5000/question/add", {
 //                     qesText: question.questionText,
 //                     qesType: question.questionType,
 //                     options: question.options,

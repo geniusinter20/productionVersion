@@ -4,7 +4,7 @@ import { message } from "antd";
 const fetchExams = () => {
 
     // return async(dispatch) => {
-    //     const response = await axios.get("http://localhost:5000/practicetests");
+    //     const response = await axios.get("http://exporagenius.com:5000/practicetests");
     //     dispatch
     return ({
         type: ExamActionTypes.FETCH_EXAMS_REQUEST,
@@ -23,7 +23,7 @@ export const fetchExamsSuccess = () => {
     return (dispatch) => {
         dispatch(fetchExams());
         axios
-            .get("http://localhost:5000/exams")
+            .get("http://exporagenius.com:5000/exams")
             .then(({ data }) => {
                 dispatch({
                     type: ExamActionTypes.FETCH_EXAMS_SUCCESS,
@@ -47,7 +47,7 @@ export const createExam = (exam) => {
             dispatch({
                 type: ExamActionTypes.START_CREATING_EXAM
             })
-            axios.post("http://localhost:5000/exams/add", exam)
+            axios.post("http://exporagenius.com:5000/exams/add", exam)
                 .then(res => {
                     if (res.data.msg === "408") {
                         message.error({ content: "Request time out try again", className: "message" });
@@ -78,7 +78,7 @@ export const updateExam = (exam) => {
             dispatch({
                 type: ExamActionTypes.UPDATE_EXAM_START,
             })
-            axios.post(`http://localhost:5000/exams/update/${exam.key}`, exam)
+            axios.post(`http://exporagenius.com:5000/exams/update/${exam.key}`, exam)
                 .then(res => {
                     if (res.data.msg === "exam updated") {
                         message.success({ content: "Exam Updated", className: "message" });
@@ -111,7 +111,7 @@ export const deleteExam = (id) => {
     console.log("deleting:", id)
     return (
         dispatch => {
-            axios.delete(`http://localhost:5000/exams/delete/${id}`)
+            axios.delete(`http://exporagenius.com:5000/exams/delete/${id}`)
                 .then(res => {
                     //console.log(res.data)
                     dispatch({
