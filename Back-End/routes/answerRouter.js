@@ -6,7 +6,7 @@ const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
 const Answer = require('../DB/models/Answer');
 
-const url = 'mongodb://localhost:27017/newDB';
+const url = process.env.MONGO_URI;
 
 const answerRouter = express.Router();
 

@@ -33,14 +33,14 @@ export default function MultipleChoiceQuestion(props) {
     //console.log(props.currentQuestionNo)
     useEffect(() => {
         //console.log("cjhanged")
-        if (answers.length > props.currentQuestionNo - 1) {
+        if (answers?answers.length > props.currentQuestionNo - 1:false) {
             //console.log(answers[props.currentQuestionNo - 1].answer.key)
             setSelectedIndex(answers[props.currentQuestionNo - 1].answer.key)
         }
         else {
             setSelectedIndex(-1)
         }
-    }, [props.currentQuestionNo])
+    }, [props.currentQuestionNo, answers])
     //console.log(props.state)
 
     if (props.state === "review") {

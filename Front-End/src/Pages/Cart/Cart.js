@@ -45,6 +45,7 @@ export default function Cart() {
     const calculateTotal = (products) => {
         var total = 0;
         products.forEach(p => {
+            console.log(p.product);
             total += getproductPrice(p.product)
             //console.log(getproductPrice(p.product));
         })
@@ -62,7 +63,7 @@ export default function Cart() {
             case "practiceTest":
                 return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image><img alt="example" src={product.testImageID?`https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>
+                        <Image><img alt="example" src={product.testImageID?`http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>
 
                         <Information>
                             <ProductName>{product.testTitle}</ProductName>

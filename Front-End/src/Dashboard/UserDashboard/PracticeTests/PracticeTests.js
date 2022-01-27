@@ -43,7 +43,7 @@ function PracticeTests() {
                     testID: expanded[0],
                 }
             })
-        }, 1000);
+        }, 200);
     }
     const handleExamReview = (examId) => {
         //setLoadingExamData(true)
@@ -54,7 +54,7 @@ function PracticeTests() {
                     testID: expanded[0]
                 }
             })
-        }, 1000);
+        }, 200);
     }
     const examColumns = [
         {

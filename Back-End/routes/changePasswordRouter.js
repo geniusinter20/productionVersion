@@ -6,7 +6,7 @@ const Client = require('../DB/models/Client');
 const timeout = require('connect-timeout');
 const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
-const url = 'mongodb://localhost:27017/newDB';
+const url = process.env.MONGO_URI;
 
 const changePasswordRouter = express.Router();
 

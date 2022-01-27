@@ -11,44 +11,56 @@ const initialState = {
 
 const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case "UPDATE_INFO":
+      //console.log("signing in:", payload)
+      return {
+        ...state,
+        userData: payload,
+      };
+    case "UPDATE_IMAGE":
+      //console.log("signing in:", payload)
+      return {
+        ...state,
+        userData: {...state.userData, imageID:payload},
+      };
     case "SIGN_IN":
       //console.log("signing in:", payload)
       return {
-        ...initialState,
+        ...state,
         loggingIn: true,
         token: payload,
       };
     case "SIGN_UP":
       return {
-        ...initialState,
+        ...state,
         registering: true,
       };
     case "SIGNED_UP":
       return {
-        ...initialState,
+        ...state,
         token: payload,
         registering: false,
       };
     case "SIGN_UP_FAIL":
       return {
-        ...initialState,
+        ...state,
         registering: false,
       };
     case "SIGN_IN_FAIL":
       return {
-        ...initialState,
+        ...state,
         loggingIn: false,
       };
     case "USER_LOADING":
       //console.log("dfsdfsfs")
       return {
-        ...initialState,
+        ...state,
         loggingIn: true,
       };
     case "USER_LOADED":
       //console.log("dfsdfsfs")
       return {
-        ...initialState,
+        ...state,
         userData: payload,
         loggedIn: true,
         loggingIn: false,

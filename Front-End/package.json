@@ -2,7 +2,7 @@
   "name": "genius",
   "version": "0.1.0",
   "homepage": "https://exporagenius.com",
-  "proxy": "https://exporagenius.com:5000/",
+  "proxy": "https://localhost:5000/",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.3.1",

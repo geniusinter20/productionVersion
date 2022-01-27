@@ -5,7 +5,7 @@ const timeout = require('connect-timeout');
 const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
 const ActivityExamState = require('../DB/models/ActivityExamState');
-const url = 'mongodb://localhost:27017/newDB';
+const url = process.env.MONGO_URI;
 
 const activityExamRouter = express.Router();
 
@@ -41,59 +41,15 @@ activityExamRouter.route('/').get(timeout('12s', { respond: false }), bodyParser
         });
     })
 });
-//GET Method a specific ActivityExamState for an exam
-activityExamRouter.route('/exam/:examID/:testID').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
-    savePost(req.body, (err, id) => {
-        if (err) {
-            console.log('I in if err')
-            return next(err)
-        }
-        if (req.timedout) {
-            console.log('I in if req.timedout')
-            res.json({ "msg": 408 })
-            process.exit(0);
-        }
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
-        mongoose.connect(url);
-
-        ActivityExamState.find({ clientID: req.params.id }, function (err, docs) {
-            if (err) throw err;
-            res.json(docs);
-        });
-    })
-});
-//GET Method a specific ActivityExamState for an exam
-// activityExamRouter.route('/exam/:id').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
-//     savePost(req.body, (err, id) => {
-//         if (err) {
-//             console.log('I in if err')
-//             return next(err)
-//         }
-//         if (req.timedout) {
-//             console.log('I in if req.timedout')
-//             res.json({ "msg": 408 })
-//             process.exit(0);
-//         }
-//         res.statusCode = 200;
-//         res.setHeader('Content-Type', 'text/plain');
-//         mongoose.connect(url);
-
-//         ActivityExamState.find({ examID: req.params.id }, function (err, docs) {
-//             if (err) throw err;
-//             res.json(docs);
-//         });
-//     })
-// });
 //GET Method a specific ActivityExamState for an actvity
-activityExamRouter.route('/exam/:examID/:testID').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
+activityExamRouter.route('/exam/:examID/:testID/:clientID').get(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
     savePost(req.body, (err, id) => {
         if (err) {
-            console.log('I in if err')
+            //console.log('I in if err')
             return next(err)
         }
         if (req.timedout) {
-            console.log('I in if req.timedout')
+            //console.log('I in if req.timedout')
             res.json({ "msg": 408 })
             process.exit(0);
         }
@@ -101,7 +57,7 @@ activityExamRouter.route('/exam/:examID/:testID').get(timeout('12s', { respond: 
         res.setHeader('Content-Type', 'text/plain');
         mongoose.connect(url);
 
-        ActivityExamState.find({ examID: req.params.examID, testID: req.params.testID }, (err, docs) => {
+        ActivityExamState.find({ examID: req.params.examID, testID: req.params.testID, clientID: req.params.clientID }, (err, docs) => {
             if (err) throw err;
             res.json(docs);
         });
@@ -111,11 +67,11 @@ activityExamRouter.route('/exam/:examID/:testID').get(timeout('12s', { respond: 
 activityExamRouter.route('/add').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
     savePost(req.body, (err, id) => {
         if (err) {
-            console.log('I in if err')
+            //console.log('I in if err')
             return next(err)
         }
         if (req.timedout) {
-            console.log('I in if req.timedout')
+            //console.log('I in if req.timedout')
             res.json({ "msg": 408 })
             process.exit(0);
         }
@@ -143,7 +99,7 @@ activityExamRouter.route('/add').post(timeout('12s', { respond: false }), bodyPa
     })
 });
 //POST Method for Update a specifice activityExamstate and Restor it
-activityExamRouter.route('/update/:examID/:testID').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
+activityExamRouter.route('/update/:examID/:testID/:clientID').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
     savePost(req.body, (err, id) => {
         if (err) {
             console.log('I in if err')
@@ -158,7 +114,7 @@ activityExamRouter.route('/update/:examID/:testID').post(timeout('12s', { respon
         res.setHeader('Content-Type', 'text/plain');
         mongoose.connect(url);
 
-        const condition = { examID: req.params.examID, testID: req.params.testID };
+        const condition = { examID: req.params.examID, testID: req.params.testID, clientID: req.params.clientID };
         const update = {
             finished: req.body.finished,
             started: req.body.started,

@@ -9,8 +9,9 @@ const ClientSchema = new Schema({
   password: str,
   address: str,
   joinDate:date,
-  image: str,
+  imageID: str,
   accountType:str,
+  phoneNumber: str,
 });
 
 const Client = mongoose.model('Client', ClientSchema);

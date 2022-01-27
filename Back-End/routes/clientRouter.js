@@ -8,42 +8,85 @@ const timeout = require('connect-timeout');
 const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 // Load User model
 const User = require('../DB/models/Client');
+const url = process.env.MONGO_URI
 
 //update user information
 //KH
-// router.route('/updateinfo').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
-//   savePost(req.body, (err, id) => {
-//     if (err) {
-//       console.log('I in if err')
-//       return next(err)
-//     }
-//     if (req.timedout) {
-//       console.log('I in if req.timedout')
-//       res.json({ "msg": 408 })
-//       process.exit(0);
-//     }
-//     res.statusCode = 200;
-//     res.setHeader('Content-Type', 'text/plain');
-//     mongoose.connect(url);
-//     // Finde By ID and Update it
-//     User.update(
-//       { _id: req.params.id },
-//       {
-//         $set: {
-//           fullName: req.body.fullName,
-//           address: req.body.address
-//         }
-//       },
-//       { upsert: true },
-//       (err, updating) => {
-//         if (err) console.log(err);
-//         else console.log(updating);
-//       }
-//     );
-//   })
-// });
+router.route('/updateinfo/:id').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
+  savePost(req.body, (err, id) => {
+    if (err) {
+      console.log('I in if err')
+      return next(err)
+    }
+    if (req.timedout) {
+      console.log('Timedout occur')
+      res.json({ "msg": 408 })
+      process.exit(0);
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    mongoose.connect(url);
+
+    // Finde By ID and Update it
+    User.update(
+      { _id: req.params.id },
+      {
+        $set: {
+          fullName: req.body.fullName,
+          address: req.body.address,
+          email: req.body.email,
+          phoneNumber: req.body.phoneNumber
+        }
+      },
+      { upsert: true },
+      (err, updating) => {
+        if (err) console.log(err);
+        else {
+          console.log(updating);
+          res.json({msg:'Updating Success'});
+        }
+      }
+    );
+  })
+});
+//update image
+router.route('/updateimage/:id').post(timeout('12s', { respond: false }), bodyParser.json(), haltOnTimedout, (req, res, next) => {
+  savePost(req.body, (err, id) => {
+    if (err) {
+      //console.log('I in if err')
+      return next(err)
+    }
+    if (req.timedout) {
+      console.log('Timedout occur')
+      res.json({ "msg": 408 })
+      process.exit(0);
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    mongoose.connect(url);
+
+    // Finde By ID and Update it
+    User.update(
+      { _id: req.params.id },
+      {
+        $set: {
+          imageID: req.body.imageID
+        }
+      },
+      { upsert: true },
+      (err, updating) => {
+        if (err) console.log(err);
+        else {
+          console.log(updating);
+          res.json('Updating success');
+        }
+      }
+    );
+  })
+});
 
 
 // Login Page
@@ -90,7 +133,8 @@ router.post('/register', timeout('12s', { respond: false }), bodyParser.json(), 
           email,
           password,
           address,
-          accountType
+          accountType,
+          phoneNumber,
         });
 
         bcryptjs.genSalt(10, (err, salt) => {

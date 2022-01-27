@@ -20,7 +20,8 @@ const examActivityInitialState = {
     started: false,
     finishedQuestionsIDsWithAnswers: [],
     timeSpent: 0,
-    testID: ""
+    testID: "",
+    activityCreated: false
 }
 
 export const UserDashboardPracticeTestsData = (state = testsInitialState, { type, payload }) => {
@@ -103,8 +104,8 @@ export const UserDashboardExamEnv = (state = examEnvInitialState, { type, payloa
 export const examActivityReducer = (state = examActivityInitialState, { type, payload }) => {
     switch (type) {
         case UserDashboardActionTypes.EXAMENV_QUESTION_SOLVE: {
-            //console.log([...state.finishedQuestionsIDsWithAnswers, payload])
-            //console.log(state.examID)
+            //console.log(state.finishedQuestionsIDsWithAnswers)
+            console.log(state)
         const tempStateQ= [...state.finishedQuestionsIDsWithAnswers]
         const ind= state.finishedQuestionsIDsWithAnswers.findIndex(e=>e.questionID === payload.answithid.questionID)
         //console.log("payload", payload.questionID)
@@ -115,8 +116,8 @@ export const examActivityReducer = (state = examActivityInitialState, { type, pa
         else{
             tempStateQ.splice(ind, 1, payload.answithid)
         }
-        
-            axios.post(`https://exporagenius.com:5000/activityexamstate/update/${state.examID}/${state.testID}`, 
+        //console.log(state);
+            axios.post(`http://localhost:5000/activityexamstate/update/${state.examID}/${state.testID}/${state.clientID}`, 
             {
                 ...state,
                 finished: payload.finished,
@@ -131,15 +132,18 @@ export const examActivityReducer = (state = examActivityInitialState, { type, pa
             }
         }
         case UserDashboardActionTypes.EXAMENV_START_EXAM: {
+            //console.log("payload", payload);
             return {
                 ...state,
                 started: true,
                 examID: payload.examID,
                 clientID: payload.clientID,
                 testID: payload.testID,
+                activityCreated: true,
             }
         }
         case UserDashboardActionTypes.EXAMENV_FETCH_ACTIVITY: {
+            //console.log("sfds");
             return {
                 ...payload
             }

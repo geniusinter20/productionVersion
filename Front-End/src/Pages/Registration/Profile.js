@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import Collapse from '@mui/material/Collapse';
 import emailjs from '@emailjs/browser';
 import { useDispatch } from "react-redux"
-import { changePassword } from "../../Redux/Actions/UserAuthActions"
+import { changePassword, updateImage, updateInfo } from "../../Redux/Actions/UserAuthActions"
 import axios from 'axios'
 import ImgCrop from 'antd-img-crop';
 import { BsFillCameraFill } from "react-icons/bs"
@@ -52,8 +52,9 @@ export default function Profile() {
     const [editing, setEditing] = useState(false)
     const [editingPassword, setEditingPassword] = useState(false)
     const dispatch = useDispatch()
-    const [imageID, setImageID] = useState(null);
-    const [imageUrl, setImageUrl]= useState(`https://exporagenius.com:5000/image/61d6e873a266163a5c944570`)
+    const [imageID, setImageID] = useState("no image");
+    const [imageUrl, setImageUrl]= useState(auth.userData.imageID?`http://localhost:5000/image/${auth.userData.imageID}`:profilePic)
+    //console.log(userInfo);
     const onFinish = () => {
         form.validateFields()
             .then(({ currentPassword, newPassword }) => {
@@ -73,20 +74,23 @@ export default function Profile() {
 
     const saveChanges = (userInfo) => {
         setEditing(false)
+        dispatch(updateInfo(userInfo))
     }
     const onUploadChange = (event) => {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`https://exporagenius.com:5000/image/${event.file.response.id}`)
+            setImageUrl(`http://localhost:5000/image/${event.file.response.id}`)
+            dispatch(updateImage(event.file.response.id))
+            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`,{imageID:event.file.response.id})
         }
     }
     const handleRemove = (imageID) => {
-        console.log(imageID)
-        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        //console.log(imageID)
+        axios.post(`http://localhost:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID) axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        if (imageID!=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -116,7 +120,7 @@ export default function Profile() {
                     </Pic>
                     <ImgCrop aspect={1 / 1} minZoom={0.1} quality={1} grid>
                         <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
+                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
                                 <BsFillCameraFill style={{ width: "35px", height: "35px", color:"white",  }}></BsFillCameraFill>
                         </CusUpload>
                     </ImgCrop>
@@ -243,7 +247,7 @@ export default function Profile() {
                         icon: <div />,
                         enterIcon: null,
                         onChange: (phoneNumber) => setUserInfo({ ...userInfo, phoneNumber }),
-                    }}>0938704953</Paragraph>
+                    }}>{userInfo.phoneNumber}</Paragraph>
                     </Descriptions.Item>
                     <Descriptions.Item style={{ padding: "5px 0 0 0" }} label="Address"><Paragraph editable={{
                         editing: editing,

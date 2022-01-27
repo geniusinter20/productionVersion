@@ -12,7 +12,7 @@ const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
 const imageRouter = express.Router();
 // Mongo URI
-const mongoURI = 'mongodb://localhost:27017/newDB';
+const mongoURI = process.env.MONGO_URI;
 
 // Create mongo connection
 const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });

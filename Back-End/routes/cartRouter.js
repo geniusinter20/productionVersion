@@ -7,7 +7,7 @@ const haltOnTimedout = require('./haltOnTimedout');
 const savePost = require('./savePost')
 const Cart = require('../DB/models/Cart');
 
-const url = 'mongodb://localhost:27017/newDB';
+const url = process.env.MONGO_URI;
 
 const cartRouter = express.Router();
 

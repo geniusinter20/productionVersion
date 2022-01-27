@@ -267,7 +267,19 @@ export default function Home() {
                         </MidPic>
                     </div>
 
-                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white" }}></Col>
+                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex",color:"#3c3c3c", padding: "30px 40px 30px 30px",gap:"20px" ,flexDirection:"column" }}>
+                        <div style={{ fontSize: "30px", fontWeight: "500" }}>
+                            What makes us one of the top rated Online Training companies
+                        </div>
+                        <div style={{ fontSize: "23px", fontWeight: "300" }}>
+                            It is a long established fact that a reader will be distracted by the readable content of a page when looking
+                            at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
+                            as opposed to using 'Content here, content here', making it look like readable English.
+                            Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
+                            and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
+                            evolved over the years
+                        </div>
+                    </Col>
                 </Segment4>}
                 <Segment5>
                     <img src={HomeImage2}></img>
@@ -286,21 +298,21 @@ export default function Home() {
                     <div style={{ fontWeight: "300", color: "#444444", width: "50%", fontSize: "16px", textAlign: "center" }}>Letter of on become he tended active enable to.
                         Vicinity relation sensible sociable surprise screened no up as.
                     </div>
-                    <Row style={{ marginTop: "4vh", minHeight: "292px", justifyContent:"space-around" }} >
+                    <Row style={{ marginTop: "4vh", minHeight: "292px", justifyContent: "space-around" }} >
                         <Slide {...(renderReviews ? { timeout: 2000 } : {})}
                             direction="left" in={renderReviews} mountOnEnter unmountOnExit container={containerRef.current}>
                             <Comment1 xs={{ span: 24, offset: 0 }} lg={{ span: 12, offset: 10 }}>
-                                
+
                                 <div style={{
-                                     height: "100%", backgroundColor: "#F0F0F0", display: "flex",
+                                    height: "100%", backgroundColor: "#F0F0F0", display: "flex",
                                     flexDirection: "column", gap: "10px", justifyContent: "center", padding: "20px 15px 20px 40px"
                                 }}>
-                                    <div style={{ color: "#444444", fontSize: "25px", fontWeight: "600", textAlign:"right" }}>{reviews[count].reviewTitle}</div>
-                                    <div style={{ "fontSize": "16px", "fontWeight": "400", "color": "rgba(49, 49, 49, 1)", textAlign:"right" }}>
+                                    <div style={{ color: "#444444", fontSize: "25px", fontWeight: "600", textAlign: "right" }}>{reviews[count].reviewTitle}</div>
+                                    <div style={{ "fontSize": "16px", "fontWeight": "400", "color": "rgba(49, 49, 49, 1)", textAlign: "right" }}>
                                         {reviews[count].reviewText}
                                     </div>
-                                    <Rating sx={{alignSelf:"end"}} precision={0.5} readOnly name="size-small" value={reviews[count].rate} size="small" />
-                                    <div style={{ fontSize: "18px", fontWeight: "600", color: "#6c6c6c", textAlign:"right" }}>{reviews[count].userName}</div>
+                                    <Rating sx={{ alignSelf: "end" }} precision={0.5} readOnly name="size-small" value={reviews[count].rate} size="small" />
+                                    <div style={{ fontSize: "18px", fontWeight: "600", color: "#6c6c6c", textAlign: "right" }}>{reviews[count].userName}</div>
                                 </div>
                             </Comment1>
                         </Slide>
@@ -310,14 +322,14 @@ export default function Home() {
                             direction="right" in={renderReviews} mountOnEnter unmountOnExit container={containerRef.current}>
                             <Comment2 xs={{ span: 24, offset: 0 }} lg={{ span: 12, offset: 0 }}>
                                 <div style={{
-                                     height: "100%", backgroundColor: "#F0F0F0", display: "flex",
+                                    height: "100%", backgroundColor: "#F0F0F0", display: "flex",
                                     flexDirection: "column", gap: "10px", justifyContent: "center", padding: "20px 30px 20px 15px"
                                 }}>
                                     <div style={{ color: "#444444", fontSize: "25px", fontWeight: "600" }}>{reviews[count + 1].reviewTitle}</div>
                                     <div style={{ width: "95%", "fontSize": "16px", "fontWeight": "400", "color": "rgba(49, 49, 49, 1)" }}>
                                         {reviews[count + 1].reviewText}
                                     </div>
-                                    <Rating  precision={0.5} readOnly name="size-small" value={reviews[count + 1].rate} size="small" />
+                                    <Rating precision={0.5} readOnly name="size-small" value={reviews[count + 1].rate} size="small" />
                                     <div style={{ fontSize: "18px", fontWeight: "600", color: "#6c6c6c" }}>{reviews[count + 1].userName}</div>
                                 </div>
                             </Comment2>
@@ -661,7 +673,7 @@ const Pic = styled.div`
 `;
 const Segment2 = styled(Row)`
   align-items: center;
-  margin:2vh 4vw 2vh 4vw;
+  margin:2vh 4vw 0vh 4vw;
   justify-content: space-between;
   flex-wrap: wrap-reverse;
   gap:10px;

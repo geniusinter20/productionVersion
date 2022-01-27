@@ -99,11 +99,11 @@ function NavBar() {
   );
   const menuToggled = (
     <div>
-      <NavItemD style={{background: toggleMenu?`#F8F8F8`:"white"}} onClick={() => setToggleMenu(!toggleMenu)}>
+      <NavItemD style={{ background: toggleMenu ? `#F8F8F8` : "white" }} onClick={() => setToggleMenu(!toggleMenu)}>
         <div style={{ fontWeight: "600", color: "#6c6c6c" }} >
           Online Training
         </div>
-        <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor:"pointer" }} rotate={toggleMenu ? 180 : 0} />
+        <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggleMenu ? 180 : 0} />
       </NavItemD>
 
       <Collapse isOpen={toggleMenu} style={{ background: "#F8F8F8" }}>
@@ -119,11 +119,11 @@ function NavBar() {
       </Collapse ></div>
   );
   const menu1Toggled = (
-    <div><NavItemD style={{background: toggleMenu1?`#F8F8F8`:"white"}} onClick={() => setToggleMenu1(!toggleMenu1)}>
+    <div><NavItemD style={{ background: toggleMenu1 ? `#F8F8F8` : "white" }} onClick={() => setToggleMenu1(!toggleMenu1)}>
       <div style={{ fontWeight: "600", color: "#6c6c6c" }} >
         About
       </div>
-      <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor:"pointer" }} rotate={toggleMenu1 ? 180 : 0} />
+      <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggleMenu1 ? 180 : 0} />
     </NavItemD>
       <Collapse isOpen={toggleMenu1} style={{ background: "#F8F8F8" }}>
 
@@ -154,10 +154,14 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-        {userLogged&&<MyAvatar style={{ borderStyle: "solid" }} size={35}
-                  >
-                    {userInfo.fullName.charAt(0).toUpperCase()}
-                  </MyAvatar>}
+          {userLogged ? auth.userData.imageID ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`}  size={35}
+          >
+
+          </Avatar>
+            : <MyAvatar style={{ borderStyle: "solid" }} size={35}
+            >
+              {userInfo.fullName.charAt(0).toUpperCase()}
+            </MyAvatar> : <div></div>}
           <Typography style={{ width: "175px", fontSize: "13px", fontWeight: "500" }} component="div" noWrap={true}>
             {loggedIn ? userInfo.email : ""}
           </Typography>
@@ -237,12 +241,12 @@ function NavBar() {
         {
           !userLogged ? <ul className="Nav-batns">
             <li key="1" className="cartIcon">
-                <Badge count={JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")).productsWithID.length:0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
-                  <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
-                </Badge>
-              </li>
+              <Badge count={JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).productsWithID.length : 0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
+                <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
+              </Badge>
+            </li>
             <li key="2" className="Navbatn">
-              <Link to="/login" state={{previousPage: location.pathname}}>Log in</Link>
+              <Link to="/login" state={{ previousPage: location.pathname }}>Log in</Link>
             </li>
             <li key="3" className="Navbatn1">
               <Link to="/register">Get started</Link>
@@ -250,16 +254,20 @@ function NavBar() {
           </ul> :
             <ul className="Nav-batns-logged">
               <li key="1" className="cartIcon">
-                <Badge count={JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")).productsWithID.length:0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
+                <Badge count={JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).productsWithID.length : 0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
                   <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
                 </Badge>
               </li>
               <li key="2" >
                 <Dropdown overlay={userMenu} placement="bottomRight">
-                  <MyAvatar style={{ borderStyle: "solid" }} size={45}
+                  {auth.userData.imageID ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`} size={45}
                   >
-                    {userInfo.fullName.charAt(0).toUpperCase()}
-                  </MyAvatar>
+
+                  </Avatar>
+                    : <MyAvatar style={{ borderStyle: "solid" }} size={45}
+                    >
+                      {userInfo.fullName.charAt(0).toUpperCase()}
+                    </MyAvatar>}
                 </Dropdown>
 
               </li>
@@ -274,7 +282,7 @@ function NavBar() {
           <NavbarBrand
             className="me-auto"
             href="/"
-            style={{fontWeight:"600", color:"6c6c6c"}}
+            style={{ fontWeight: "600", color: "6c6c6c" }}
           >
             Genius
           </NavbarBrand>

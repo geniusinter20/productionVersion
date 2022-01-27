@@ -8,7 +8,7 @@ export const signUp = (user) => {
       type: "SIGN_UP",
     });
     axios
-      .post(`https://exporagenius.com:5000/client/register`, user)
+      .post(`http://localhost:5000/client/register`, user)
       .then((token) => {
         if (token.data.msg) {
           dispatch({
@@ -42,35 +42,35 @@ export const signIn = (email, password, remembered) => {
     dispatch({
       type: "SIGN_IN",
     });
-    axios.post(`https://exporagenius.com:5000/client/login`, { email, password })
-    .then(({ data }) => {
-      //console.log(data);
-      if (data.msg) {
-        message.error({ content: data.msg, className: "message" });
+    axios.post(`http://localhost:5000/client/login`, { email, password })
+      .then(({ data }) => {
+        //console.log(data);
+        if (data.msg) {
+          message.error({ content: data.msg, className: "message" });
+          dispatch({
+            type: "SIGN_IN_FAIL",
+          });
+        }
+        else {
+          if (remembered) localStorage.setItem("userToken", data);
+
+          dispatch({
+            type: "SIGN_IN",
+            payload: data,
+          });
+          dispatch(loadUser(data))
+        }
+      }).catch((error) => {
         dispatch({
           type: "SIGN_IN_FAIL",
         });
-      }
-      else {
-        if (remembered) localStorage.setItem("userToken", data);
-
-        dispatch({
-          type: "SIGN_IN",
-          payload: data,
-        });
-        dispatch(loadUser(data))
-      }
-    }).catch((error) => {
-      dispatch({
-        type: "SIGN_IN_FAIL",
-      });
-    })
+      })
   };
 }
 export const changePassword = (currentPassword, newPassword, email, userID) => {
   localStorage.removeItem("userToken")
   return (dispatch) => {
-    let promiseA = axios.post(`https://exporagenius.com:5000/changepassword/${userID}`, { currentPassword, newPassword })
+    let promiseA = axios.post(`http://localhost:5000/changepassword/${userID}`, { currentPassword, newPassword })
     let promiseB = promiseA.then(({ data }) => {
       //console.log("firstResponse:",data)
       console.log(data);
@@ -80,7 +80,7 @@ export const changePassword = (currentPassword, newPassword, email, userID) => {
       }
       message.success({ content: "Password Changed", className: "message" });
       axios
-        .post(`https://exporagenius.com:5000/client/login`, { email: email, password: newPassword })
+        .post(`http://localhost:5000/client/login`, { email: email, password: newPassword })
         .then(({ data }) => {
           localStorage.setItem("userToken", data);
 
@@ -90,6 +90,31 @@ export const changePassword = (currentPassword, newPassword, email, userID) => {
   };
 }
 
+export const updateImage = (imageID) => {
+  return (dispatch) => {
+    dispatch({
+      type: "UPDATE_IMAGE",
+      payload: imageID,
+    });
+  };
+};
+export const updateInfo = (userData) => {
+  return (dispatch) => {
+    axios
+      .post(`http://localhost:5000/client/updateinfo/${userData._id}`, userData)
+      .then(({ data }) => {
+        //console.log(data);
+        if (data.msg === "Updating Success") {
+          message.success({ content: data.msg, className: "message" });
+          dispatch({
+            type: "UPDATE_INFO",
+            payload: userData,
+          });
+        }
+
+      })
+  };
+};
 export const signOut = () => {
   return (dispatch) => {
     dispatch({
@@ -107,7 +132,7 @@ export const loadUser = (tok) => {
     if (token) {
       //console.log("user loading");
       axios
-        .get(`https://exporagenius.com:5000/client/login`,
+        .get(`http://localhost:5000/client/login`,
           {
             headers: {
               'Authorization': `Bearer ${token}`

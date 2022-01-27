@@ -161,7 +161,7 @@ class QuestionsForm extends Component {
         //console.log(this.state.answerwithid)
         const { examInfo, loadingData, loadingQuestions, currentQuestionNo } = this.state;
         const question = this.state.questions[this.state.currentQuestionNo - 1];
-        const questionSolved= this.state.answerwithid !== null || this.props.len.length> this.state.currentQuestionNo-1
+        const questionSolved= this.state.answerwithid !== null ||  (this.props.len?this.props.len.length> this.state.currentQuestionNo-1:false)
         //console.log(questionSolved)
         return (
             <MainContainer>

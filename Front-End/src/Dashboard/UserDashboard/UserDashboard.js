@@ -62,8 +62,8 @@ function UserDashboard(props) {
     }, [])
     useEffect(() => {
         console.log(cart);
-        if (purchasedPracticeTests) dispatch(fetchuserpracticetests(purchasedPracticeTests.map(x => x.product.key)))
-    }, [cart])
+        if (purchasedPracticeTests && auth.loggedIn) dispatch(fetchuserpracticetests(purchasedPracticeTests.map(x => x.product.key),auth.userData._id))
+    }, [cart,auth.loggedIn])
 
     const toggle = () => {
         setCollapsed(!collapsed)
