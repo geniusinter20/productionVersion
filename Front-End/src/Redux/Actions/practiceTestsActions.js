@@ -21,7 +21,7 @@ export const resetSelectedTest = () => {
 const fetchPracticeTests = () => {
 
     // return async(dispatch) => {
-    //     const response = await axios.get("https://exporagenius:5000/practicetests");
+    //     const response = await axios.get("https://exporagenius.com:5000/practicetests");
     //     dispatch
     return ({
         type: PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST,
@@ -33,7 +33,7 @@ export const fetchPracticeTestsSuccess = () => {
     return (dispatch) => {
         dispatch(fetchPracticeTests());
         axios
-            .get("https://exporagenius:5000/practicetests")
+            .get("https://exporagenius.com:5000/practicetests")
             .then(({ data }) => {
                 setTimeout(() => {
                     dispatch({
@@ -69,7 +69,7 @@ export const createPracticeTest = (test) => {
             dispatch({
                 type: PracticeTestActionTypes.CREATE_PRACTICETEST_START,
             })
-            axios.post("https://exporagenius:5000/practicetests/add"
+            axios.post("https://exporagenius.com:5000/practicetests/add"
                 , test)
                 .then(res => {
                     if (res.data.msg === "test created") {
@@ -102,7 +102,7 @@ export const selectedPracticeTest = (id) => {
     return (
         dispatch => {
             axios
-                .get(`https://exporagenius:5000/practicetests/${id}`)
+                .get(`https://exporagenius.com:5000/practicetests/${id}`)
                 .then(({ data }) => {
                     //console.log(data);
                     setTimeout(() => {
@@ -126,7 +126,7 @@ export const editSelectedPracticeTest = (test) => {
                 type: "SELECTED_PRACTICETEST_UPDATE_START",
             })
             console.log(test);
-            axios.post(`https://exporagenius:5000/practicetests/update/${test.key}`, test)
+            axios.post(`https://exporagenius.com:5000/practicetests/update/${test.key}`, test)
                 .then(res => {
                     if (res.data.msg === "test updated") {
                         message.success({ content: "Test Updated", className: "message" });

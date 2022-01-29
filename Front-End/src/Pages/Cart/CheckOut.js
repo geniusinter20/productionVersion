@@ -225,7 +225,7 @@ export default function CheckOut() {
                                     }}
                                 >
                                     <Image fallback={noImage} width={39} height={24}
-                                        src={`https://exporagenius:5000/image/${getImageID(p.product)}`}></Image>
+                                        src={`https://exporagenius.com:5000/image/${getImageID(p.product)}`}></Image>
                                     <ListItemText sx={{
                                         '& .MuiListItemText-primary': {
                                             fontSize: 17,

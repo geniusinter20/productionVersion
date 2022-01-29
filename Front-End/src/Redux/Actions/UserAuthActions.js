@@ -8,7 +8,7 @@ export const signUp = (user) => {
       type: "SIGN_UP",
     });
     axios
-      .post(`https://exporagenius:5000/client/register`, user)
+      .post(`https://exporagenius.com:5000/client/register`, user)
       .then((token) => {
         if (token.data.msg) {
           dispatch({
@@ -42,7 +42,7 @@ export const signIn = (email, password, remembered) => {
     dispatch({
       type: "SIGN_IN",
     });
-    axios.post(`https://exporagenius:5000/client/login`, { email, password })
+    axios.post(`https://exporagenius.com:5000/client/login`, { email, password })
       .then(({ data }) => {
         //console.log(data);
         if (data.msg) {
@@ -70,7 +70,7 @@ export const signIn = (email, password, remembered) => {
 export const changePassword = (currentPassword, newPassword, email, userID) => {
   localStorage.removeItem("userToken")
   return (dispatch) => {
-    let promiseA = axios.post(`https://exporagenius:5000/changepassword/${userID}`, { currentPassword, newPassword })
+    let promiseA = axios.post(`https://exporagenius.com:5000/changepassword/${userID}`, { currentPassword, newPassword })
     let promiseB = promiseA.then(({ data }) => {
       //console.log("firstResponse:",data)
       console.log(data);
@@ -80,7 +80,7 @@ export const changePassword = (currentPassword, newPassword, email, userID) => {
       }
       message.success({ content: "Password Changed", className: "message" });
       axios
-        .post(`https://exporagenius:5000/client/login`, { email: email, password: newPassword })
+        .post(`https://exporagenius.com:5000/client/login`, { email: email, password: newPassword })
         .then(({ data }) => {
           localStorage.setItem("userToken", data);
 
@@ -101,7 +101,7 @@ export const updateImage = (imageID) => {
 export const updateInfo = (userData) => {
   return (dispatch) => {
     axios
-      .post(`https://exporagenius:5000/client/updateinfo/${userData._id}`, userData)
+      .post(`https://exporagenius.com:5000/client/updateinfo/${userData._id}`, userData)
       .then(({ data }) => {
         //console.log(data);
         if (data.msg === "Updating Success") {
@@ -132,7 +132,7 @@ export const loadUser = (tok) => {
     if (token) {
       //console.log("user loading");
       axios
-        .get(`https://exporagenius:5000/client/login`,
+        .get(`https://exporagenius.com:5000/client/login`,
           {
             headers: {
               'Authorization': `Bearer ${token}`

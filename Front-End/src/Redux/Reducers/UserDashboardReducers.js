@@ -117,7 +117,7 @@ export const examActivityReducer = (state = examActivityInitialState, { type, pa
             tempStateQ.splice(ind, 1, payload.answithid)
         }
         //console.log(state);
-            axios.post(`https://exporagenius:5000/activityexamstate/update/${state.examID}/${state.testID}/${state.clientID}`, 
+            axios.post(`https://exporagenius.com:5000/activityexamstate/update/${state.examID}/${state.testID}/${state.clientID}`, 
             {
                 ...state,
                 finished: payload.finished,
