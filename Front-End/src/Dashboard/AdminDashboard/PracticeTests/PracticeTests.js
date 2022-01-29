@@ -57,7 +57,7 @@ class PracticeTests extends Component {
         dataIndex: 'testImageID',
         render: id=>{
           //console.log(`imageID=${id}`)
-          return(<Image fallback={noImage} width={80} height={45} src={id?`https://exporagenius.com:5000/image/${id}`:noImage}></Image>)}
+          return(<Image fallback={noImage} width={80} height={45} src={id?`https://exporagenius:5000/image/${id}`:noImage}></Image>)}
       },
       {
         title: 'PracticeTest',

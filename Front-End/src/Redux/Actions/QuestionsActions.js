@@ -6,7 +6,7 @@ export const fetchQuestions = () => {
     return (dispatch) => {
         
         axios
-            .get("https://exporagenius.com:5000/questions")
+            .get("https://exporagenius:5000/questions")
             .then(({ data }) => {
                 setTimeout(() => {
                     dispatch({

@@ -129,7 +129,7 @@ export default function AddPracticeTests(props) {
                     uid: '-1',
                     name: 'image.png',
                     status: 'done',
-                    url: `https://exporagenius.com:5000/image/${data.testImageID}`,
+                    url: `https://exporagenius:5000/image/${data.testImageID}`,
                 },
             ])
         }
@@ -220,12 +220,12 @@ export default function AddPracticeTests(props) {
     }
     const handleRemove = (imageID) => {
         console.log(imageID)
-        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        axios.post(`https://exporagenius:5000/image/delete/${imageID}`)
         setFileList([])
         setImageID("no image")
     }
     const beforeUpload = () => {
-        if (imageID !== "no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        if (imageID !== "no image") axios.post(`https://exporagenius:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -358,7 +358,7 @@ export default function AddPracticeTests(props) {
                             <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                                     <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                        name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png"
+                                        name="file" onPreview={onPreview} action='https://exporagenius:5000/image/upload' accept=".jpg, .jpeg, .png"
                                         fileList={fileList} beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />

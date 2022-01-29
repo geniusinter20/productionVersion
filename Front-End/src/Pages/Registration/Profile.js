@@ -6,15 +6,19 @@ import profilePic from "../../Images/profilePic.png"
 import { Descriptions, Button, Typography, Form, Input, Tag, Image, Upload } from 'antd'
 import { useSelector } from "react-redux"
 import Collapse from '@mui/material/Collapse';
-import emailjs from '@emailjs/browser';
 import { useDispatch } from "react-redux"
 import { changePassword, updateImage, updateInfo } from "../../Redux/Actions/UserAuthActions"
 import axios from 'axios'
 import ImgCrop from 'antd-img-crop';
 import { BsFillCameraFill } from "react-icons/bs"
 import NavBar from '../../Components/AppNavbar/Navbar'
+import { Countries } from './Countries'
+import * as flags from 'react-flags-select';
+import TextField from '@mui/material/TextField';
+import PhoneInput from 'react-phone-input-2'
+import ReactFlagsSelect from 'react-flags-select';
 
-const { Paragraph } = Typography;
+const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 const formItemLayout = {
     labelCol: {
         lg: { span: 5 },
@@ -29,12 +33,6 @@ const formItemLayout = {
         xm: { span: 18 },
     },
 };
-var templateParams = {
-    from_name: 'yazn',
-    to_name: 'yazn1',
-    message: 'Check this out!'
-};
-
 export default function Profile() {
     //send emails
     //     useEffect(() => {
@@ -45,15 +43,19 @@ export default function Profile() {
     //        console.log('FAILED...', error);
     //     });
     // }, [])
-    const [form] = Form.useForm();
-    const navigate = useNavigate()
     const auth = useSelector(state => state.auth)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!auth.loggedIn) navigate("/login")
+    }, [auth.loggedIn])
+
+    const [form] = Form.useForm();
     const [userInfo, setUserInfo] = useState(auth.userData)
     const [editing, setEditing] = useState(false)
     const [editingPassword, setEditingPassword] = useState(false)
     const dispatch = useDispatch()
     const [imageID, setImageID] = useState("no image");
-    const [imageUrl, setImageUrl]= useState(auth.userData.imageID?`https://exporagenius.com:5000/image/${auth.userData.imageID}`:profilePic)
+    const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID ? `https://exporagenius:5000/image/${userInfo.imageID}` : profilePic)
     //console.log(userInfo);
     const onFinish = () => {
         form.validateFields()
@@ -68,9 +70,7 @@ export default function Profile() {
             })
     };
 
-    useEffect(() => {
-        if (!auth.loggedIn) navigate("/login")
-    }, [auth.loggedIn])
+
 
     const saveChanges = (userInfo) => {
         setEditing(false)
@@ -80,17 +80,17 @@ export default function Profile() {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`https://exporagenius.com:5000/image/${event.file.response.id}`)
+            setImageUrl(`https://exporagenius:5000/image/${event.file.response.id}`)
             dispatch(updateImage(event.file.response.id))
-            axios.post(`https://exporagenius.com:5000/client/updateimage/${auth.userData._id}`,{imageID:event.file.response.id})
+            axios.post(`https://exporagenius:5000/client/updateimage/${auth.userData._id}`, { imageID: event.file.response.id })
         }
     }
     const handleRemove = (imageID) => {
         //console.log(imageID)
-        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        axios.post(`https://exporagenius:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID!=="no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        if (imageID !== "no image") axios.post(`https://exporagenius:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -118,10 +118,10 @@ export default function Profile() {
                 <Col xs={{ span: 24, offset: 0 }} lg={{ span: 4, offset: 0 }} style={{ position: "relative" }}>
                     <Pic><Image src={imageUrl}></Image>
                     </Pic>
-                    <ImgCrop aspect={1 / 1} minZoom={0.1} quality={1} grid>
+                    <ImgCrop aspect={1 / 1} minZoom={0.1} quality={0.8} grid>
                         <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
-                                <BsFillCameraFill style={{ width: "35px", height: "35px", color:"white",  }}></BsFillCameraFill>
+                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius:5000/image/upload' accept=".jpg, .jpeg, .png">
+                            <BsFillCameraFill style={{ width: "35px", height: "35px", color: "white", }}></BsFillCameraFill>
                         </CusUpload>
                     </ImgCrop>
 
@@ -131,8 +131,11 @@ export default function Profile() {
                         <div style={{ fontSize: "30px", fontWeight: "600", lineHeight: "50px", color: "#444444" }}>{auth.userData.fullName}</div>
                         {auth.userData.accountType ? <CustomTag color="processing">{auth.userData.accountType}</CustomTag> : null}
                     </div>
-                    <div style={{ fontSize: "20px", fontWeight: "400", color: "#6c6c6c", maxWidth: "600px" }}>
+                    <div style={{ fontSize: "20px", fontWeight: "400", color: "#6c6c6c", maxWidth: "600px", marginBottom:"5px" }}>
                         {auth.userData.email}
+                    </div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6c6c6c", maxWidth: "600px" }}>
+                        Joined in: {new Date(userInfo.joinDate).toLocaleDateString("en-US", options)}
                     </div>
                     {
                         !editingPassword && <Button1 onClick={() => setEditingPassword(true)} style={{ borderStyle: "none", fontSize: "14px", width: "160px", marginTop: "15px" }} >Change Password</Button1>
@@ -140,8 +143,7 @@ export default function Profile() {
 
                 </Col>
             </Segment1>
-            <Collapse style={{ padding: "4vh 4vw 4vh 4vw" }} in={editingPassword}>
-
+            <Collapse style={{ padding: "8vh 4vw 4vh 4vw" }} in={editingPassword}>
                 <Form
                     {...formItemLayout}
                     form={form}
@@ -216,54 +218,116 @@ export default function Profile() {
                 </Form>
             </Collapse>
             <Segment2>
-                <Descriptions column={2} title="Basic Info"
+                <Descriptions1 column={2}title="Basic Info"
                     extra={
-                        editing ? <Button type="primary" onClick={() => saveChanges(userInfo)} style={{ fontSize: "16px" }} >Save Changes</Button>
-                            : <Button type="text" onClick={() => setEditing(true)} style={{ borderStyle: "none", fontSize: "16px" }} >Edit</Button>
+                        editing ?
+                            <div style={{ display: "flex", gap: "16px" }}>
+                                <Button onClick={() => setEditing(false)} style={{ fontSize: "16px", height: 37 }} >Cancel</Button>
+                                <Button type="primary" onClick={() => saveChanges(userInfo)} style={{ fontSize: "16px", height: 37 }} >Save</Button>
+                            </div> :
+                            <Button onClick={() => setEditing(true)} style={{ fontSize: "16px", height: 37 }} >Edit</Button>
                     }>
-                    <Descriptions.Item style={{ padding: "5px 0 0 0" }} label="FullName"><Paragraph editable={{
-                        editing: editing,
-                        triggerType: ['text'],
-                        icon: <div />,
-                        enterIcon: null,
-                        onChange: (fullName) => setUserInfo({ ...userInfo, fullName }),
-                    }}
-                    >{userInfo.fullName}
-                    </Paragraph>
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ padding: "5px 0 0 0" }} label="Email"><Paragraph editable={{
-                        editing: false,
-                        triggerType: ['text'],
-                        icon: <div />,
-                        enterIcon: null,
-                        onChange: (email) => setUserInfo({ ...userInfo, email }),
-                    }}
-                    >{userInfo.email}
-                    </Paragraph>
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ padding: "5px 0 0 0" }} label="PhoneNumber"><Paragraph editable={{
-                        editing: editing,
-                        triggerType: ['text'],
-                        icon: <div />,
-                        enterIcon: null,
-                        onChange: (phoneNumber) => setUserInfo({ ...userInfo, phoneNumber }),
-                    }}>{userInfo.phoneNumber}</Paragraph>
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ padding: "5px 0 0 0" }} label="Address"><Paragraph editable={{
-                        editing: editing,
-                        triggerType: ['text'],
-                        icon: <div />,
-                        enterIcon: null,
-                        onChange: (address) => setUserInfo({ ...userInfo, address }),
-                    }}
-                    >{userInfo.address}
-                    </Paragraph>
-                    </Descriptions.Item>
-                </Descriptions>
+                    <DescriptionsItem label="FullName">
+                        {
+                            editing ?
+                                <TextField
+                                    fullWidth
+                                    id="standard-basic"
+                                    defaultValue={userInfo.fullName}
+                                    variant="standard"
+                                    onChange={event => setUserInfo({ ...userInfo, fullName: event.target.value })}
+                                /> : userInfo.fullName
+                        }
+                    </DescriptionsItem>
+                    <DescriptionsItem label="Email">
+                        {
+                            editing ? <TextField
+                                xs={{ padding: "0 30px 0 0" }}
+                                fullWidth
+                                disabled
+                                id="standard-basic"
+                                defaultValue={userInfo.email}
+                                variant="standard"
+                                onChange={event => setUserInfo({ ...userInfo, email: event.target.value })}
+                            /> : userInfo.email
+                        }
+                    </DescriptionsItem>
+                    <DescriptionsItem label="PhoneNumber">{
+                        editing ? <PhoneInput
+                            containerClass="cusCont"
+                            inputClass="cusInput1"
+                            dropdownClass="cusDrop"
+                            disableDropdown
+                            // containerStyle={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }}
+                            country={`+${userInfo.phoneNumber.slice(3)}`}
+                            value={userInfo.phoneNumber}
+                            onChange={phone => setUserInfo({ ...userInfo, phoneNumber: phone })}
+                        /> : `00${userInfo.phoneNumber}`
+                    }
+                    </DescriptionsItem>
+                    <DescriptionsItem label="Country">
+                         <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            {React.createElement(flags[userInfo.countryCode.charAt(0) + userInfo.countryCode.charAt(1).toLowerCase()], {})}
+                            {Countries[userInfo.countryCode]}
+                        </span>
+                    </DescriptionsItem>
+                    <DescriptionsItem label="Address">
+                        {
+                            editing ? <TextField
+                                fullWidth
+                                id="standard-basic"
+                                defaultValue={userInfo.address}
+                                variant="standard"
+                                onChange={event => setUserInfo({ ...userInfo, address: event.target.value })}
+                            /> : userInfo.address
+                        }
+                    </DescriptionsItem>
+                </Descriptions1>
             </Segment2>
         </div>
     )
 }
+const ReactFlagsSelect1 = styled(ReactFlagsSelect)`
+height: 35px;
+width: 350px;
+&>*:nth-child(1){
+    padding: 5px 10px 5px 0px;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
+    min-height: 35px;
+}   
+&>*:nth-child(2)>*{
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}   
+&>*:nth-child(2)>*:nth-child(1){
+    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 0px;
+}   
+&>*:nth-child(2)>*:nth-child(1)>*{
+    border: none;
+}   
+`
+const Descriptions1 = styled(Descriptions)`
+position: relative;
+&>*{
+    overflow-y: visible;
+    height: auto;
+}
+&>*>*>*>*>*>*{
+    padding: 0 3vw 0 0;
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+}
+`
+const DescriptionsItem = styled(Descriptions1.Item)`
+`
 const Button1 = styled(Button)`
 background-color: #444444;
 color: white;

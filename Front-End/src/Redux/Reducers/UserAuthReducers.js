@@ -2,7 +2,7 @@
 import jwtDecode from "jwt-decode";
 
 const initialState = {
-  token: localStorage.getItem("userToken"),
+  token: localStorage.getItem("remembered")?localStorage.getItem("userToken"):null,
   userData: null,
   loggedIn: false,
   registering: false,
@@ -67,6 +67,7 @@ const authReducer = (state = initialState, { type, payload }) => {
       };
     case "SIGN_OUT":
       localStorage.removeItem("userToken");
+      localStorage.removeItem("remembered");
       return {
         token: null,
         loggedIn: false,

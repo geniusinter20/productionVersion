@@ -154,7 +154,7 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`}  size={35}
+          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius:5000/image/${auth.userData.imageID}`}  size={35}
           >
 
           </Avatar>
@@ -198,7 +198,7 @@ function NavBar() {
                   onMouseLeave={() => setDropdown(false)}
                 >
                   <Dropdown overlay={menu} placement="bottomCenter">
-                    <div ><MyLink to={item.path}>{item.title}</MyLink></div>
+                    <div>{item.title}</div>
                   </Dropdown>
                 </li>
 
@@ -260,7 +260,7 @@ function NavBar() {
               </li>
               <li key="2" >
                 <Dropdown overlay={userMenu} placement="bottomRight">
-                  {auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={45}
+                  {auth.userData.imageID ? <Avatar src={`https://exporagenius:5000/image/${auth.userData.imageID}`} size={45}
                   >
 
                   </Avatar>

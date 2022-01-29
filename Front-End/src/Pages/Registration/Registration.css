@@ -65,3 +65,35 @@ z-index:-1;
     background-color: #3c3c3c ;
     border-color:#3c3c3c;
 }
+.cusInput{
+    border-radius: 1px !important;
+    border-width: 0.4px !important;
+    height: 35px !important;
+    width: 100% !important;
+    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12)
+}
+.cusInput:focus {
+    border: solid 0.3px rgb(37, 166, 252) !important;
+      box-shadow: 0 0 0 0.4px rgb(37, 166, 252);
+  }
+.cusInput:open{
+    border: solid 0.3px rgb(37, 166, 252) !important;
+      box-shadow: 0 0 0 0.4px rgb(37, 166, 252);
+  }
+.cusInput1{
+    border-radius: 1px !important;
+    border-width: 0.4px !important;
+    height: 35px !important;
+    width: 100% !important;
+}
+.cusInput1:focus {
+    border: solid 0.3px rgb(37, 166, 252) !important;
+      box-shadow: 0 0 0 0.4px rgb(37, 166, 252);
+  }
+.cusInput1:open{
+    border: solid 0.3px rgb(37, 166, 252) !important;
+      box-shadow: 0 0 0 0.4px rgb(37, 166, 252);
+  }
+.cusDrop{
+height: 160px;
+}

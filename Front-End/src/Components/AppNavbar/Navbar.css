@@ -84,7 +84,7 @@
     
   }
   
-  .nav-item a {
+  .nav-item>* {
     text-decoration: none;
     fill:#6C6C6C;
     color:#6C6C6C;
@@ -93,14 +93,8 @@
     border-radius: 5px;
 
   }
-  .nav-item div {
-    text-decoration: none;
-    color: #303030;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+
+ 
   .nav-item a:hover {
     color: rgb(0, 212, 212);
   }

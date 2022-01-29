@@ -12,6 +12,7 @@ const ClientSchema = new Schema({
   imageID: str,
   accountType:str,
   phoneNumber: str,
+  countryCode: str,
 });
 
 const Client = mongoose.model('Client', ClientSchema);

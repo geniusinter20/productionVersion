@@ -29,7 +29,6 @@ router.route('/updateinfo/:id').post(timeout('12s', { respond: false }), bodyPar
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     mongoose.connect(url);
-
     // Finde By ID and Update it
     User.update(
       { _id: req.params.id },
@@ -38,7 +37,8 @@ router.route('/updateinfo/:id').post(timeout('12s', { respond: false }), bodyPar
           fullName: req.body.fullName,
           address: req.body.address,
           email: req.body.email,
-          phoneNumber: req.body.phoneNumber
+          phoneNumber: req.body.phoneNumber,
+          countryCode: req.body.countryCode,
         }
       },
       { upsert: true },
@@ -114,7 +114,7 @@ router.post('/register', timeout('12s', { respond: false }), bodyParser.json(), 
       res.json({ "msg": 408 })
       process.exit(0);
     }
-    const { fullName, email, password, address, accountType } = req.body;
+    const { fullName, email, password, address, accountType,phoneNumber,countryCode, joinDate } = req.body;
     //let errors = [];
     User.findOne({ email: email }).then(user => {
       if (user) {
@@ -135,6 +135,8 @@ router.post('/register', timeout('12s', { respond: false }), bodyParser.json(), 
           address,
           accountType,
           phoneNumber,
+          countryCode,
+          joinDate,
         });
 
         bcryptjs.genSalt(10, (err, salt) => {

@@ -76,7 +76,7 @@ function AdminDashboard(props) {
                 >
                     <Affix offsetTop={30}>
                         <div className="siderHeader">
-                            <div style={{ fontWeight: "400", display: "flex", gap: "4px" }}>Hi,<div style={{ fontWeight: "700" }}>yazn</div></div>
+                        <div style={{ fontWeight: "400", display: "flex", gap: "4px", flexWrap: "wrap" }}>Hi,<div style={{ fontWeight: "700" }}>{userInfo.fullName.match("^[a-zA-Z-]*")}</div></div>
                             {!collapsed && <Logo><object data={Logo_H_B} type="image/svg+xml"></object></Logo>}
                         </div>
                         <Menu defaultSelectedKeys={[params.page]} style={{ marginTop: "15vh" }}>
@@ -90,7 +90,7 @@ function AdminDashboard(props) {
                         </Menu>
                     </Affix>
                 </Sider>
-                <Layout style={{minHeight:"100vh"}} >
+                <Layout style={{ minHeight: "100vh" }} >
                     <Header className="header">
                         <div style={{
                             display: "flex",
@@ -105,19 +105,24 @@ function AdminDashboard(props) {
                             <Breadcrumb>{breadcrumbItems}</Breadcrumb>
                         </div>
                         <div className="iconContainer">
-                            <ARiSettings3Fill onClick={()=>navigate("/profile")} color="#6C6C6C" style={{ height: "30px", width: "30px", }} />
+                            <ARiSettings3Fill onClick={() => navigate("/profile")} color="#6C6C6C" style={{ height: "30px", width: "30px", }} />
                             <Badge count={0} style={{ backgroundColor: "#5BCAD6" }}>
                                 <IHiBell color="#6C6C6C" />
                             </Badge>
                             <div className="vl"></div>
                             <div> {userInfo.fullName.toUpperCase()}</div>
-                            <MyAvatar style={{ borderStyle: "solid" }} size={50}
-                            >
-                                {userInfo.fullName.charAt(0).toUpperCase()}
-                            </MyAvatar>
+                            {
+                                userInfo.imageID ? <Avatar src={`https://exporagenius:5000/image/${userInfo.imageID}`} size={50}
+                                >
+                                </Avatar>
+                                    : <MyAvatar style={{  border: "solid #F8F8F8" }} size={50}
+                                    >
+                                        {userInfo.fullName.charAt(0).toUpperCase()}
+                                    </MyAvatar>
+                            }
                         </div>
                     </Header>
-                    <Content className="content" style={{height:"100%"}}>
+                    <Content className="content" style={{ height: "100%" }}>
                         {/* {
                             params.page === "salesoverview" && <SalesOverview />
                         }
@@ -161,7 +166,7 @@ height: 100%;
     height: 75%;
 }
 `
-const ARiSettings3Fill=styled(RiSettings3Fill)`
+const ARiSettings3Fill = styled(RiSettings3Fill)`
 height: 30px;
 width: 30px;
 cursor: pointer;
@@ -180,7 +185,7 @@ cursor: pointer;
     }
 }
 `
-const IHiBell=styled(HiBell)`
+const IHiBell = styled(HiBell)`
 height: 30px;
 width: 30px;
 cursor: pointer;

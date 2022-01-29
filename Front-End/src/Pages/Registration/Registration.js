@@ -7,7 +7,11 @@ import "./Registration.css"
 import { signUp } from '../../Redux/Actions/UserAuthActions';
 import { useDispatch, useSelector } from "react-redux"
 import { Form, Input, Select, Row, Col, Checkbox, Button, } from 'antd';
-const { Option } = Select;
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/high-res.css'
+import ReactFlagsSelect from 'react-flags-select';
+import { Countries } from './Countries';
+
 const tailFormItemLayout = {
     wrapperCol: {
         xs: {
@@ -43,26 +47,32 @@ export default function Registreation() {
     const dispatch = useDispatch()
     const [loggingIn, setLoggingIn] = useState(false);
     const [registering, setRegistering] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState(null);
+    const [countryCode, setCountryCode] = useState(null);
+    const [country, setCountry] = useState("United States");
     const auth = useSelector(state => state.auth)
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
         setLoggingIn(auth.loggingIn);
         setRegistering(auth.registering);
     }, [auth]);
     useEffect(() => {
         //console.log(auth.loggedIn);
-        if(auth.loggedIn) navigate("/")
+        if (auth.loggedIn) navigate("/")
     }, [auth]);
     const onFinish = () => {
         form.validateFields()
             .then(
-                ({ fullName, email, password, address }) => {
+                ({ fullName, email, password }) => {
                     //console.log("fullname:", fullName)
                     dispatch(signUp({
                         fullName: fullName,
                         email: email,
                         password: password,
-                        address: address,
+                        address: "",
+                        phoneNumber: phoneNumber,
+                        countryCode: countryCode,
+                        joinDate: new Date(),
                     }))
                 })
             .catch((errorInfo) => { });
@@ -95,7 +105,7 @@ export default function Registreation() {
                 <Side1><div className='background' /></Side1>
 
                 <Side2>
-                    <div style={{ fontSize: "23px", fontWeight: "700", color: "#6C6C6C", marginBottom: "4vh", marginTop: "2vh" }}>Register Individual Account!</div>
+                    <div style={{ fontSize: "23px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "1vh" }}>Register Individual Account!</div>
                     <div style={{ width: "100%" }}>
                         <Form
                             layout="vertical"
@@ -175,8 +185,7 @@ export default function Registreation() {
                             >
                                 <Input.Password placeholder="Re enter your fullname" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
                             </Form.Item>
-
-                            <Form.Item
+                            {/* <Form.Item
                                 style={{ marginBottom: 12 }}
                                 name="address"
                                 label="Your Address"
@@ -188,10 +197,33 @@ export default function Registreation() {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Enter your Address" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
+                                 <Input placeholder="Enter your Address" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} /> 
+                            </Form.Item> */}
+                            <Form.Item label="Country" style={{ marginBottom: 15 }}>
+                                <ReactFlagsSelect1
+                                    searchable
+                                    selected={countryCode}
+                                    onSelect={code => {
+                                        setCountryCode(code)
+                                        setCountry(Countries[code])
+                                    }}
+                                    selectedSize={14}
+                                />
                             </Form.Item>
+                            <Form.Item label="Phone Number" style={{ marginBottom: 13 }}>
+                                <PhoneInput
+                                    containerClass="cusCont"
+                                    inputClass="cusInput"
+                                    dropdownClass="cusDrop"
+                                    // containerStyle={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }}
+                                    country={countryCode?countryCode.toLowerCase():"us"}
+                                    value={phoneNumber}
+                                    onChange={phone => setPhoneNumber(phone)}
+                                />
+                            </Form.Item>
+
                             <Form.Item
-                                style={{ marginBottom: 14 }}
+                                style={{ marginBottom: 15 }}
                                 name="agreement"
                                 valuePropName="checked"
                                 rules={[
@@ -210,13 +242,39 @@ export default function Registreation() {
                             </Form.Item>
                         </Form>
                     </div>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C" }}>Already have an Account? <StyledLink to="" >Sign in</StyledLink></div>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", justifySelf: "flex-end" }}>©2021 Genius Digital All Right Reserved</div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C", marginTop:"10px" }}>Already have an Account? <StyledLink to="" >Sign in</StyledLink></div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", justifySelf: "flex-end",marginTop:"5px" }}>©2021 Genius Digital All Right Reserved</div>
                 </Side2>
             </div>
         </MainContainer>
     );
 }
+const ReactFlagsSelect1 = styled(ReactFlagsSelect)`
+height: 35px;
+&>*:nth-child(1){
+    padding: 5px 10px 5px 0px;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
+    height: 35px;
+}   
+&>*:nth-child(2)>*{
+    
+    height: 40px;
+    display: flex;
+    align-items: center;
+}   
+&>*:nth-child(2)>*:nth-child(1){
+    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 0px;
+}   
+&>*:nth-child(2)>*:nth-child(1)>*{
+    border: none;
+}   
+`
 const MainContainer = styled.div`
 display: flex;
 position: relative;
@@ -225,7 +283,7 @@ justify-content: center;
 min-height: 100vh;
 overflow: hidden;
 align-content: stretch;
-padding:5vh 0vw 5vh 0vw;
+padding:2vh 0vw 2vh 0vw;
 `
 const Side2 = styled.div`
 display: flex;
@@ -235,9 +293,9 @@ justify-content:space-between;
 align-self: stretch;
 background: rgb(241, 241, 241, 0.90);
 width: 40vw;
-padding-top: 3vh;
-padding-left: 7vw;
-padding-right: 7vw;
+padding-top: 2vh;
+padding-left: 6vw;
+padding-right: 6vw;
 padding-bottom: 1vh;
 `
 const Side1 = styled.div`
