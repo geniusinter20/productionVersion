@@ -87,7 +87,8 @@ activityExamRouter.route('/add').post(timeout('12s', { respond: false }), bodyPa
             finished: req.body.finished,
             started: req.body.started,
             finishedQuestionsIDsWithAnswers: req.body.finishedQuestionsIDsWithAnswers,
-            timeSpent: req.body.timeSpent
+            timeSpent: req.body.timeSpent,
+            startDate: req.body.startDate,
         });
         //let ID = activityExamState._id;
         // save model to database

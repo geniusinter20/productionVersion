@@ -5,6 +5,7 @@ import { Divider, Tag, Progress, Table } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 export default function ScoreBoard(props) {
     const userData = useSelector(state => state.auth.userData)
     const examActivity = useSelector(state => state.examActivity)
@@ -28,6 +29,8 @@ export default function ScoreBoard(props) {
 
         <MainContainer>
             <div style={{ display: "flex", alignItems: 'center', gap: "3px", color: "#969696" }}>
+                {new Date(examActivity.startDate).toLocaleDateString("en-US", options)}
+                <Divider type="vertical" style={{ borderWidth: "2px", height: "20px", backgroundColor: "#969696" }} />
                 {userData.fullName.toUpperCase()}
                 <Divider type="vertical" style={{ borderWidth: "2px", height: "20px", backgroundColor: "#969696" }} />
                 {props.examInfo.examName}
@@ -123,10 +126,10 @@ export default function ScoreBoard(props) {
                     What Can You Do Next?
                 </div>
                 <ul style={{ fontWeight: "400", fontSize: "14px", color: "#6c6c6c", marginTop: "5px" }}>
-                <li>Check your email. Look for more information on when your certificate will be delivered.</li>
-                <li>Start thinking about your future professional development. Learning more about your exam performance is
-                     a great way to start. See our web page for more details on how you performed in each area of
-                    the exam and to get more ideas on what to do next.</li>
+                    <li>Check your email. Look for more information on when your certificate will be delivered.</li>
+                    <li>Start thinking about your future professional development. Learning more about your exam performance is
+                        a great way to start. See our web page for more details on how you performed in each area of
+                        the exam and to get more ideas on what to do next.</li>
 
                 </ul>
             </div>

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const  {str, clientID, examID, activityID, questionID, bool, num} = require('./datatypes');
+const  {str, date, examID, activityID, questionID, bool, num} = require('./datatypes');
 
 
 const ActivityExamStateSchema = new mongoose.Schema({
@@ -10,7 +10,8 @@ const ActivityExamStateSchema = new mongoose.Schema({
     started: bool,
     finishedQuestionsIDsWithAnswers: [{}],
     timeSpent: num,
-    testID: str
+    testID: str,
+    startDate: date,
 });
 
 const ActivityExamState = mongoose.model('ActivityExamState', ActivityExamStateSchema);

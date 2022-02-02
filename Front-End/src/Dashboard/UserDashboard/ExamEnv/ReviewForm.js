@@ -326,7 +326,7 @@ width: 100%;
 `
 const ProgressBar = styled.div`
 display: grid;
-grid-template-columns: 85% 13%;
+grid-template-columns: 82% 15%;
 grid-column-gap: 2%;
 width: 100%;
 &> .label{

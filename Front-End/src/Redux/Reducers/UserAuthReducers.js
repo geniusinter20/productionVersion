@@ -2,7 +2,7 @@
 import jwtDecode from "jwt-decode";
 
 const initialState = {
-  token: localStorage.getItem("remembered")?localStorage.getItem("userToken"):null,
+  token: localStorage.getItem("userToken")?localStorage.getItem("userToken"):null,
   userData: null,
   loggedIn: false,
   registering: false,

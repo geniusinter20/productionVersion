@@ -12,11 +12,11 @@ import {useNavigate, useLocation} from "react-router-dom"
 import {
     Form,
     Input,
-    Checkbox,
+    Row,
+    Col,
     Button,
 } from 'antd';
 export default function Registreation() {
-    const [remembered, setRemembered] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [form] = Form.useForm();
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function Registreation() {
             .then(
                 ({ email, password }) => {
                     //console.log("fullname:", fullName)
-                    dispatch(signIn(email, password, remembered))
+                    dispatch(signIn(email, password))
 
                 })
             .catch((errorInfo) => { });
@@ -54,10 +54,11 @@ export default function Registreation() {
                 <div className='gradient'></div>
                 <img src={examEnvBackground} />
             </div>
-            <div style={{ display: "flex", minHeight: "90vh", position: "relative" }}>
-                <Side1><div className='background' /></Side1>
-
-                <Side2>
+            <Row style={{ minHeight: "90vh", position: "relative", width:"100%", alignItems:"center", justifyContent:"center" }}>
+                <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }} >
+                    <div className='background' />
+                    </Side1>
+                <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 9, offset: 0 }}>
                     <div style={{ position: "relative", height: "90px", width: "250px" }}>
                         <div style={{
                             fontSize: "20px",
@@ -81,7 +82,7 @@ export default function Registreation() {
                     </div>
 
                     <SubContainer >
-                        <div style={{ fontSize: "23px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "2vh", justifySelf: "center" }}>LOG IN TO YOUR ACCOUNT!</div>
+                        <div style={{ fontSize: "22px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "2vh", justifySelf: "center", textAlign:"center" }}>LOG IN TO YOUR ACCOUNT!</div>
                         <div style={{ width: "100%" }}>
                             <Form
                                 requiredMark={'optional'}
@@ -110,7 +111,7 @@ export default function Registreation() {
                                 </Form.Item>
 
                                 <Form.Item
-                                    style={{ marginBottom: 12 }}
+                                    style={{ marginBottom: 32 }}
                                     name="password"
                                     label="Password"
                                     rules={[
@@ -122,17 +123,6 @@ export default function Registreation() {
                                 >
                                     <Input.Password placeholder="Enter your Password" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
                                 </Form.Item>
-
-                                <Form.Item
-                                    style={{ marginBottom: 10 }}
-                                    name="rememberme"
-                                    valuePropName="checked"
-                                >
-                                    <Checkbox onChange={(e) => setRemembered(e.target.checked)}>
-                                        Remember me
-                                    </Checkbox>
-                                </Form.Item>
-
                                 <Form.Item style={{ marginBottom: 5 }} >{
                                     !loggingIn? <Button  style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
                                         Sign in
@@ -149,7 +139,7 @@ export default function Registreation() {
                     </SubContainer>
                     <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", width: "100%", textAlign: "center", position: "absolute", bottom: "5px" }}>©2021 Genius Digital All Right Reserved</div>
                 </Side2>
-            </div >
+            </Row >
         </MainContainer >
     );
 }
@@ -162,6 +152,9 @@ min-height: 100vh;
 overflow: hidden;
 align-content: stretch;
 padding:5vh 0vw 5vh 0vw;
+@media (max-width: 576px){
+    &{padding:0px;}
+} 
 `
 const SubContainer = styled.div`
 display: flex;
@@ -172,7 +165,7 @@ flex-direction: column;
 gap: 2vh;
 width: 100%;
 `
-const Side2 = styled.div`
+const Side2 = styled(Col)`
 display: flex;
 align-items: center;
 flex-direction: column;
@@ -180,15 +173,16 @@ justify-content:center;
 align-self: stretch;
 background: rgb(241, 241, 241, 0.90);
 gap:5vh;
-width: 40vw;
 padding-top: 0vh;
-padding-left: 7vw;
-padding-right: 7vw;
+padding-left: 5vw;
+padding-right: 5vw;
 padding-bottom: 5vh;
+ @media (max-width: 576px){
+    &{height:100vh;}
+} 
 `
-const Side1 = styled.div`
+const Side1 = styled(Col)`
 align-self: stretch;
-width:30vw;
 position: relative;
 `
 const StyledLink = styled(Link)`

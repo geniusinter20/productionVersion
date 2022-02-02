@@ -36,7 +36,7 @@ export const signUp = (user) => {
   };
 };
 
-export const signIn = (email, password, remembered) => {
+export const signIn = (email, password) => {
 
   return (dispatch) => {
     dispatch({
@@ -52,7 +52,6 @@ export const signIn = (email, password, remembered) => {
           });
         }
         else {
-          if (remembered) localStorage.setItem("remembered", 1);
           localStorage.setItem("userToken", data);
           dispatch({
             type: "SIGN_IN",

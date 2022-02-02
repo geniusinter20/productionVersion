@@ -101,10 +101,10 @@ export default function Registreation() {
                 <div className='gradient'></div>
                 <img src={examEnvBackground} />
             </div>
-            <div style={{ display: "flex", minHeight: "90vh", position: "relative" }}>
-                <Side1><div className='background' /></Side1>
+            <Row style={{ minHeight: "100vh", position: "relative", width:"100%", alignItems:"center", justifyContent:"center" }}>
+                <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }}><div className='background' /></Side1>
 
-                <Side2>
+                <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 10, offset: 0 }}>
                     <div style={{ fontSize: "23px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "1vh" }}>Register Individual Account!</div>
                     <div style={{ width: "100%" }}>
                         <Form
@@ -223,7 +223,7 @@ export default function Registreation() {
                             </Form.Item>
 
                             <Form.Item
-                                style={{ marginBottom: 15 }}
+                                style={{ marginBottom: 25 }}
                                 name="agreement"
                                 valuePropName="checked"
                                 rules={[
@@ -237,15 +237,15 @@ export default function Registreation() {
                                     I Agree To the Terms & Conditions
                                 </Checkbox>
                             </Form.Item>
-                            <Form.Item style={{ marginBottom: 5 }} >
+                            <Form.Item style={{ marginBottom: 0 }} >
                                 {renderButton()}
                             </Form.Item>
                         </Form>
                     </div>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C", marginTop:"10px" }}>Already have an Account? <StyledLink to="" >Sign in</StyledLink></div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C", marginTop:"10px" }}>Already have an Account? <StyledLink to="/login" >Sign in</StyledLink></div>
                     <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", justifySelf: "flex-end",marginTop:"5px" }}>©2021 Genius Digital All Right Reserved</div>
                 </Side2>
-            </div>
+            </Row>
         </MainContainer>
     );
 }
@@ -283,24 +283,26 @@ justify-content: center;
 min-height: 100vh;
 overflow: hidden;
 align-content: stretch;
-padding:2vh 0vw 2vh 0vw;
+padding:0;
+
 `
-const Side2 = styled.div`
+const Side2 = styled(Col)`
 display: flex;
 align-items: center;
 flex-direction: column;
 justify-content:space-between;
 align-self: stretch;
 background: rgb(241, 241, 241, 0.90);
-width: 40vw;
 padding-top: 2vh;
 padding-left: 6vw;
 padding-right: 6vw;
 padding-bottom: 1vh;
+@media (max-width: 576px){
+    &{height:100vh;}
+}
 `
-const Side1 = styled.div`
+const Side1 = styled(Col)`
 align-self: stretch;
-width:30vw;
 position: relative;
 `
 const StyledLink = styled(Link)`

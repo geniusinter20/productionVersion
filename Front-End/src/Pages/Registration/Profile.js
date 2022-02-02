@@ -33,6 +33,13 @@ const formItemLayout = {
         xm: { span: 18 },
     },
 };
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height
+    };
+}
 export default function Profile() {
     //send emails
     //     useEffect(() => {
@@ -53,8 +60,9 @@ export default function Profile() {
     const [userInfo, setUserInfo] = useState(auth.userData)
     const [editing, setEditing] = useState(false)
     const [editingPassword, setEditingPassword] = useState(false)
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const dispatch = useDispatch()
-    const [imageID, setImageID] = useState("no image");
+    const [imageID, setImageID] = useState(userInfo && userInfo.imageID ? userInfo.imageID : "no image");
     const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID ? `https://exporagenius.com:5000/image/${userInfo.imageID}` : profilePic)
     //console.log(userInfo);
     const onFinish = () => {
@@ -69,9 +77,14 @@ export default function Profile() {
                 })
             })
     };
-
-
-
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+        }
+        //console.log(windowDimensions)
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [windowDimensions]);
     const saveChanges = (userInfo) => {
         setEditing(false)
         dispatch(updateInfo(userInfo))
@@ -87,6 +100,7 @@ export default function Profile() {
     }
     const handleRemove = (imageID) => {
         //console.log(imageID)
+        setImageID("no image")
         axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
@@ -114,31 +128,33 @@ export default function Profile() {
     return (
         auth.loggedIn && <div style={{ dispaly: "flex", flexDirection: "column" }}>
             <NavBar />
-            <Segment1>
-                <Col xs={{ span: 24, offset: 0 }} lg={{ span: 4, offset: 0 }} style={{ position: "relative" }}>
-                    <Pic><Image src={imageUrl}></Image>
-                    </Pic>
-                    <ImgCrop aspect={1 / 1} minZoom={0.1} quality={0.8} grid>
-                        <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                            beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
-                            <BsFillCameraFill style={{ width: "35px", height: "35px", color: "white", }}></BsFillCameraFill>
-                        </CusUpload>
-                    </ImgCrop>
-
+            <Segment1 gutter={[0, 15]}>
+                <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 5, offset: 0 }}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ maxWidth: "300px", position: "relative" }}>
+                        <Pic><Image src={imageUrl}></Image>
+                        </Pic>
+                        <ImgCrop aspect={1 / 1} minZoom={0.1} quality={0.8} grid>
+                            <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
+                                beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
+                                <BsFillCameraFill style={{ width: "35px", height: "35px", color: "white", }}></BsFillCameraFill>
+                            </CusUpload>
+                        </ImgCrop>
+                    </div>
                 </Col>
-                <Col xs={{ span: 24, offset: 0 }} lg={{ span: 12, offset: 0 }} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24, offset: 0 }} xl={{ span: 12 }} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
                         <div style={{ fontSize: "30px", fontWeight: "600", lineHeight: "50px", color: "#444444" }}>{auth.userData.fullName}</div>
                         {auth.userData.accountType ? <CustomTag color="processing">{auth.userData.accountType}</CustomTag> : null}
                     </div>
-                    <div style={{ fontSize: "20px", fontWeight: "400", color: "#6c6c6c", maxWidth: "600px", marginBottom:"5px" }}>
+                    <div style={{ fontSize: "20px", fontWeight: "400", color: "#6c6c6c", maxWidth: "600px", marginBottom: "5px" }}>
                         {auth.userData.email}
                     </div>
                     <div style={{ fontSize: "13px", fontWeight: "500", color: "#6c6c6c", maxWidth: "600px" }}>
                         Joined in: {new Date(userInfo.joinDate).toLocaleDateString("en-US", options)}
                     </div>
                     {
-                        !editingPassword && <Button1 onClick={() => setEditingPassword(true)} style={{ borderStyle: "none", fontSize: "14px", width: "160px", marginTop: "15px" }} >Change Password</Button1>
+                        !editingPassword && <Button1 onClick={() => setEditingPassword(true)} style={{ borderStyle: "none", fontSize: "14px", width: windowDimensions.width< 574?"100%":"200px", marginTop: "25px" }} >Change Password</Button1>
                     }
 
                 </Col>
@@ -218,7 +234,8 @@ export default function Profile() {
                 </Form>
             </Collapse>
             <Segment2>
-                <Descriptions1 column={2}title="Basic Info"
+                <Descriptions1 column={{ xxl: 3, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 }} style={{ minWidth: "350px", width:"100%" }} title="Basic Info"
+                    layout={windowDimensions.width < 574 ? 'vertical' : 'horizontal'} bordered={windowDimensions.width < 574 }
                     extra={
                         editing ?
                             <div style={{ display: "flex", gap: "16px" }}>
@@ -266,7 +283,7 @@ export default function Profile() {
                     }
                     </DescriptionsItem>
                     <DescriptionsItem label="Country">
-                         <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             {React.createElement(flags[userInfo.countryCode.charAt(0) + userInfo.countryCode.charAt(1).toLowerCase()], {})}
                             {Countries[userInfo.countryCode]}
                         </span>
@@ -287,32 +304,6 @@ export default function Profile() {
         </div>
     )
 }
-const ReactFlagsSelect1 = styled(ReactFlagsSelect)`
-height: 35px;
-width: 350px;
-&>*:nth-child(1){
-    padding: 5px 10px 5px 0px;
-    border-radius: 2px;
-    background-color: white;
-    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
-    min-height: 35px;
-}   
-&>*:nth-child(2)>*{
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-}   
-&>*:nth-child(2)>*:nth-child(1){
-    box-shadow: 1px 3px 5px 1px rgba(0, 0, 0, 0.12);
-    height: auto;
-    display: flex;
-    align-items: center;
-    padding: 0px;
-}   
-&>*:nth-child(2)>*:nth-child(1)>*{
-    border: none;
-}   
-`
 const Descriptions1 = styled(Descriptions)`
 position: relative;
 &>*{
@@ -331,6 +322,7 @@ const DescriptionsItem = styled(Descriptions1.Item)`
 const Button1 = styled(Button)`
 background-color: #444444;
 color: white;
+height: 40px;
 &:hover{
     animation: btnmove22 0.8s;
     animation-fill-mode: forwards;
@@ -360,7 +352,6 @@ bottom:0;
 right: 0;
 background: rgba(28, 28, 28,0.8);
 border-radius: 50%;
-
 &:hover >*{
     animation: mytran 0.8s;
     animation-fill-mode: forwards;
@@ -391,6 +382,13 @@ const Segment1 = styled(Row)`
   margin: 2vh 0 2vh 0;
   justify-content: flex-start;
   gap: 30px;
+  @media (max-width: 992px) {
+    margin: 2vh 4vw 2vh 4vw;
+    align-items: center;
+    &>*:nth-child(2){
+        align-items: center;
+    }
+}
 `
 const Segment2 = styled(Row)`
   padding: 0vh 4vw 0vh 4vw;
@@ -398,19 +396,18 @@ const Segment2 = styled(Row)`
   justify-content: space-between;
 `
 const Pic = styled.div`
-@media (max-width: 700px) {
-    height: 300px;
-  width: 300px;
+@media (max-width: 574px) {
+height: 300px;
+width: 300px;
 }
-  border-radius: 50%;
-  height: 250px;
-  width: 250px;
-  position: relative;
-    overflow: hidden;
-    position: relative;
+border-radius: 50%;
+height: 250px;
+width: 250px;
+position: relative;
+overflow: hidden;
     &>*:nth-child(1){  
-    height:250px;
-    max-width: 250px;
+    height:100%;
+    max-width: 300px;
     position: absolute;
     top: -9999px;
     left: -9999px;

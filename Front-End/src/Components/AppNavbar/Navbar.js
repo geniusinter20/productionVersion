@@ -4,11 +4,11 @@ import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { navItems } from "./NavItems";
 import "./Navbar.css";
 import "./Buttons.css";
-import { Navbar, NavbarBrand, NavLink, NavItem, NavbarToggler, Collapse, Nav, Button } from 'reactstrap';
+import { Navbar, NavbarBrand, NavbarText, NavItem, NavbarToggler, Collapse, Nav } from 'reactstrap';
 import logo1 from "../../Images/Logo1.svg";
 import { Avatar, Badge } from 'antd';
 import styled from "styled-components";
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown,Button } from 'antd';
 import { onlineTrainingMenu, aboutMenu } from "./NavItems";
 import { MdLogout } from "react-icons/md"
 import { FaUserCog, FaUserPlus } from "react-icons/fa"
@@ -30,6 +30,7 @@ function NavBar() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdown1, setDropdown1] = useState(false);
   const [toggle, setToggle] = useState(false);
+  const [toggle1, setToggle1] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleMenu1, setToggleMenu1] = useState(false);
   const [userLogged, setUserLogged] = useState(false);
@@ -51,8 +52,15 @@ function NavBar() {
   useEffect(() => {
     setUserLogged(loggedIn)
   }, [loggedIn])
-  const toggleHandle = () => {
-    setToggle(v => !v);
+  const toggleHandle = (main, user) => {
+    if (main) {
+      setToggle1(false)
+      setToggle(v => !v)
+    }
+    else if (user) {
+      setToggle(false)
+      setToggle1(v => !v)
+    }
   };
   // var stringToColour = function (str) {
   //   var hash = 0;
@@ -74,6 +82,7 @@ function NavBar() {
         break;
       }
       case "createAccount": {
+        dispatch(signOut())
         navigate("/register")
         break;
       }
@@ -154,7 +163,7 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`}  size={35}
+          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={35}
           >
 
           </Avatar>
@@ -260,7 +269,7 @@ function NavBar() {
               </li>
               <li key="2" >
                 <Dropdown overlay={userMenu} placement="bottomRight">
-                  {auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={45}
+                  {auth.userData.imageID ? <Avatar style={{cursor:"pointer"}} src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={45}
                   >
 
                   </Avatar>
@@ -286,11 +295,49 @@ function NavBar() {
           >
             Genius
           </NavbarBrand>
+          {userLogged ? <div style={{ marginRight: "20px", display: "flex", gap: "5px", alignItems: "center", cursor: "pointer" }}
+            onClick={() => toggleHandle(false, true)}>
+            {
+              auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={40}
+              >
+
+              </Avatar>
+                : <MyAvatar style={{ borderStyle: "solid" }} size={40}
+                >
+                  {userInfo.fullName.charAt(0).toUpperCase()}
+                </MyAvatar>}
+            <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggle1 ? 180 : 0} />
+          </div> : 
+          <WButton size="sm" onClick={()=>navigate("/login")} >Sign In</WButton>}
           <NavbarToggler
             className="me-2"
-            onClick={() => toggleHandle()}
+            onClick={() => toggleHandle(true, false)}
           />
-          <Collapse navbar isOpen={toggle} >
+          <Collapse navbar isOpen={toggle1} style={{ paddingTop: "15px" }}>
+            <Nav navbar >
+              <NavItemD>
+                <Link to="/profile">Manage Your Account</Link>
+              </NavItemD>
+              <NavItemD>
+              <div style={{ cursor: "pointer" }} onClick={() => {
+                  setUserLogged(false)
+                  dispatch(signOut())
+                  navigate("/register")
+                }
+                }>Create Account</div>
+              </NavItemD>
+              <NavItemD>
+                <div style={{ cursor: "pointer" }} onClick={() => {
+                  setUserLogged(false)
+                  dispatch(signOut())
+                  setToggle1(false)
+                }
+                }>Sign Out</div>
+              </NavItemD>
+            </Nav>
+          </Collapse>
+
+          <Collapse navbar isOpen={toggle} style={{ paddingTop: "15px" }}>
             <Nav navbar >
               {navItems.map((item) => {
                 if (item.title === "Online Training") {
@@ -328,6 +375,29 @@ function NavBar() {
 
   );
 }
+const WButton = styled(Button)`
+height: 37px;
+font-weight: 600;
+color: #6c6c6c;
+margin-right: 20px;
+&:hover{
+    animation: mmm1 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes mmm1 {
+    0% {
+        color: #444444;
+    background-color: white;
+    border-color: white;
+   }
+     
+   100% {
+    color: white;
+    background-color: #444444;
+    border-color: #444444;
+   }
+}
+`
 const MyCon = styled.div`
 display: flex;
 align-items: center;

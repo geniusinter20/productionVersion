@@ -54,6 +54,7 @@ function ExamEnv(props) {
             finishedQuestionsIDsWithAnswers: [],
             timeSpent: 0,
             testID: state.testID,
+            startDate: new Date(),
         }))
     }
     useEffect(() => {

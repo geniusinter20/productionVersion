@@ -140,6 +140,7 @@ export const examActivityReducer = (state = examActivityInitialState, { type, pa
                 clientID: payload.clientID,
                 testID: payload.testID,
                 activityCreated: true,
+                startDate: payload.startDate,
             }
         }
         case UserDashboardActionTypes.EXAMENV_FETCH_ACTIVITY: {
