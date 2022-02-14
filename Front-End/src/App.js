@@ -19,6 +19,7 @@ import Profile from './Pages/Registration/Profile';
 import styled from 'styled-components';
 import Unauthorized from "./Images/401Unauthorized.svg";
 import NotFound from './NotFound';
+import SelectedTest from './Pages/PracticeTests/SelectedTest';
 
 const mapStateToProps = (state) => {
   const { allPracticeTests } = state;
@@ -69,7 +70,7 @@ class App extends Component {
     if(this.state.spinnerOn) {
        setTimeout(() => {
          this.setState({ spinnerOn: false })
-       }, 500);
+       }, 300);
     }
     //const location= this.props.location
     //console.log(location.pathname.match('/dashboard/*') )
@@ -92,6 +93,7 @@ class App extends Component {
             <Route path="/register" element={<Registration />} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/practicetests" element={<PracticeTests />} />
+            <Route path="/practicetests/*" element={<SelectedTest />} />
             <Route path='/pmpcertificate' element={<PMP_Certificate />} />
             <Route exact path='/dashboard/*' element={CheckLogInAuthorization(<AdminDashboard />)} />
             <Route exact path='/mydashboard/*' element={CheckLogInAuthorization(<UserDashboard />)} />

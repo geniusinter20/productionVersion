@@ -5,6 +5,7 @@ import { Row, Col, Button, Image } from 'antd';
 import NavBar from '../../Components/AppNavbar/Navbar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -15,18 +16,18 @@ import Radio from '@mui/material/Radio';
 import { BsPaypal } from "react-icons/bs"
 import { HiLockClosed } from "react-icons/hi"
 import { clearCart } from "../../Redux/Actions/CartActions"
-import { useNavigate } from 'react-router-dom';
 import noImage from "../../Images/noImage.png"
+import {Helmet} from "react-helmet"
 
 export default function CheckOut() {
     const paypal = useRef();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const products = useSelector(state => state.cart.products)
+    const { state } = useLocation();
+    const products = useSelector(!state ? state => state.cart.products : r => state.product)
     const [total, setTotal] = useState(0)
     const [selectedValue, setSelectedValue] = React.useState('paypal');
     const [checkingOut, setCheckingOut] = useState(false)
-
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -136,6 +137,9 @@ export default function CheckOut() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap: "5vh" }}>
+            <Helmet>
+                <title>Check Out</title>
+            </Helmet>
             <NavBar></NavBar>
             <Row style={{ margin: "3vh 4vw 3vh 4vw", flexWrap: " wrap-reverse", justifyContent: "space-around" }} >
                 <Col xs={{ span: 24, offset: 0 }} lg={{ span: 12, offset: 0 }} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>

@@ -138,6 +138,11 @@ export default function AddPracticeTests(props) {
     function insertAt(array, index, ...elementsArray) {
         array.splice(index, 0, ...elementsArray);
     }
+    const handleDeleteWSP=(ind)=>{
+        var temp= [...addedWSWL]
+        temp.splice(ind,1);
+        setAddedWSWL(temp)
+    }
     const handleTextEdit = (e, index) => {
         const temp = addedWSWL.filter((item, ind) => ind !== index)
         insertAt(temp, index, e)
@@ -182,7 +187,8 @@ export default function AddPracticeTests(props) {
     };
     const handleTextAdd = () => {
         //console.log("tempwswp", tempWSWL)
-        dispatch({ type: "SELECTED_PRACTICETEST_ADDWSWP", payload: tempWSWL })
+        setAddedWSWL([...addedWSWL, tempWSWL])
+        //dispatch({ type: "SELECTED_PRACTICETEST_ADDWSWP", payload: tempWSWL })
     }
     const onFinish = () => {
         //message.success('Update success!');
@@ -266,7 +272,7 @@ export default function AddPracticeTests(props) {
                 }>editing..</Button >
         )
         if (!editing && edited) return (
-            <div style={{display: "flex", gap: "20px"}}>
+            <div style={{ display: "flex", gap: "20px" }}>
                 <Button type="primary"
                     onClick={() => {
                         navigate("/dashboard/practicetests")
@@ -277,8 +283,10 @@ export default function AddPracticeTests(props) {
                     style={
                         { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
                     }>Go Back</Button >
-                <Button shape="round" style={{ height: "40px", width: "110px", display: "flex", alignItems: "center", 
-                justifyContent: "Space-evenly", padding: "5px" }} onClick={() => {
+                <Button shape="round" style={{
+                    height: "40px", width: "110px", display: "flex", alignItems: "center",
+                    justifyContent: "Space-evenly", padding: "5px"
+                }} onClick={() => {
                     dispatch(resetSelectedTest())
                 }}>Keep Editing</Button>
             </div>
@@ -300,76 +308,76 @@ export default function AddPracticeTests(props) {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <fieldset disabled={!editing && edited?"disabled":null}>
-                        <Form.Item
+                        <fieldset disabled={!editing && edited ? "disabled" : null}>
+                            <Form.Item
 
-                            name="testTitle"
-                            label="Test Title"
-                            rules={[{ required: true, message: 'Please input Title!' }]} >
-                            <Input
-                                placeholder="input placeholder" />
-                        </Form.Item>
-                        <Form.Item
-                            name="price"
-                            label="Price"
-                            rules={[{ required: true, message: 'Please input Price!' }]}
-                        >
-                            <Input placeholder="input placeholder" />
-                        </Form.Item>
-                        <Form.Item
-                            name="validationPeriod"
-                            label="Validation Period"
-                        >
-                            <Input placeholder="input placeholder" />
-                        </Form.Item>
-                        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "20px", marginBottom: "17px" }}>
-                            <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "7px" }}>
-                                <div>Test Type</div>
-                                <Select onChange={(v) => setTestType(v)} value={testType}>
-                                    <Select.Option value="FP">Full Package</Select.Option>
-                                    <Select.Option value="PTO">Practic Test Only</Select.Option>
-                                </Select>
-                            </div>
-                            <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "7px" }}>
-                                <div>Test Category</div>
-                                <Select onChange={(v) => setTestCategory(v)} value={testCategory}>
-                                    <Select.Option value="PMP">PMP</Select.Option>
-                                    <Select.Option value="CAPM">CAPM</Select.Option>
-                                </Select>
-                            </div>
-                        </div>
-                        <Form.Item
-                            name="description"
-                            label="Description"
-                            rules={
-                                [{ required: true, message: 'Please input Intro' }]
-                            } >
-                            <Input.TextArea showCount maxLength={100} />
-                        </Form.Item>
-                        <Form.Item
-                            name="brief"
-                            label="Brief"
-                            rules={
-                                [{ required: true, message: 'Please input Intro' }]
-                            } >
-                            <Input.TextArea showCount maxLength={100} />
-                        </Form.Item>
-                        <Form.Item label="Test Image">
-                            <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                                <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
-                                    <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                        name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png"
-                                        fileList={fileList} beforeUpload={beforeUpload}>
-                                        <p className="ant-upload-drag-icon">
-                                            <InboxOutlined />
-                                        </p>
-                                        <p className="ant-upload-hint">
-                                            Drag & drop Your Image
-                                            or Click to browse.</p>
-                                    </Upload.Dragger>
-                                </ImgCrop>
+                                name="testTitle"
+                                label="Test Title"
+                                rules={[{ required: true, message: 'Please input Title!' }]} >
+                                <Input
+                                    placeholder="input placeholder" />
                             </Form.Item>
-                        </Form.Item>
+                            <Form.Item
+                                name="price"
+                                label="Price"
+                                rules={[{ required: true, message: 'Please input Price!' }]}
+                            >
+                                <Input placeholder="input placeholder" />
+                            </Form.Item>
+                            <Form.Item
+                                name="validationPeriod"
+                                label="Validation Period"
+                            >
+                                <Input placeholder="input placeholder" />
+                            </Form.Item>
+                            <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "20px", marginBottom: "17px" }}>
+                                <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "7px" }}>
+                                    <div>Test Type</div>
+                                    <Select onChange={(v) => setTestType(v)} value={testType}>
+                                        <Select.Option value="FP">Full Package</Select.Option>
+                                        <Select.Option value="PTO">Practic Test Only</Select.Option>
+                                    </Select>
+                                </div>
+                                <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "7px" }}>
+                                    <div>Test Category</div>
+                                    <Select onChange={(v) => setTestCategory(v)} value={testCategory}>
+                                        <Select.Option value="PMP">PMP</Select.Option>
+                                        <Select.Option value="CAPM">CAPM</Select.Option>
+                                    </Select>
+                                </div>
+                            </div>
+                            <Form.Item
+                                name="brief"
+                                label="Brief"
+                                rules={
+                                    [{ required: true, message: 'Please input Brief' }]
+                                } >
+                                <Input.TextArea autoSize={{ minRows: 4, maxRows: 4 }} showCount maxLength={250} />
+                            </Form.Item>
+                            <Form.Item
+                                name="description"
+                                label="Description"
+                                rules={
+                                    [{ required: true, message: 'Please input Description' }]
+                                } >
+                                <Input.TextArea autoSize={{ minRows: 6, maxRows: 9 }} />
+                            </Form.Item>
+                            <Form.Item label="Test Image">
+                                <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+                                    <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
+                                        <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
+                                            name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png"
+                                            fileList={fileList} beforeUpload={beforeUpload}>
+                                            <p className="ant-upload-drag-icon">
+                                                <InboxOutlined />
+                                            </p>
+                                            <p className="ant-upload-hint">
+                                                Drag & drop Your Image
+                                                or Click to browse.</p>
+                                        </Upload.Dragger>
+                                    </ImgCrop>
+                                </Form.Item>
+                            </Form.Item>
                         </fieldset>
                     </Form>
                 </FormContainer>
@@ -512,9 +520,13 @@ export default function AddPracticeTests(props) {
                                     renderItem={item => (
                                         <List.Item key={item.id}>
                                             <div style={{ width: "100%" }}>
-                                                <Paragraph editable={{ onChange: (e) => handleTextEdit(e, addedWSWL.indexOf(item)), maxLength: 100 }}>
-                                                    {item}</Paragraph>
+                                                <Paragraph editable={!(!editing && edited)?{ onChange: (e) => handleTextEdit(e, addedWSWL.indexOf(item)), maxLength: 200 }:false}>
+                                                    {item}
+                                                    </Paragraph>
                                             </div>
+                                            <Button disabled={!editing && edited} onClick={() => handleDeleteWSP(addedWSWL.indexOf(item))} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" danger>
+                                                Delete
+                                            </Button>
                                         </List.Item>
                                     )}
                                 />

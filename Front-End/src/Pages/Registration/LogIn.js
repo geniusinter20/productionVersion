@@ -7,8 +7,9 @@ import "./LogIn.css"
 import { signIn } from '../../Redux/Actions/UserAuthActions';
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from 'react';
-import {useSelector} from 'react-redux'
-import {useNavigate, useLocation} from "react-router-dom"
+import { useSelector } from 'react-redux'
+import { useNavigate, useLocation } from "react-router-dom"
+import { Helmet } from 'react-helmet';
 import {
     Form,
     Input,
@@ -20,7 +21,7 @@ export default function Registreation() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     const [loggingIn, setLoggingIn] = useState(false);
     const auth = useSelector(state => state.auth)
     const { state } = useLocation();
@@ -38,26 +39,30 @@ export default function Registreation() {
     };
     useEffect(() => {
         setLoggingIn(auth.loggingIn);
-        console.log("logged:",auth.loggedIn);
-        console.log("logging:",auth.loggingIn);
+        console.log("logged:", auth.loggedIn);
+        console.log("logging:", auth.loggingIn);
         setLoggedIn(auth.loggedIn);
-        if(auth.loggedIn && !auth.loggingIn){
+        if (auth.loggedIn && !auth.loggingIn) {
             //console.log(state);
-            if(state) navigate(state.previousPage)
+            if (state) navigate(state.previousPage)
             else navigate("/")
-        } 
+        }
     }, [auth])
-    
+
     return (
         <MainContainer>
+            <Helmet>
+                <title>Sign In</title>
+                <meta name="description" content="Genius logIn" />
+            </Helmet>
             <div className='pageBackground'>
                 <div className='gradient'></div>
                 <img src={examEnvBackground} />
             </div>
-            <Row style={{ minHeight: "90vh", position: "relative", width:"100%", alignItems:"center", justifyContent:"center" }}>
+            <Row style={{ minHeight: "90vh", position: "relative", width: "100%", alignItems: "center", justifyContent: "center" }}>
                 <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }} >
                     <div className='background' />
-                    </Side1>
+                </Side1>
                 <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 9, offset: 0 }}>
                     <div style={{ position: "relative", height: "90px", width: "250px" }}>
                         <div style={{
@@ -82,7 +87,7 @@ export default function Registreation() {
                     </div>
 
                     <SubContainer >
-                        <div style={{ fontSize: "22px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "2vh", justifySelf: "center", textAlign:"center" }}>LOG IN TO YOUR ACCOUNT!</div>
+                        <div style={{ fontSize: "22px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "2vh", justifySelf: "center", textAlign: "center" }}>LOG IN TO YOUR ACCOUNT!</div>
                         <div style={{ width: "100%" }}>
                             <Form
                                 requiredMark={'optional'}
@@ -124,7 +129,7 @@ export default function Registreation() {
                                     <Input.Password placeholder="Enter your Password" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
                                 </Form.Item>
                                 <Form.Item style={{ marginBottom: 5 }} >{
-                                    !loggingIn? <Button  style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                                    !loggingIn ? <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
                                         Sign in
                                     </Button> :
                                         <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
@@ -137,7 +142,7 @@ export default function Registreation() {
 
                         <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C" }}>Don’t have an Account? <StyledLink to="/register" >Sign up</StyledLink></div>
                     </SubContainer>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", width: "100%", textAlign: "center", position: "absolute", bottom: "5px" }}>©2021 Genius Digital All Right Reserved</div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", width: "100%", textAlign: "center", position: "absolute", bottom: "5px" }}>©{new Date().getFullYear()} Genius Digital All Right Reserved</div>
                 </Side2>
             </Row >
         </MainContainer >

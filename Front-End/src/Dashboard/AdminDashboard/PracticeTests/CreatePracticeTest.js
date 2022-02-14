@@ -266,24 +266,24 @@ export default function AddPracticeTests(props) {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            name="description"
-                            label="Description"
-                            rules={
-                                [{ required: true, message: 'Please input Intro' }]
-                            } >
-                            <Input.TextArea showCount maxLength={100} />
-                        </Form.Item>
-                        <Form.Item
                             name="brief"
                             label="Brief"
                             rules={
-                                [{ required: true, message: 'Please input Intro' }]
+                                [{ required: true, message: 'Please input Brief' }]
                             } >
-                            <Input.TextArea showCount maxLength={100} />
+                            <Input.TextArea autoSize={{ minRows: 4, maxRows: 4 }} showCount maxLength={250} />
+                        </Form.Item>
+                        <Form.Item
+                            name="description"
+                            label="Description"
+                            rules={
+                                [{ required: true, message: 'Please input Description' }]
+                            } >
+                            <Input.TextArea autoSize={{ minRows: 6, maxRows: 9 }} />
                         </Form.Item>
                         <Form.Item label="Upload Image">
                             <Form.Item name="uploadImage" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                                <ImgCrop aspect={2 / 1} minZoom={0.1} quality={1} grid>
+                                <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                                     <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
                                         name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">

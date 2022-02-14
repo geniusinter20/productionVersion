@@ -14,9 +14,12 @@ class HowItWorks extends Component{
                     How It <div style={{color:"#3CA9E7", fontWeight:"600"}}>Works</div>
                 </Header>
                 <Sections>
-                    <SubSection><MdManageAccounts className='icon1'/><div className="subTitle1">Create an account</div><div className="subDiscription">Lorem ipsum dolor sit amet,consecteteu.</div></SubSection>
-                    <SubSection><BiCheckShield className='icon1'/><div className="subTitle1">Get authorization</div><div className="subDiscription">Lorem ipsum dolor sit amet,consecteteu.</div></SubSection>
-                    <SubSection><CgSmileMouthOpen className='icon1'/><div className="subTitle1">Enjoy the app</div><div className="subDiscription">Lorem ipsum dolor sit amet,consecteteu.</div></SubSection>
+                    <SubSection><MdManageAccounts className='icon1'/><div className="subTitle1">Create an account</div>
+                    <div className="subDiscription">Register in the system.</div></SubSection>
+                    <SubSection><BiCheckShield className='icon1'/><div className="subTitle1">Get authorization</div>
+                    <div className="subDiscription">Get an email with a confirmation link.</div></SubSection>
+                    <SubSection><CgSmileMouthOpen className='icon1'/><div className="subTitle1">Enjoy the app</div>
+                    <div className="subDiscription">Start your PMI certification preparation.</div></SubSection>
                 </Sections>
             </MainContainer>
         )

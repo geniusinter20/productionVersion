@@ -9,7 +9,7 @@ class Footer extends Component {
         return (
             <MainContainer>
                 <Logo><object data={logo} type="image/svg+xml"></object></Logo>
-                <Text>©2021 Genius Digital All Right Reserved</Text>
+                <Text>©{new Date().getFullYear()} Genius Digital All Right Reserved</Text>
                 <Socials>
                         <AiFillFacebook></AiFillFacebook>
                         <AiFillLinkedin></AiFillLinkedin>

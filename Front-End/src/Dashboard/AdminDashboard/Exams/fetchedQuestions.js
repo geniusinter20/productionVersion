@@ -51,7 +51,7 @@ class FetchedQuestions extends Component {
     // }
     fetchQuestion = (e) => {
         var number = 0;
-        if(!e) this.setState({ loadingQuestions: true })
+        if (!e) this.setState({ loadingQuestions: true })
         else e.every(async element => {
             var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
             if (res.data.msg) {
@@ -234,8 +234,7 @@ class FetchedQuestions extends Component {
                     nodeSelector=".ant-list-item.draggble"
                     onDragEnd={this.onDragEnd}
                 >
-
-                    {this.state.loadingQuestions ? <div style={{ width: "100%", height: "100%",marginTop:"30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {this.state.loadingQuestions&&this.props.ids.length>0 ? <div style={{ width: "100%", height: "100%", marginTop: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <PuffLoader css={"display: block; margin: 0 0 0 0;"} size={80} />
                     </div> : <List
                         dataSource={this.state.fetchedQuestions}
@@ -255,7 +254,7 @@ class FetchedQuestions extends Component {
                                             <ActionItem disabled={!editing && edited} color="red">Delete</ActionItem>
                                         </Popconfirm>,
                                         <ActionItem disabled={!editing && edited} onClick={!(!editing && edited) ? () => this.showModal(item) : ""} color="#5BCAD6">Edit</ActionItem>,
-                                        <FiMenu style={{ marginBottom: "3px", height: "20px", width: "20px", cursor: !(!editing && edited)?'grab':"not-allowed", color: '#999' }} />,]}
+                                        <FiMenu style={{ marginBottom: "3px", height: "20px", width: "20px", cursor: !(!editing && edited) ? 'grab' : "not-allowed", color: '#999' }} />,]}
                                         className={!(!editing && edited) ? "draggble" : ""}
                                         key={item.key}
                                     >

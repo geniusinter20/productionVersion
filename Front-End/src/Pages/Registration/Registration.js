@@ -11,6 +11,7 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/high-res.css'
 import ReactFlagsSelect from 'react-flags-select';
 import { Countries } from './Countries';
+import { Helmet } from 'react-helmet';
 
 const tailFormItemLayout = {
     wrapperCol: {
@@ -97,11 +98,15 @@ export default function Registreation() {
     }
     return (
         <MainContainer>
+            <Helmet>
+                <title>Register</title>
+                <meta name="description" content="Genius Registeration" />
+            </Helmet>
             <div className='pageBackground'>
                 <div className='gradient'></div>
                 <img src={examEnvBackground} />
             </div>
-            <Row style={{ minHeight: "100vh", position: "relative", width:"100%", alignItems:"center", justifyContent:"center" }}>
+            <Row style={{ minHeight: "100vh", position: "relative", width: "100%", alignItems: "center", justifyContent: "center" }}>
                 <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }}><div className='background' /></Side1>
 
                 <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 10, offset: 0 }}>
@@ -216,7 +221,7 @@ export default function Registreation() {
                                     inputClass="cusInput"
                                     dropdownClass="cusDrop"
                                     // containerStyle={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }}
-                                    country={countryCode?countryCode.toLowerCase():"us"}
+                                    country={countryCode ? countryCode.toLowerCase() : "us"}
                                     value={phoneNumber}
                                     onChange={phone => setPhoneNumber(phone)}
                                 />
@@ -242,8 +247,8 @@ export default function Registreation() {
                             </Form.Item>
                         </Form>
                     </div>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C", marginTop:"10px" }}>Already have an Account? <StyledLink to="/login" >Sign in</StyledLink></div>
-                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", justifySelf: "flex-end",marginTop:"5px" }}>©2021 Genius Digital All Right Reserved</div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#6C6C6C", marginTop: "10px" }}>Already have an Account? <StyledLink to="/login" >Sign in</StyledLink></div>
+                    <div style={{ fontSize: "13px", fontWeight: "500", color: "#AEAEAE", justifySelf: "flex-end", marginTop: "5px" }}>©{new Date().getFullYear()} Genius Digital All Right Reserved</div>
                 </Side2>
             </Row>
         </MainContainer>

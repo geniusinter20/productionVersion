@@ -18,7 +18,7 @@ import { fetchuserpracticetests } from "../../Redux/Actions/UserDashboardActions
 import { fetchExamsSuccess } from '../../Redux/Actions/ExamsActions';
 import { useSelector } from "react-redux"
 import { loadCart } from '../../Redux/Actions/CartActions';
-
+import { Helmet } from 'react-helmet';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -75,6 +75,10 @@ function UserDashboard(props) {
 
     return (
         < div className="mainContainer">
+            <Helmet>
+                <title>Dashboard</title>
+                <meta name="description" content="Genius Student Dashboard" />
+            </Helmet>
             <Layout>
                 <Sider padding={0} trigger={null} collapsible collapsed={collapsed} className="sider"
                     style={{ background: "white", }}
@@ -160,7 +164,7 @@ function UserDashboard(props) {
                             <Route path="/editpracticetest/:id" element={<EditPracticeTest />} /> */}
                         </Routes>
                     </Content>
-                    <Footer className="footer">©2021 Genius Digital All Right Reserved</Footer>
+                    <Footer className="footer">©{new Date().getFullYear()} Genius Digital All Right Reserved</Footer>
                 </Layout>
             </Layout>
         </div >

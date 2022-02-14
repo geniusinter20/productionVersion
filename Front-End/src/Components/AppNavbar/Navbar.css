@@ -1,4 +1,4 @@
-@media screen and (min-width: 1100px){
+@media screen and (min-width: 1000px){
   .navbar1 {
     display: flex;
     height: 70px;
@@ -10,6 +10,7 @@
     padding: 0 4vw 0 4vw;
     position: sticky;
     z-index: 1;
+    /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16); */
   }
   .navbar2{
     display: none;

@@ -7,7 +7,7 @@ import NavBar from '../../Components/AppNavbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import { useDispatch } from 'react-redux';
 import { fetchPracticeTestsSuccess } from '../../Redux/Actions/practiceTestsActions';
-
+import { Helmet } from 'react-helmet';
 
 function PracticeTests() {
     const dispatch = useDispatch();
@@ -16,6 +16,10 @@ function PracticeTests() {
     }, [])
     return (
         <div>
+            <Helmet>
+                <title>Practice Tests</title>
+                <meta name="description" content="Genius practice Tests" />
+            </Helmet>
             <NavBar></NavBar>
             <Header></Header>
             <ProductContainer></ProductContainer>

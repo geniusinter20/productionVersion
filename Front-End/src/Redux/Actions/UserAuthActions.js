@@ -137,7 +137,7 @@ export const loadUser = (tok) => {
               'Authorization': `Bearer ${token}`
             }
           }).then(({ data }) => {
-            console.log("data", data)
+            //console.log("data", data)
             dispatch({
               type: "USER_LOADED",
               payload: data[0],

@@ -19,6 +19,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import PuffLoader from "react-spinners/PuffLoader";
 import noImage from "../../Images/noImage.png";
 import { useLocation } from 'react-router-dom'
+import { Helmet } from 'react-helmet';
 
 const { Search } = Input;
 
@@ -26,7 +27,7 @@ export default function Cart() {
     const dispatch = useDispatch()
     const location = useLocation();
     const cart = useSelector(state => state.cart)
-    const auth= useSelector(state=>state.auth)
+    const auth = useSelector(state => state.auth)
     const [show, setShow] = useState([])
     const [total, setTotal] = useState(0)
     const [products, setProducts] = useState([])
@@ -63,8 +64,7 @@ export default function Cart() {
             case "practiceTest":
                 return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image><img alt="example" src={product.testImageID?`https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>
-
+                        <Image><img alt="example" src={product.testImageID!=="no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>
                         <Information>
                             <ProductName>{product.testTitle}</ProductName>
                             <Tooltip title={product.testBrief}>
@@ -91,6 +91,10 @@ export default function Cart() {
     }
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap: "5vh" }}>
+            <Helmet>
+                <title>Cart</title>
+                <meta name="description" content="Genius Cart" />
+            </Helmet>
             <NavBar></NavBar>
             <Row style={{ margin: "3vh 4vw 3vh 4vw", flexWrap: " wrap-reverse", justifyContent: "space-around" }} >
                 <Col xs={{ span: 24, offset: 0 }} lg={{ span: 16, offset: 0 }}>
@@ -178,8 +182,8 @@ export default function Cart() {
                             30-Day Money-Back Guarantee
                         </div>
                         {products.length > 0 && <Button1 onClick={() => {
-                            auth.loggedIn?navigate("checkout"):navigate("/login",{
-                                state:{
+                            auth.loggedIn ? navigate("checkout") : navigate("/login", {
+                                state: {
                                     previousPage: location.pathname,
                                 }
                             })

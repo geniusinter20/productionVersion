@@ -35,12 +35,10 @@ export const fetchPracticeTestsSuccess = () => {
         axios
             .get("https://exporagenius.com:5000/practicetests")
             .then(({ data }) => {
-                setTimeout(() => {
-                    dispatch({
-                        type: PracticeTestActionTypes.FETCH_PRACTICETESTS_SUCCESS,
-                        payload: data
-                    })
-                }, 1000)
+                dispatch({
+                    type: PracticeTestActionTypes.FETCH_PRACTICETESTS_SUCCESS,
+                    payload: data
+                })
             })
             .catch(function (error) {
                 dispatch(fetchPracticeTestsFailure(error))
@@ -99,21 +97,36 @@ export const togglePracticeTestStatus = (test) => {
 }
 export const selectedPracticeTest = (id) => {
     //console.log("fetching:", id)
+    var exams = [];
     return (
         dispatch => {
+            dispatch({
+                type: PracticeTestActionTypes.SELECTED_PRACTICETEST_REQUESTED
+            })
             axios
                 .get(`https://exporagenius.com:5000/practicetests/${id}`)
                 .then(({ data }) => {
                     //console.log(data);
-                    setTimeout(() => {
-                        dispatch({
-                            type: PracticeTestActionTypes.SELECTED_PRACTICETEST,
-                            payload: data[0],
+                    var test= data[0]
+                    test.testExamsIDs.forEach(i => {
+                        axios.get(`https://exporagenius.com:5000/exams/${i}`).then(({ data }) => {
+                            exams.push(data[0])
+                            if (exams.length === test.testExamsIDs.length) {
+                                dispatch({
+                                    type: PracticeTestActionTypes.SELECTED_PRACTICETEST_FETCHED,
+                                    payload: {
+                                        ...test,
+                                        testExams: exams,
+                                    },
+                                })
+                            }
                         })
-                    }, 1000)
+
+                    })
                     //console.log("fetched:",data[0])
                 })
                 .catch(function (error) {
+                    console.log(error);
                 })
 
         })

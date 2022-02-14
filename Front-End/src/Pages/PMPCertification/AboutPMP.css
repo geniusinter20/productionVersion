@@ -2,19 +2,21 @@
     display: flex;
     width: 92vw;
     flex-wrap: wrap;
-    margin: 4vw;
-    gap: 4vw;
+    margin: 0 4vw 0 4vw;
     justify-content: space-around;
+    align-items: flex-start;
 }
-
+@media( max-width: 1000px){
+    .mainContainer1{gap: 20px;}
+}
+@media( min-width: 1000px){
+    .mainContainer1{gap: 4vw;}
+}
 .pic1{
     height: 45vh;
     min-height: 350px;
     position: relative;
     overflow: hidden;
-    position: relative;
-    overflow: hidden;
-    flex-grow: 0.7;
 }
 .pic1 img{
     width:100%;

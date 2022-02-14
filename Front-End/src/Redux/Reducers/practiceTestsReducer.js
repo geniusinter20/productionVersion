@@ -116,9 +116,12 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
 
 const selectedPracticeTestInitialState={
     testExamsIDs:[],
-    loadingTest: true,
+    loadingTest: false,
+    testLoaded: false,
     editing: false,
-    edited: false
+    edited: false,
+    testExams: [],
+    testExamsLoaded: false,
 }
 export const selectedPracticeTestReducer = (state = selectedPracticeTestInitialState, { type, payload }) => {
     switch (type) {
@@ -128,13 +131,19 @@ export const selectedPracticeTestReducer = (state = selectedPracticeTestInitialS
                 editing: false, 
                 edited: false
             });
-        case PracticeTestActionTypes.SELECTED_PRACTICETEST:{ 
-            //console.log(payload);
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_REQUESTED:{ 
+            return ({
+                loadingTest: true,
+            });}
+        case PracticeTestActionTypes.SELECTED_PRACTICETEST_FETCHED:{ 
+            console.log(payload);
             return ({
                 ...payload,
                 loadingTest: false,
                 editing: false, 
-                edited: false
+                edited: false,
+                testLoaded: true,
+                testExamsLoaded: true,
             });}
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_ADDEXAM:
             const temp = state.testExamsIDs

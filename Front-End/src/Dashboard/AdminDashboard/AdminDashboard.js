@@ -20,7 +20,7 @@ import { Link, Route, Routes, useParams, useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchExamsSuccess } from '../../Redux/Actions/ExamsActions';
-
+import { Helmet } from 'react-helmet';
 
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -70,6 +70,10 @@ function AdminDashboard(props) {
     }
     return (
         < div className="mainContainer">
+            <Helmet>
+                <title>Admin Dashboard</title>
+                <meta name="description" content="Genius Admin Dashboard" />
+            </Helmet>
             <Layout>
                 <Sider padding={0} trigger={null} collapsible collapsed={collapsed} className="sider"
                     style={{ background: "white", }}
@@ -152,7 +156,7 @@ function AdminDashboard(props) {
                             <Route path="/practicetests/editpracticetest" element={<EditPracticeTest />} />
                         </Routes>
                     </Content>
-                    <Footer className="footer">©2021 Genius Digital All Right Reserved</Footer>
+                    <Footer className="footer">©{new Date().getFullYear()} Genius Digital All Right Reserved</Footer>
                 </Layout>
             </Layout>
         </div >

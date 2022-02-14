@@ -17,6 +17,7 @@ import * as flags from 'react-flags-select';
 import TextField from '@mui/material/TextField';
 import PhoneInput from 'react-phone-input-2'
 import ReactFlagsSelect from 'react-flags-select';
+import { Helmet } from 'react-helmet'
 
 const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 const formItemLayout = {
@@ -127,6 +128,10 @@ export default function Profile() {
     }
     return (
         auth.loggedIn && <div style={{ dispaly: "flex", flexDirection: "column" }}>
+            <Helmet>
+                <title>My Profile</title>
+                <meta name="description" content="Genius User Profile" />
+            </Helmet>
             <NavBar />
             <Segment1 gutter={[0, 15]}>
                 <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 5, offset: 0 }}
@@ -154,7 +159,7 @@ export default function Profile() {
                         Joined in: {new Date(userInfo.joinDate).toLocaleDateString("en-US", options)}
                     </div>
                     {
-                        !editingPassword && <Button1 onClick={() => setEditingPassword(true)} style={{ borderStyle: "none", fontSize: "14px", width: windowDimensions.width< 574?"100%":"200px", marginTop: "25px" }} >Change Password</Button1>
+                        !editingPassword && <Button1 onClick={() => setEditingPassword(true)} style={{ borderStyle: "none", fontSize: "14px", width: windowDimensions.width < 574 ? "100%" : "200px", marginTop: "25px" }} >Change Password</Button1>
                     }
 
                 </Col>
@@ -234,8 +239,8 @@ export default function Profile() {
                 </Form>
             </Collapse>
             <Segment2>
-                <Descriptions1 column={{ xxl: 3, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 }} style={{ minWidth: "350px", width:"100%" }} title="Basic Info"
-                    layout={windowDimensions.width < 574 ? 'vertical' : 'horizontal'} bordered={windowDimensions.width < 574 }
+                <Descriptions1 column={{ xxl: 3, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 }} style={{ minWidth: "350px", width: "100%" }} title="Basic Info"
+                    layout={windowDimensions.width < 574 ? 'vertical' : 'horizontal'} bordered={windowDimensions.width < 574}
                     extra={
                         editing ?
                             <div style={{ display: "flex", gap: "16px" }}>
@@ -279,7 +284,7 @@ export default function Profile() {
                             country={`+${userInfo.phoneNumber.slice(3)}`}
                             value={userInfo.phoneNumber}
                             onChange={phone => setUserInfo({ ...userInfo, phoneNumber: phone })}
-                        /> : `00${userInfo.phoneNumber}`
+                        /> : `+${userInfo.phoneNumber}`
                     }
                     </DescriptionsItem>
                     <DescriptionsItem label="Country">
@@ -288,7 +293,7 @@ export default function Profile() {
                             {Countries[userInfo.countryCode]}
                         </span>
                     </DescriptionsItem>
-                    <DescriptionsItem label="Address">
+                    {/* <DescriptionsItem label="Address">
                         {
                             editing ? <TextField
                                 fullWidth
@@ -298,7 +303,7 @@ export default function Profile() {
                                 onChange={event => setUserInfo({ ...userInfo, address: event.target.value })}
                             /> : userInfo.address
                         }
-                    </DescriptionsItem>
+                    </DescriptionsItem> */}
                 </Descriptions1>
             </Segment2>
         </div>

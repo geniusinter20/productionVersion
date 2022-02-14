@@ -13,15 +13,15 @@ export default function Segment() {
                     <Fill>
                     <div className="container">
                         <HomeInformation>
-                                <div style={{fontSize:'60%', fontWeight:300, color:"white"}}>Supercharge Your Skills and</div>
+                                <div style={{fontSize:'70%', fontWeight:300, color:"white"}}>Supercharge Your Skills and</div>
                                 <div style={{fontSize:'60%',fontWeight:600, color:'#5BCAD6'}}> Work Smarter</div>
-                            <div style={{color:"white",fontSize:'30%', fontWeight:"400"}}>Earn the New PMP Certification</div>
-                            <Buttons gutter={[20, 20]}>
-                                <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 4, offset: 0 }}>
-                                <Button1 onClick={()=>navigate("/practicetests")} type="primary">Practice Tests</Button1>
+                            <div style={{color:"white",fontSize:'40%', fontWeight:"200"}}>Earn the New PMP Certificate</div>
+                            <Buttons>
+                                <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 6, offset: 0 }} xl={{ span: 5, offset: 0 }} >
+                                <Button1 shape="round" onClick={()=>navigate("/practicetests")} type="primary">Practice Tests</Button1>
                                 </Col1>
-                                <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 4, offset: 0 }}>
-                                <Button1 type="primary">Our Courses</Button1>
+                                <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 6, offset: 0 }} xl={{ span: 5, offset: 0 }}>
+                                <Button1 shape="round" type="primary">Our Courses</Button1>
                                 </Col1>
                             </Buttons>
                         </HomeInformation>
@@ -32,14 +32,12 @@ export default function Segment() {
 }
 
 const Button1 = styled(Button)`
-margin: 0px !important;
 background: none;
 color: white;
-width: 100%;
 font-size: 22px;
 height: 50px;
 border: solid 1px white ;
-border-radius: 200px;
+width: 100%;
 &:hover{
     animation: btnmove27 0.8s;
     animation-fill-mode: forwards;
@@ -73,7 +71,10 @@ align-items: center;
 justify-content: center;
 padding: 0px 0px 0px 0px !important;
 margin-top: 30px;
-gap: 30px;
+gap: 60px;
+@media( max-width: 1000px){
+    gap: 15px;
+}
 `
 const Col1= styled(Col)`
 margin:  0px 0px 0px 0px !important;
@@ -96,26 +97,8 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-padding: 50px 30px 50px 30px;
-`
-const HomeTitle = styled.h2`
-margin-top: 5vh;
-    align-self:stretch;
-    margin-bottom: 0vh;
-    font-weight: bold;
-    color: white;
-  
-`
-
-const HomeInfo = styled.h4`
-    font-size: 35px;
-    color: white;
-    margin-bottom: 200px;
-`
-
-const HomeDesc = styled.p`
-    font-size: 20px;
-    line-height: 1.5;
-    color: white;
-    margin-bottom: 5px
+padding: 30px 4vw 30px 4vw;
+@media( min-width: 1000px){
+    padding: 90px 4vw 90px 4vw;
+}
 `

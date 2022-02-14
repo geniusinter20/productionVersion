@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from "../../Components/AppNavbar/Navbar"
 import Footer from "../../Components/Footer/Footer"
 import styled, { keyframes } from 'styled-components';
-import { Row, Col, Button, Carousel } from 'antd';
+import { Row, Col, Button, Carousel, BackTop } from 'antd';
 import HomeHeader from "../../Images/HomeHeader.png"
 import Slide from '@mui/material/Slide';
 import { fadeInRightBig, fadeIn } from 'react-animations';
@@ -12,16 +12,16 @@ import HomeImage1 from "../../Images/HomeImage1.png"
 import HomeImage2 from "../../Images/HomeImage2.png"
 import Countup from 'react-countup';
 import Rating from '@mui/material/Rating';
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined, UpOutlined } from "@ant-design/icons";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
 import { Form, Input, Checkbox, } from 'antd';
 import { BsPhone } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiHome3Line } from "react-icons/ri";
+import { IoChevronUpOutline } from "react-icons/io5";
 import { useLocation } from 'react-router-dom';
 import * as Scroll from 'react-scroll'
-import profilePic from "../../Images/profilePic.png"
 import { useSelector } from "react-redux"
 
 
@@ -107,9 +107,6 @@ export default function Home() {
         return () => window.removeEventListener('resize', handleResize);
     }, [windowDimensions]);
     useEffect(() => {
-        document.title = "Home"
-    }, []);
-    useEffect(() => {
         window.onscroll = () => {
             //console.log(window.pageYOffset)
             if (window.pageYOffset > 700) {
@@ -162,6 +159,7 @@ export default function Home() {
     };
     return (
         <div>
+             <BackTop visibilityHeight={1500}><CrButton shape="circle" icon={<IoChevronUpOutline/>} size="large" /></BackTop>
             <Navbar></Navbar>
             <MainContainer>
                 <Header gutter={[0, 20]}>
@@ -169,8 +167,7 @@ export default function Home() {
                         <div style={{ fontSize: "80%", fontWeight: "200", lineHeight: "80px", color: "#444444" }}>We Deliver</div>
                         <div style={{ fontSize: "80%", fontWeight: "500", lineHeight: "80px", color: "#5BCAD6" }}>Value</div>
                         <div style={{ fontSize: "20%", fontWeight: "300", color: "#6c6c6c", maxWidth: "600px", marginTop: "4vh" }}>
-                            Build skills with courses, certificates, and degrees online
-                            from world-class universities and companies.
+                        Build skills required for passing PMI certifications with courses, practice tests, and exams from PMI accredited instructors.
                         </div>
                         <Button type="primary" shape="round" size="lg" style={{ maxWidth: "155px", height: "45px", marginTop: "3vh", fontWeight: "500", fontSize: "17.5px" }}>Our Services</Button>
                     </ColAni>
@@ -189,9 +186,10 @@ export default function Home() {
                                 Project Management Training Provider
                             </div>
                             <div style={{ fontSize: "18px", fontWeight: "200", color: "white", maxWidth: "530px", marginTop: "2vh" }}>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                standard dummy text ever since the 1500s, when an unknown printer took a
-                                galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.
+                            Here in ExporaGenius, we strongly believe that everything is achievable if you have the motivation and opportunity to 
+                            put effort into that direction. We understand that motivation and putting effort go hand-in-hand, however, it's also 
+                            obvious for us that motivation has crucial meaning. Therefore,
+                            we create our program that way to encourage our users and keep them motivated in preparation for PMI certification.
                             </div>
                         </ColAni>
                         <Col xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 13, offset: 0 }}>
@@ -267,25 +265,27 @@ export default function Home() {
                         </MidPic>
                     </div>
 
-                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex",color:"#3c3c3c", padding: "30px 40px 30px 30px",gap:"20px" ,flexDirection:"column" }}>
+                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex",color:"#3c3c3c", padding: "30px 40px 30px 30px",gap:"15px" ,flexDirection:"column" }}>
                         <div style={{ fontSize: "30px", fontWeight: "500" }}>
                             What makes us one of the top rated Online Training companies
                         </div>
-                        <div style={{ fontSize: "23px", fontWeight: "300" }}>
-                            It is a long established fact that a reader will be distracted by the readable content of a page when looking
-                            at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                            as opposed to using 'Content here, content here', making it look like readable English.
-                            Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
-                            and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
-                            evolved over the years
+                        <div style={{ fontSize: "21px", fontWeight: "300" }}>
+                        Accordingly to our research and personal experience, even senior-level Project Managers tend to feel 
+                        anxiety and self-doubt after deciding to take PMI certification. These emotions are caused by the uncertainty 
+                        that exists around PMI certification and the lack of high-quality preparation materials. But what if, you can 
+                        change the rules and get access to high-quality material? What if, you can change the amount of uncertainty that
+                         goes along with PMI certification? These were two main issues that we wanted to address in our product. Therefore,
+                          in our online courses, practice tests, and exams we are using only the latest available information and 
+                        test question to keep our users prepared for any surprises during taking the exam.
                         </div>
                     </Col>
                 </Segment4>}
                 <Segment5>
                     <img src={HomeImage2}></img>
                     <div style={{ fontSize: "60px", lineHeight: "55px", color: "white" }}>Why join us?</div>
-                    <div style={{ fontSize: "25px", color: "white", textAlign: "center", margin: "0 6vw 0 6vw", fontWeight: "300" }}>Welcome to the National Hookah Community Association "NHCA".
-                        We are a diverse alliance of businesses from all ends of the Hookah experience.
+                    <div style={{ fontSize: "25px", color: "white", textAlign: "center", margin: "0 6vw 0 6vw", fontWeight: "300" }}>
+                        Our programs were developed in collaboration with world-class experts in Project Management,
+                     PMI acknowledged Project Managers, and PMP certificated Project Managers.
                     </div>
                     <WButton shape="round" size="lg">Read more</WButton>
                 </Segment5>
@@ -294,10 +294,7 @@ export default function Home() {
                         <BackRec1></BackRec1>
                         <BackRec2></BackRec2>
                     </div>
-                    <div style={{ display: "flex", gap: "10px", fontSize: "50px", lineHeight: "60px", fontWeight: "100" }}>What <div style={{ fontWeight: "600", color: "#5BCAD6" }}>Students</div> Say</div>
-                    <div style={{ fontWeight: "300", color: "#444444", width: "50%", fontSize: "16px", textAlign: "center" }}>Letter of on become he tended active enable to.
-                        Vicinity relation sensible sociable surprise screened no up as.
-                    </div>
+                    <div style={{ display: "flex", gap: "10px", fontSize: "30%", lineHeight: "60px", fontWeight: "100" }}>What <div style={{ fontWeight: "600", color: "#5BCAD6" }}>Students</div> Say</div>
                     <Row style={{ marginTop: "4vh", minHeight: "292px", justifyContent: "space-around" }} >
                         <Slide {...(renderReviews ? { timeout: 2000 } : {})}
                             direction="left" in={renderReviews} mountOnEnter unmountOnExit container={containerRef.current}>
@@ -423,7 +420,7 @@ export default function Home() {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Enter your E-mail" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
+                                <Input placeholder="Enter E-mail Subject" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
                             </Form.Item>
                             <Form.Item
                                 style={{ marginBottom: 25 }}
@@ -454,8 +451,8 @@ export default function Home() {
                             </Form.Item>
 
                             <Form.Item style={{ marginBottom: 5 }} >{
-                                <WButton style={{ width: "120px", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} size="lg" htmlType="submit">
-                                    Submit
+                                <WButton style={{ width: "100px", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} size="lg" htmlType="submit">
+                                    Send
                                 </WButton>
                             }
                             </Form.Item>
@@ -466,15 +463,15 @@ export default function Home() {
                         <div style={{ color: "white", display: "flex", flexDirection: "column", gap: "25px", fontSize: "20px", fontWeight: "200" }}>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <BsPhone style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></BsPhone>
-                                <div>+963938704953</div>
+                                <div>+971 55 409 0055</div>
                             </div>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <HiOutlineMail style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></HiOutlineMail>
-                                <div>yazn.alsahyone1999@gmail.com</div>
+                                <div>info@exporagenius.com</div>
                             </div>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <RiHome3Line style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></RiHome3Line>
-                                <div>911 W. Washington Blvd.<br />Los Angeles, CA 90015 U.S.A.</div>
+                                <div>FoRK 0242, Compass Building, A Shohada Road, <br />AL Hamra Industrial Zone-F2,Ras A Khaimah, United Arab Emirates</div>
                             </div>
                         </div>
                     </Col2>
@@ -484,6 +481,29 @@ export default function Home() {
         </div>
     );
 }
+const CrButton= styled(Button)`
+font-weight: 600;
+background-color: #444444;
+border-color: #444444;
+color: white;
+&:hover{
+    animation: mmm166 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes mmm166 {
+    0% {
+    color:white ;
+    background-color: #444444;
+    border-color: #444444;
+   }
+     
+   100% {
+    color: #444444;
+    background-color: white;
+    border-color: white;
+   }
+}
+`
 const MyForm = styled(Form)`
 &>*>*>*{
     color:white !important;
@@ -569,6 +589,7 @@ const Segment6 = styled.div`
     align-items: center;
     overflow: hidden;
     position: relative;
+    font-size: clamp(110px, 20vw, 180px);
 `;
 const MainContainer = styled.div`
   

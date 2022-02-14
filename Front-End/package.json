@@ -2,7 +2,7 @@
   "name": "genius",
   "version": "0.1.0",
   "homepage": "https://exporagenius.com",
-  "proxy": "https://exporagenius.com:5000/",
+  "proxy": "http://localhost:5000/",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.3.1",
@@ -30,6 +30,7 @@
     "react-drag-listview": "^0.1.8",
     "react-dropzone": "^11.4.2",
     "react-flags-select": "^2.1.2",
+    "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-phone-input-2": "^2.14.0",
     "react-redux": "^7.2.6",

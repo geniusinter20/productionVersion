@@ -142,7 +142,6 @@ const credentials = {key: privateKey, cert: certificate, ca:ca};
 const server = https.createServer(credentials, app).listen(PORT, () => console.log(`Server is running on https://localhost:${PORT}`));
 
 //app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
-
 /*
 https.createServer({
     key: fs.readFileSync('key.pem'),

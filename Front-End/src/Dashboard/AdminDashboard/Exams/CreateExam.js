@@ -51,10 +51,10 @@ function EditExam(props) {
   const [qCount, setQCOunt] = useState(0);
   const [deletedQuestionIDs, setDeletedQuestionIDs] = useState([]);
   const [imageID, setImageID] = useState("no image");
-  const [validQuestion, setValidQuestion]= useState(false);
-  const creating= useSelector(state=> state.allExams.creating);
-  const created= useSelector(state=> state.allExams.created);
-  
+  const [validQuestion, setValidQuestion] = useState(false);
+  const creating = useSelector(state => state.allExams.creating);
+  const created = useSelector(state => state.allExams.created);
+
   if (data !== undefined) {
     form.setFieldsValue({
       brief: data.examBrief,
@@ -66,7 +66,7 @@ function EditExam(props) {
       examCategory: data.examCategory,
     })
   }
-  
+
   const onUploadChange = (event) => {
     //console.log(event.file.response)
     if (event.file.response) setImageID(event.file.response.id)
@@ -75,8 +75,8 @@ function EditExam(props) {
     console.log(imageID)
     axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
   }
-  const beforeUpload=()=>{
-    if(imageID!=="no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+  const beforeUpload = () => {
+    if (imageID !== "no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -168,19 +168,19 @@ function EditExam(props) {
             options: options,
             ansExp: question.answerExplination,
             number: qCount + 1,
-            key:uuid(),
+            key: uuid(),
           }])
           setQCOunt(qCount + 1)
         }
       ).then(() => {
-        
+
         QuestionForm.setFieldsValue({
           questionText: "",
           answerExplination: ""
         })
       })
-      setQuestionType("multipleChoice")
-      setOptions([])
+    setQuestionType("multipleChoice")
+    setOptions([])
   }
   const onExamEditFinish = (qids) => {
     form.validateFields(["examTitle", "passingRate", "period", "description", "brief"])
@@ -208,52 +208,52 @@ function EditExam(props) {
 
 
   }
-  const renderOptions=(questionType)=>{
+  const renderOptions = (questionType) => {
     switch (questionType) {
       case "multipleChoice":
-        return(
+        return (
           <Options status="creating" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} ></Options>
         )
       case "ordering":
-        return(
+        return (
           <OrderingOptions status="creating" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} useForm={Form.useForm}></OrderingOptions>
         )
       case "matching":
-        return(
+        return (
           <MatchingOptions status="creating" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} ></MatchingOptions>
         )
       default:
         break;
     }
   }
-  const renderCreationButton=()=>{
-    if(!creating&&!created) return(
+  const renderCreationButton = () => {
+    if (!creating && !created) return (
       <Button type="primary"
-          onClick={() => onFinish()}
-          shape="round"
-          style={
-            { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>Create Exam</Button >
+        onClick={() => onFinish()}
+        shape="round"
+        style={
+          { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+        }>Create Exam</Button >
     )
-    if(creating && !created) return(
+    if (creating && !created) return (
       <Button type="primary"
-          loading
-          shape="round"
-          style={
-            { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>Creating</Button >
+        loading
+        shape="round"
+        style={
+          { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+        }>Creating</Button >
     )
-    if(!creating && created) return(
+    if (!creating && created) return (
       <Button type="primary"
-          onClick={() => {
-            dispatch(resetExams())
-            navigate("/dashboard/exams")
-            window.location.reload();
-          }}
-          shape="round"
-          style={
-            { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>Go Back</Button >
+        onClick={() => {
+          dispatch(resetExams())
+          navigate("/dashboard/exams")
+          window.location.reload();
+        }}
+        shape="round"
+        style={
+          { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+        }>Go Back</Button >
     )
   }
   //console.log(questions)
@@ -302,20 +302,20 @@ function EditExam(props) {
               </Select>
             </Form.Item>
             <Form.Item
-              name="description"
-              label="Description"
-              rules={
-                [{ required: true, message: 'Please input Intro' }]
-              } >
-              <Input.TextArea showCount maxLength={100} />
-            </Form.Item>
-            <Form.Item
               name="brief"
               label="Brief"
               rules={
-                [{ required: true, message: 'Please input Intro' }]
+                [{ required: true, message: 'Please input Brief' }]
               } >
-              <Input.TextArea showCount maxLength={60} />
+              <Input.TextArea autoSize={{ minRows: 4, maxRows: 4 }} showCount maxLength={250} />
+            </Form.Item>
+            <Form.Item
+              name="description"
+              label="Description"
+              rules={
+                [{ required: true, message: 'Please input Description' }]
+              } >
+              <Input.TextArea autoSize={{ minRows: 6, maxRows: 9 }} />
             </Form.Item>
             <Form.Item label="Dragger">
               <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
@@ -358,7 +358,7 @@ function EditExam(props) {
               okButtonProps={{ disabled: !validQuestion }}
               cancelButtonProps={{ disabled: false }}
               width={"40vw"}
-              
+
             >
               <div style={{ display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
                 <Form form={QuestionForm} layout="vertical" name="nest-messages" onFinish={onQuestionCreateFinish}>
@@ -375,24 +375,25 @@ function EditExam(props) {
                     dataSource={fetchedQuestions}
                     renderItem={item => <List.Item>{item}</List.Item>}
                   /> */}</Form>
-                  <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
-                    <div>Question Type</div>
-                  <Select style={{marginBottom:"20px"}} onChange={(e) =>{ 
-                      setOptions(e==="matching"?[{
-                        ["root"]: {
-                            name: "Options",
-                            items: []
-                        },
-                    }]:[])
-                      setQuestionType(e)}
-                      } value={questionType}>
-                      <Option value="multipleChoice">Multiple Choice</Option>
-                      <Option value="ordering">Ordering</Option>
-                      <Option value="matching">Matching</Option>
-                    </Select>
-                    </div>
-                  {renderOptions(questionType)}
-                
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <div>Question Type</div>
+                  <Select style={{ marginBottom: "20px" }} onChange={(e) => {
+                    setOptions(e === "matching" ? [{
+                      ["root"]: {
+                        name: "Options",
+                        items: []
+                      },
+                    }] : [])
+                    setQuestionType(e)
+                  }
+                  } value={questionType}>
+                    <Option value="multipleChoice">Multiple Choice</Option>
+                    <Option value="ordering">Ordering</Option>
+                    <Option value="matching">Matching</Option>
+                  </Select>
+                </div>
+                {renderOptions(questionType)}
+
               </div>
             </Modal>
             <Form.Item

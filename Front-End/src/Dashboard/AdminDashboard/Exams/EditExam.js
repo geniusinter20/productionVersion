@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Typography, Upload, Form, Input, message, Button, Modal, Select, Spin} from 'antd';
+import { Typography, Upload, Form, Input, message, Button, Modal, Select, Spin } from 'antd';
 import { BsPlusSquareDotted } from "react-icons/bs";
 import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -56,9 +56,9 @@ function EditExam(props) {
   const [deletedQuestionIDs, setDeletedQuestionIDs] = useState([]);
   const [imageID, setImageID] = useState("no image");
   const [fileList, setFileList] = useState([]);
-  const [validQuestion, setValidQuestion]= useState(false);
-  const editing= useSelector(state=> state.allExams.creating);
-  const edited= useSelector(state=> state.allExams.created);
+  const [validQuestion, setValidQuestion] = useState(false);
+  const editing = useSelector(state => state.allExams.creating);
+  const edited = useSelector(state => state.allExams.created);
 
   if (data !== undefined) {
     form.setFieldsValue({
@@ -81,7 +81,7 @@ function EditExam(props) {
       setTimeout(() => {
         setLoading(false)
       }, 300);
-      if (data.examImageID && data.examImageID!=="no image") {
+      if (data.examImageID && data.examImageID !== "no image") {
         setImageID(data.examImageID)
         setFileList([
           {
@@ -159,19 +159,19 @@ function EditExam(props) {
             options: options,
             ansExp: question.answerExplination,
             number: qCount + 1,
-            key:uuid(),
+            key: uuid(),
           }])
           setQCOunt(qCount + 1)
         }
       ).then(() => {
-        
+
         QuestionForm.setFieldsValue({
           questionText: "",
           answerExplination: ""
         })
       })
-setOptions([])
-setValidQuestion(false)
+    setOptions([])
+    setValidQuestion(false)
   }
   const onExamEditFinish = (qids) => {
     form.validateFields(["examTitle", "passingRate", "period", "description", "brief"])
@@ -208,7 +208,7 @@ setValidQuestion(false)
     setImageID(null)
   }
   const beforeUpload = () => {
-    if (imageID && imageID!=="no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+    if (imageID && imageID !== "no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     return true
   }
   const onPreview = async file => {
@@ -229,58 +229,60 @@ setValidQuestion(false)
     const imgWindow = window.open(src);
     imgWindow.document.write(image.outerHTML);
   }
-  const renderOptions=(questionType)=>{
+  const renderOptions = (questionType) => {
     switch (questionType) {
       case "multipleChoice":
-        return(
+        return (
           <Options status="editing" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} ></Options>
         )
       case "ordering":
-        return(
+        return (
           <OrderingOptions status="editing" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} useForm={Form.useForm} ></OrderingOptions>
         )
       case "matching":
-        return(
+        return (
           <MatchingOptions status="editing" Options={options} setOptions={setOptions} setValidQuestion={setValidQuestion} ></MatchingOptions>
         )
       default:
         break;
     }
   }
-  const renderCreationButton=()=>{
-    if(!editing&&!edited) return(
+  const renderCreationButton = () => {
+    if (!editing && !edited) return (
       <Button type="primary"
-          onClick={() => onFinish()}
+        onClick={() => onFinish()}
+        shape="round"
+        style={
+          { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+        }>Save Changes</Button >
+    )
+    if (editing && !edited) return (
+      <Button type="primary"
+        loading
+        shape="round"
+        style={
+          { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+        }>Saving..</Button >
+    )
+    if (!editing && edited) return (
+      <div style={{ display: "flex", gap: "20px" }}>
+        <Button type="primary"
+          onClick={() => {
+            navigate("/dashboard/exams")
+            window.location.reload();
+            dispatch(resetExams())
+          }}
           shape="round"
           style={
-            { height: "40px", width: "135px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>save Changes</Button >
-    )
-    if(editing && !edited) return(
-      <Button type="primary"
-          loading
-          shape="round"
-          style={
-            { height: "40px", width: "115px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-          }>Saving..</Button >
-    )
-    if(!editing && edited) return(
-      <div style={{display: "flex", gap: "20px"}}>
-                <Button type="primary"
-                    onClick={() => {
-                        navigate("/dashboard/exams")
-                        window.location.reload();
-                        dispatch(resetExams())
-                    }}
-                    shape="round"
-                    style={
-                        { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
-                    }>Go Back</Button >
-                <Button shape="round" style={{ height: "40px", width: "110px", display: "flex", alignItems: "center", 
-                justifyContent: "Space-evenly", padding: "5px" }} onClick={() => {
-                    dispatch(resetExams())
-                }}>Keep Editing</Button>
-            </div>
+            { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
+          }>Go Back</Button >
+        <Button shape="round" style={{
+          height: "40px", width: "110px", display: "flex", alignItems: "center",
+          justifyContent: "Space-evenly", padding: "5px"
+        }} onClick={() => {
+          dispatch(resetExams())
+        }}>Keep Editing</Button>
+      </div>
     )
   }
   //console.log(loading)
@@ -299,68 +301,68 @@ setValidQuestion(false)
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <fieldset disabled={!editing && edited?"disabled":null}>
-            <Form.Item
+            <fieldset disabled={!editing && edited ? "disabled" : null}>
+              <Form.Item
 
-              name="examTitle"
-              label="Exam Title"
-              rules={[{ required: true, message: 'Please input Title!' }]} >
-              <Input
-                placeholder="input placeholder" />
-            </Form.Item>
-            <Form.Item
-              name="passingRate"
-              label="Passing Rate"
-              rules={[{ required: true, message: 'Please input Price!' }]}
-            >
-              <Input placeholder="input placeholder" />
-            </Form.Item>
-            <Form.Item
-              name="period"
-              label="Period"
-              rules={
-                [{ required: true }, { warningOnly: true }, { type: 'string' }]
-              } >
-              <Input placeholder="input placeholder" />
-            </Form.Item>
-            <Form.Item name={'examCategory'} label="Exam Category">
-              <Select onChange={(c) => setExamCategory(c)} value={examCategory}>
-                <Option value="PMP">PMP</Option>
-                <Option value="CAPM">CAPM</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="description"
-              label="Description"
-              rules={
-                [{ required: true, message: 'Please input Intro' }]
-              } >
-              <Input.TextArea showCount maxLength={100} />
-            </Form.Item>
-            <Form.Item
-              name="brief"
-              label="Brief"
-              rules={
-                [{ required: true, message: 'Please input Intro' }]
-              } >
-              <Input.TextArea showCount maxLength={60} />
-            </Form.Item>
-            <Form.Item label="Exam Image">
-              <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-                <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
-                  <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                    name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png"
-                    fileList={fileList} beforeUpload={beforeUpload}>
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-hint">
-                      Drag & drop Your Image
-                      or Click to browse.</p>
-                  </Upload.Dragger>
-                </ImgCrop>
+                name="examTitle"
+                label="Exam Title"
+                rules={[{ required: true, message: 'Please input Title!' }]} >
+                <Input
+                  placeholder="input placeholder" />
               </Form.Item>
-            </Form.Item>
+              <Form.Item
+                name="passingRate"
+                label="Passing Rate"
+                rules={[{ required: true, message: 'Please input Price!' }]}
+              >
+                <Input placeholder="input placeholder" />
+              </Form.Item>
+              <Form.Item
+                name="period"
+                label="Period"
+                rules={
+                  [{ required: true }, { warningOnly: true }, { type: 'string' }]
+                } >
+                <Input placeholder="input placeholder" />
+              </Form.Item>
+              <Form.Item name={'examCategory'} label="Exam Category">
+                <Select onChange={(c) => setExamCategory(c)} value={examCategory}>
+                  <Option value="PMP">PMP</Option>
+                  <Option value="CAPM">CAPM</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="brief"
+                label="Brief"
+                rules={
+                  [{ required: true, message: 'Please input Brief' }]
+                } >
+                <Input.TextArea autoSize={{ minRows: 4, maxRows: 4 }} showCount maxLength={250} />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label="Description"
+                rules={
+                  [{ required: true, message: 'Please input Description' }]
+                } >
+                <Input.TextArea autoSize={{ minRows: 6, maxRows: 9 }} />
+              </Form.Item>
+              <Form.Item label="Exam Image">
+                <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+                  <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
+                    <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
+                      name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png"
+                      fileList={fileList} beforeUpload={beforeUpload}>
+                      <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                      </p>
+                      <p className="ant-upload-hint">
+                        Drag & drop Your Image
+                        or Click to browse.</p>
+                    </Upload.Dragger>
+                  </ImgCrop>
+                </Form.Item>
+              </Form.Item>
             </fieldset>
           </Form>
         </FormContainer>
@@ -390,7 +392,7 @@ setValidQuestion(false)
               cancelButtonProps={{ disabled: false }}
               width={"50vw"}
             >
-              <div style={{ display: "flex", flexDirection: "column", flexWrap: "wrap", width:"100%" }}>
+              <div style={{ display: "flex", flexDirection: "column", flexWrap: "wrap", width: "100%" }}>
                 <Form form={QuestionForm} layout="vertical" name="nest-messages" onFinish={onQuestionCreateFinish}>
                   <Form.Item name={'questionText'} label="Question Text">
                     <Input.TextArea />
@@ -405,23 +407,24 @@ setValidQuestion(false)
                     dataSource={fetchedQuestions}
                     renderItem={item => <List.Item>{item}</List.Item>}
                   /> */}</Form>
-                  <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
-                    <div>Question Type</div>
-                  <Select style={{marginBottom:"20px"}} onChange={(e) =>{ 
-                      setOptions(e==="matching"?[{
-                        ["root"]: {
-                            name: "Options",
-                            items: []
-                        },
-                    }]:[])
-                      setQuestionType(e)}
-                      } value={questionType}>
-                      <Option value="multipleChoice">Multiple Choice</Option>
-                      <Option value="ordering">Ordering</Option>
-                      <Option value="matching">Matching</Option>
-                    </Select>
-                    </div>
-                  {renderOptions(questionType)}   
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <div>Question Type</div>
+                  <Select style={{ marginBottom: "20px" }} onChange={(e) => {
+                    setOptions(e === "matching" ? [{
+                      ["root"]: {
+                        name: "Options",
+                        items: []
+                      },
+                    }] : [])
+                    setQuestionType(e)
+                  }
+                  } value={questionType}>
+                    <Option value="multipleChoice">Multiple Choice</Option>
+                    <Option value="ordering">Ordering</Option>
+                    <Option value="matching">Matching</Option>
+                  </Select>
+                </div>
+                {renderOptions(questionType)}
               </div>
             </Modal>
             <Form.Item
@@ -447,7 +450,7 @@ setValidQuestion(false)
           </div>
         </FormContainer>
       </div>
-    </div>
+    </div >
   )
 }
 export default EditExam;
