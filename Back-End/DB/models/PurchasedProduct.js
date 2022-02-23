@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-const  {num, str, date, clientID, courseID, practicalTestID, certificateID} = require('./datatypes');
-
+const  {num, str, date} = require('./datatypes');
 
 
 const PurchasedProductSchema = new mongoose.Schema({
-    productClientID: clientID,
-    purchasedDate: date,
-    purchasedProductID: courseID || practicalTestID || certificateID,
-    purchasePrice: num,
-    cardNo: str
+    clientID: str,
+    purchasedProductID: str,
+    purchasedProductType: str,
+    purchaseDetails: {}
 });
 
 const PurchasedProduct = mongoose.model('PurchasedProduct', PurchasedProductSchema);

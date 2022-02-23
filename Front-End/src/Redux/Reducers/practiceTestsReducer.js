@@ -6,11 +6,18 @@ const initialState = {
     error: '',
     creating: false,
     creadted: false,
+    purchasedPracticeTestsIDs: []
 }
 
 export const practiceTestsReducer = (state = initialState, { type, payload }) => {
-
     switch (type) {
+        case PracticeTestActionTypes.FETCH_PURCHASED_PRACTICETESTS: {
+            //console.log("asfasfdsdf")
+            return {
+                ...state,
+                purchasedPracticeTestsIDs: payload.map(p=>(p.purchasedProductID),[])
+            };
+        }
         case PracticeTestActionTypes.FETCH_PRACTICETESTS_REQUEST: {
             return {
                 ...state,
@@ -38,6 +45,7 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         }
         case PracticeTestActionTypes.FETCH_PRACTICETESTS_FALIURE: {
             return {
+                ...state,
                 loading: false,
                 practiceTests: [],
                 error: payload
@@ -45,6 +53,7 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         }
         case PracticeTestActionTypes.FETCH_PRACTICETESTS_SUCCESS: {
             return {
+                ...state,
                 loading: false,
                 practiceTests: payload,
                 error: ''
@@ -53,7 +62,7 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         case PracticeTestActionTypes.DELETE_PRACTICETEST: {
             const temp = state.practiceTests.filter((e) => e._id !== payload);
             //console.log(temp)
-            axios.delete(`https://exporagenius.com:5000/practicetests/delete/${payload}`)
+            axios.delete(`http://localhost:5000/practicetests/delete/${payload}`)
             return {
                 ...state,
                 practiceTests: temp
@@ -125,6 +134,7 @@ const selectedPracticeTestInitialState={
 }
 export const selectedPracticeTestReducer = (state = selectedPracticeTestInitialState, { type, payload }) => {
     switch (type) {
+        
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_RESET: 
             return ({
                 ...state,
@@ -136,7 +146,7 @@ export const selectedPracticeTestReducer = (state = selectedPracticeTestInitialS
                 loadingTest: true,
             });}
         case PracticeTestActionTypes.SELECTED_PRACTICETEST_FETCHED:{ 
-            console.log(payload);
+            //console.log(payload);
             return ({
                 ...payload,
                 loadingTest: false,

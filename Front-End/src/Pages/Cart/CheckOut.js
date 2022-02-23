@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch } from 'react-redux';
 import "./Cart.css";
-import { Row, Col, Button, Image } from 'antd';
+import { Row, Col, Button, Image, message, Spin } from 'antd';
 import NavBar from '../../Components/AppNavbar/Navbar';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -15,19 +15,35 @@ import IconButton from '@mui/material/IconButton';
 import Radio from '@mui/material/Radio';
 import { BsPaypal } from "react-icons/bs"
 import { HiLockClosed } from "react-icons/hi"
-import { clearCart } from "../../Redux/Actions/CartActions"
+import { clearCart, loadCart } from "../../Redux/Actions/CartActions"
 import noImage from "../../Images/noImage.png"
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
+import axios from 'axios';
+import Modal from '@mui/material/Modal';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function CheckOut() {
     const paypal = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { state } = useLocation();
-    const products = useSelector(!state ? state => state.cart.products : r => state.product)
+    const [products, setProducts] = useState([]);
+    const productsInCart = useSelector(state => state.cart.products)
+    const auth = useSelector(state => state.auth)
     const [total, setTotal] = useState(0)
     const [selectedValue, setSelectedValue] = React.useState('paypal');
     const [checkingOut, setCheckingOut] = useState(false)
+    const [finishedCheckingOut, setfinishedCheckingOut] = useState(false)
+    const [completingCheckout, setCompletingCheckout] = useState(true)
+    useEffect(() => {
+        dispatch(loadCart())
+    }, [])
+    console.log(products)
+    useEffect(() => {
+        if (state) setProducts(state.product)
+        else setProducts(productsInCart)
+    }, [state, productsInCart])
+
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -72,6 +88,39 @@ export default function CheckOut() {
         })
         setTotal(temp)
     }
+    const finishCheckout = (order) => {
+        setfinishedCheckingOut(true);
+        axios.post("http://localhost:5000/checkout/add", order).then(res => {
+            products.forEach((p, i) => {
+                axios.post("http://localhost:5000/purchasedproduct/add",
+                    {
+                        clientID: auth.userData._id,
+                        purchasedProductID: p.product.key,
+                        purchasedProductType: p.productType,
+                        purchaseDetails: {
+                            purchaseDate: order.create_time,
+                            purchaseID: order.id,
+                        }
+                    }).then(res => {
+                        if (i === products.length - 1) {
+                            setTimeout(() => {
+                                setCompletingCheckout(false)
+                                message.success({ content: "Checkout Completed", className: "message" });
+                                navigate("/")
+                                if (!state) dispatch(clearCart())
+                            }, 1000);
+
+
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+            })
+
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     const generateItems = () => {
         return products.map(p => {
             switch (p.productType) {
@@ -79,7 +128,7 @@ export default function CheckOut() {
                     return (
                         {
                             name: getproductName(p.product),
-                            description: getproductDescription(p.product),
+                            description: `Purchased From Genius`,
                             unit_amount: {
                                 currency_code: "USD",
                                 value: getproductPrice(p.product)
@@ -119,13 +168,14 @@ export default function CheckOut() {
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     if (order.status === "COMPLETED") {
-                        navigate("/")
-                        dispatch(clearCart())
+                        finishCheckout(order)
                     }
-                    console.log(order);
+                    //console.log(order);
                 },
                 onError: (err) => {
-                    console.log(err);
+                    //const error= err.toString().match(/\w+(?=.*Corr)/g)
+                    message.error({ content: err.name, className: "message" });
+                    //console.log(err);
                 },
             })
             .render(paypal.current);
@@ -137,6 +187,15 @@ export default function CheckOut() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap: "5vh" }}>
+            <Modal
+                open={completingCheckout && finishedCheckingOut}
+                closeAfterTransition>
+                <div style={{ width: "100vw", height: "100vh", display: "flex", gap: 20, alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+                    <Spin indicator={<LoadingOutlined style={{ fontSize: 94, color: "white" }} spin />} />
+                    <div style={{ color: "white", fontSize: 16 }}>Finishing Checkout...</div>
+                </div>
+
+            </Modal>
             <Helmet>
                 <title>Check Out</title>
             </Helmet>
@@ -229,7 +288,7 @@ export default function CheckOut() {
                                     }}
                                 >
                                     <Image fallback={noImage} width={39} height={24}
-                                        src={`https://exporagenius.com:5000/image/${getImageID(p.product)}`}></Image>
+                                        src={`http://localhost:5000/image/${getImageID(p.product)}`}></Image>
                                     <ListItemText sx={{
                                         '& .MuiListItemText-primary': {
                                             fontSize: 17,
@@ -270,7 +329,7 @@ export default function CheckOut() {
                     </div>
                 </Col>
             </Row>
-        </div>
+        </div >
     )
 }
 

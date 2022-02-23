@@ -172,7 +172,7 @@ function PracticeTests() {
                 }
                 else {
                     return (
-                        <Tag className="tagProcessing" icon={<SyncOutlined spin style={{ color: "#096dd9" }} className="icon" />} color="processing">
+                        <Tag className="tagProcessing" icon={<SyncOutlined style={{ color: "#096dd9" }} className="icon" />} color="processing">
                             IN PROGRESS
                         </Tag>
                     )
@@ -204,7 +204,7 @@ function PracticeTests() {
     //const [dataSource, setDataSource]= useState([]);
     //console.log("allexamsact", examsActivities)
     const dispatch = useDispatch();
-    console.log(examsActivities)
+    //console.log(examsActivities)
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "4vh", margin: "2vh 4vw 2vh 4vw" }}>
             <Modal width={300} bodyStyle={{ height: "30vh", display: "flex", gap: "4vh", flexDirection: "column", alignItems: "center", justifyContent: "center" }} footer={null} closable={false} visible={loadingExamData}>

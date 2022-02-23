@@ -11,10 +11,10 @@ import { ImConnection } from 'react-icons/im';
 import { BsPlusSquareDotted } from "react-icons/bs";
 import { Button } from "antd";
 import "./StartScreen.css"
+import { useNavigate } from 'react-router-dom';
 
-class StartScreen extends Component {
-
-    render() {
+function StartScreen (props) {
+    const navigate= useNavigate();
         return (
             <MainContainer>
                 <div className='side1'>
@@ -24,10 +24,10 @@ class StartScreen extends Component {
                 </div>
                 <Side2>
                     <Header>
-                        Welcome to <div style={{ color: "#30b8c7", fontWeight: "600", fontSize: "2.4rem", textAlign: "center" }}>{this.props.examInfo.examName}</div>
+                        Welcome to <div style={{ color: "#30b8c7", fontWeight: "600", fontSize: "2.4rem", textAlign: "center" }}>{props.examInfo.examName}</div>
                     </Header>
                     <div style={{ alignSelf: "flex-start", fontSize: "14px", color: "#6C6C6C", fontWeight:"600" }}>
-                        {`Exam Period: ${Math.floor(this.props.examInfo.examPeriod/60)}:${this.props.examInfo.examPeriod}:00`}</div>
+                        {`Exam Period: ${Math.floor(props.examInfo.examPeriod/60)}:${props.examInfo.examPeriod}:00`}</div>
                     <div style={{ alignSelf: "flex-start", fontSize: "14px", color: "#6C6C6C" }}>Please read the following instruction carefuly before proceding to the exam</div>
                     <Sections>
                         <SubSection><ImConnection className='icon' /><div className="subTitle">Make sure to have a stable internet connection</div></SubSection>
@@ -41,13 +41,14 @@ class StartScreen extends Component {
                     <Button type="primary"
                             className='button1'
                             shape="round"
+                            onClick={()=>navigate(-1)}
                             style={
                                 { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
                             }>Back</Button >
                         <Button type="primary"
                             className='button'
                             shape="round"
-                            onClick={this.props.setStarted}
+                            onClick={props.setStarted}
                             style={
                                 { height: "40px", width: "100px", display: "flex", alignItems: "center", justifyContent: "Space-evenly", padding: "5px" }
                             }>Start</Button >
@@ -55,7 +56,6 @@ class StartScreen extends Component {
                 </Side2>
             </MainContainer>
         );
-    }
 }
 export default StartScreen;
 

@@ -22,6 +22,7 @@ export const removeProduct = (productType, productID) => {
 }
 export const clearCart = (productType, product) => {
     //console.log("sdfsdfsd")
+    localStorage.removeItem("cart")
     return ({
         type: CartActionTypes.CART_CLEAR,
     })
@@ -44,7 +45,7 @@ export const loadCart = () => {
                 case "practiceTest": {
                     //console.log(p);
                     axios
-                        .get(`https://exporagenius.com:5000/practicetests/${p.productID}`)
+                        .get(`http://localhost:5000/practicetests/${p.productID}`)
                         .then(({ data }) => {
                             products.push({
                                 productType: p.productType,

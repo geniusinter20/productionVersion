@@ -41,7 +41,7 @@ export default function Cart() {
             setProducts(cart.products)
             if (cart.productsWithID.length >= 0) calculateTotal(cart.products)
         }
-        console.log("cart", cart.products)
+        //console.log("cart", cart.products)
     }, [cart])
     const calculateTotal = (products) => {
         var total = 0;
@@ -64,7 +64,7 @@ export default function Cart() {
             case "practiceTest":
                 return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image><img alt="example" src={product.testImageID!=="no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>
+                        <Image><img alt="example" src={product.testImageID!=="no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>
                         <Information>
                             <ProductName>{product.testTitle}</ProductName>
                             <Tooltip title={product.testBrief}>

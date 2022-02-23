@@ -41,7 +41,7 @@ class FetchedQuestions extends Component {
     // fetchQuestion = (e) => {
     //     var number = 0;
     //     e.forEach(async element => {
-    //         var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
+    //         var res = await axios.get(`http://localhost:5000/question/${element}`)
     //         number++;
     //         this.addQuestion({ ...res.data[0], number: number })
     //         this.props.setQCOunt(number)
@@ -53,7 +53,7 @@ class FetchedQuestions extends Component {
         var number = 0;
         if (!e) this.setState({ loadingQuestions: true })
         else e.every(async element => {
-            var res = await axios.get(`https://exporagenius.com:5000/question/${element}`)
+            var res = await axios.get(`http://localhost:5000/question/${element}`)
             if (res.data.msg) {
                 message.error({ content: `Error loading questions: ${res.data.msg}`, className: "message" });
                 this.setState({ loadingQuestions: false })
@@ -155,7 +155,7 @@ class FetchedQuestions extends Component {
                             fetchedQuestions: temp,
                         })
                         //console.log("key", this.state.selectedQuestion.key)
-                        axios.post(`https://exporagenius.com:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
+                        axios.post(`http://localhost:5000/question/update/${this.state.selectedQuestion.key}`, newQ)
                     }
                 })
     }

@@ -47,6 +47,7 @@ export const cartReducer = (state = cartInitialState, { type, payload }) => {
             return {
                 ...state,
                 products: [],
+                productsWithID: []
             }
         }
         default:

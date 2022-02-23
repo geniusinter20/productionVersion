@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchPracticeTestsSuccess, selectedPracticeTest } from '../../Redux/Actions/practiceTestsActions';
+import { fetchPracticeTestsSuccess, fetchPurchasedPracticeTests, selectedPracticeTest } from '../../Redux/Actions/practiceTestsActions';
 import noImage from "../../Images/noImage.png";
 import { Row, Col, Typography, Button, Input, Affix, List, Skeleton, Card, Avatar } from "antd";
 import Rating from '@mui/material/Rating';
@@ -35,6 +35,8 @@ export default function SelectedTest() {
   const [loadingReviews, setLoadingReviews] = useState(false);
   const productsInCart = useSelector(state => state.cart.productsWithID.filter(x => x.productType === "practiceTest"));
   const [addedToCart, setAddedToCart] = useState(productsInCart.findIndex(x => x.productID === state.testID) !== -1)
+  const purchasedPracticeTestsIDs= useSelector(state=>state.allPracticeTests.purchasedPracticeTestsIDs)
+  const [purchased, setPurchased]= useState(true)
   const [reviews, setReviews] = useState([{
     userName: "john Doe",
     userID: "456464",
@@ -66,7 +68,17 @@ export default function SelectedTest() {
   useEffect(() => {
     if (!state || !state.testID) navigate(-1)
   }, [])
-
+  useEffect(() => {
+    dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+  }, [auth.loggedIn])
+  
+  useEffect(() => {
+    if(purchasedPracticeTestsIDs){
+      //console.log(purchasedPracticeTestsIDs.includes(state.testID))
+      setPurchased(purchasedPracticeTestsIDs.includes(state.testID))
+    }
+  }, [purchasedPracticeTestsIDs])
+  
   useEffect(() => {
     dispatch(selectedPracticeTest(state.testID))
     dispatch(fetchPracticeTestsSuccess());
@@ -82,7 +94,7 @@ export default function SelectedTest() {
   //console.log(relatedTests);
   const loadMoreReviews = () => {
     setReviews([...reviews, ...new Array(2).fill({ loading: true })])
-    console.log(reviews);
+    //console.log(reviews);
     setTimeout(() => {
       //reviews.splice(-1, 2)
       setReviews([...reviews, {
@@ -102,7 +114,7 @@ export default function SelectedTest() {
         loading: false,
         reviewValue: 4.5,
       }])
-      console.log(reviews);
+      //console.log(reviews);
     }, 1000);
   }
 
@@ -119,7 +131,7 @@ export default function SelectedTest() {
         <Button onClick={() => { loadMoreReviews() }}>loading more</Button>
       </div>
     ) : null;
-  const SideColumn = test.testLoaded ?
+  const SideColumn = test.testLoaded && !purchased ?
     <div style={{ display: "flex", flexDirection: "column", padding: "25px", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.16)", gap: 10 }}>
       <div style={{ fontSize: "18px", color: "#444444" }}>
         <div style={{ fontSize: "23px", fontWeight: "600", marginBottom: 5 }}>What You'll Get</div>
@@ -131,7 +143,7 @@ export default function SelectedTest() {
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
         <div style={{ fontSize: "30px", fontWeight: "600", color: "#444444" }}>
-          {`$${test.testPrice}`}
+          {`$${test.testPrice -1}.99`}
         </div>
         <TButton onClick={() => setApplyingCoupon(true)} style={{ fontSize: "17px", fontWeight: "500", color: "#444444", textDecoration: "underline" }}>
           Apply Coupon
@@ -154,19 +166,21 @@ export default function SelectedTest() {
       <div style={{ fontSize: "13px", fonWeight: "300", color: "#969696", alignSelf: "center", marginBottom: "5px" }}>
         30-Day Money-Back Guarantee
       </div>
-      {addedToCart ? <Button2 onClick={() => {
+      {addedToCart ? 
+      <Button2 
+      onClick={() => {
         setAddedToCart(false)
         dispatch(removeProduct("practiceTest", state.testID))
         }} type="primary" size="large">
         Remove From Cart
       </Button2> :
-        <Button2 onClick={() => {
+        <Button2   onClick={() => {
           setAddedToCart(true)
           dispatch(addProduct("practiceTest", state.testID))
         }} type="primary" size="large">
           Add to Cart
         </Button2>}
-      <Button1 onClick={() => {
+      <Button1  onClick={() => {
         auth.loggedIn ? navigate("/cart/checkout", {state:{
           product:[{
             productType: "practiceTest",
@@ -187,7 +201,7 @@ export default function SelectedTest() {
       <MainContainer>
         <Section1>
           <Background>
-            <img src={test.testImageID ? `https://exporagenius.com:5000/image/${test.testImageID}` : noImage}></img>
+            <img src={test.testImageID ? `http://localhost:5000/image/${test.testImageID}` : noImage}></img>
             <Fill></Fill>
           </Background>
           <Row style={{ position: "absolute", top: 0, padding: "8vh 0 0 4vw", width: "100%" }}>
@@ -280,7 +294,7 @@ export default function SelectedTest() {
                             testID: item.key,
                           }
                         })}
-                        ><img alt="example" src={item.testImageID ? `https://exporagenius.com:5000/image/${item.testImageID}` : noImage} /></Image>}
+                        ><img alt="example" src={item.testImageID ? `http://localhost:5000/image/${item.testImageID}` : noImage} /></Image>}
                       >
                         <ProductDtails onClick={() => navigate(`/practicetests/${item.testTitle}`, {
                           state: {

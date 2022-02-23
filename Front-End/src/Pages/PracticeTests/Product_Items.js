@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import { Card, Rate, Pagination, Tooltip, Button } from 'antd';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart, AiOutlineCheck } from 'react-icons/ai';
 import "./Product_Items.css";
 import { addProduct, removeProduct } from "../../Redux/Actions/CartActions";
 import PuffLoader from "react-spinners/PuffLoader"
@@ -9,6 +9,7 @@ import noImage from "../../Images/noImage.png"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Rating from '@mui/material/Rating';
+import { fetchPurchasedPracticeTests } from "../../Redux/Actions/practiceTestsActions";
 
 function Products(props) {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ function Products(props) {
   const practiceTests = useSelector(state => state.allPracticeTests.practiceTests);
   const productsInCart = useSelector(state => state.cart.productsWithID.filter(x => x.productType === "practiceTest"));
   const auth = useSelector(state => state.auth);
+  const purchasedPracticeTestsIDs= useSelector(state=>state.allPracticeTests.purchasedPracticeTestsIDs)
+  //console.log(purchasedPracticeTestsIDs)
   const changeCurrentPage = (page) => {
     setCurrentPage(page)
   }
@@ -49,6 +52,9 @@ function Products(props) {
     }, 200);
 
   }
+  useEffect(() => {
+    if(auth.loggedIn)dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+  }, [auth.loggedIn])
   return (
     !dataLoaded ? <div style={{ width: "100%", height: "100%", marginTop: "15vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <PuffLoader css={"display: block; margin: 0 0 0 0;"} size={100} />
@@ -64,7 +70,7 @@ function Products(props) {
                     testID: product.key,
                   }
                 })}
-                ><img alt="example" src={product.testImageID!=="no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>}
+                ><img alt="example" src={product.testImageID!=="no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>}
               >
                 <ProductDtails onClick={() => navigate(`/practicetests/${product.testTitle}`, {
                   state: {
@@ -77,13 +83,16 @@ function Products(props) {
                   <PPrice>{"$ "}{parseFloat(product.testPrice).toFixed(2)}</PPrice>
                 </ProductDtails>
                 {
-
+                  purchasedPracticeTestsIDs.includes(product.key)?
+                  <Tooltip title="Purchased!">
+                      <Button style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineCheck />} />
+                    </Tooltip>:
                   productsInCart.findIndex(x => x.productID === product.key) === -1 ?
                     <Tooltip title="Add to Cart">
-                      <Button onClick={() => addToCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineHeart />} />
+                      <Button  onClick={() => addToCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px" }} shape="circle" icon={<AiOutlineHeart />} />
                     </Tooltip> :
                     <Tooltip title="Remove from Cart">
-                      <Button onClick={() => removeFromCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px", borderColor: "#303030" }} shape="circle" icon={<AiFillHeart />} />
+                      <Button  onClick={() => removeFromCart("practiceTest", product.key)} style={{ position: "absolute", right: "20px", bottom: "13px", borderColor: "#303030" }} shape="circle" icon={<AiFillHeart />} />
                     </Tooltip>
                 }
               </CCard>

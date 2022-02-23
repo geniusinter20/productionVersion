@@ -19,6 +19,7 @@ import { fetchExamsSuccess } from '../../Redux/Actions/ExamsActions';
 import { useSelector } from "react-redux"
 import { loadCart } from '../../Redux/Actions/CartActions';
 import { Helmet } from 'react-helmet';
+import { fetchPurchasedPracticeTests } from '../../Redux/Actions/practiceTestsActions';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -26,7 +27,7 @@ function UserDashboard(props) {
     const navigate = useNavigate()
     const params = useParams()
     const dispatch = useDispatch();
-    const purchasedPracticeTests = useSelector(state => state.cart.products.filter(x => x.productType === "practiceTest"))
+    const purchasedPracticeTestsIDs= useSelector(state=>state.allPracticeTests.purchasedPracticeTestsIDs)
     const cart = useSelector(state => state.cart)
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
@@ -58,12 +59,15 @@ function UserDashboard(props) {
 
     useEffect(() => {
         dispatch(fetchExamsSuccess())
-        dispatch(loadCart())
     }, [])
     useEffect(() => {
-        console.log(cart);
-        if (purchasedPracticeTests && auth.loggedIn) dispatch(fetchuserpracticetests(purchasedPracticeTests.map(x => x.product.key), auth.userData._id))
-    }, [cart, auth.loggedIn])
+        //console.log(cart);
+        if (auth.loggedIn) dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+    }, [auth.loggedIn])
+    useEffect(() => {
+        //console.log(cart);
+        if (purchasedPracticeTestsIDs && auth.loggedIn) dispatch(fetchuserpracticetests(purchasedPracticeTestsIDs, auth.userData._id))
+    }, [purchasedPracticeTestsIDs, auth.loggedIn])
 
     const toggle = () => {
         setCollapsed(!collapsed)
@@ -124,7 +128,7 @@ function UserDashboard(props) {
                             <div className="vl"></div>
                             <div> {userInfo.fullName.toUpperCase()}</div>
                             {
-                                userInfo.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${userInfo.imageID}`} size={50}
+                                userInfo.imageID ? <Avatar src={`http://localhost:5000/image/${userInfo.imageID}`} size={50}
                                 >
                                 </Avatar>
                                     : <MyAvatar style={{ border: "solid #F8F8F8" }} size={50}

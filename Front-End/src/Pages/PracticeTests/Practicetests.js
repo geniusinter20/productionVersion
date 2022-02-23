@@ -5,15 +5,20 @@ import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../../Components/AppNavbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
-import { useDispatch } from 'react-redux';
-import { fetchPracticeTestsSuccess } from '../../Redux/Actions/practiceTestsActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPracticeTestsSuccess, fetchPurchasedPracticeTests } from '../../Redux/Actions/practiceTestsActions';
 import { Helmet } from 'react-helmet';
 
 function PracticeTests() {
     const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
     useEffect(() => {
         dispatch(fetchPracticeTestsSuccess());
     }, [])
+    useEffect(() => {
+      if(auth.loggedIn)dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+    }, [auth.loggedIn])
+    
     return (
         <div>
             <Helmet>
