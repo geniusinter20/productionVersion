@@ -42,15 +42,6 @@ function getWindowDimensions() {
     };
 }
 export default function Profile() {
-    //send emails
-    //     useEffect(() => {
-    //     emailjs.send('service_lut0ol8', 'template_a8gkpri', templateParams, 'user_y3Z1q9WIfU0XwFNUkDWlM')
-    //     .then(function(response) {
-    //        console.log('SUCCESS!', response.status, response.text);
-    //     }, function(error) {
-    //        console.log('FAILED...', error);
-    //     });
-    // }, [])
     const auth = useSelector(state => state.auth)
     const navigate = useNavigate()
     useEffect(() => {

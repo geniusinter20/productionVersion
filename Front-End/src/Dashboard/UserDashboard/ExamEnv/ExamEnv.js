@@ -11,7 +11,7 @@ import "./examEnv.css";
 import { startExam } from '../../../Redux/Actions/UserDashboardActions';
 import { fetchActivity } from '../../../Redux/Actions/UserDashboardActions';
 import FinishScreen from './FinishScreen';
-import { Tabs } from 'antd';
+import { Tabs, Row } from 'antd';
 import ScoreBoard from './ScoreBoard';
 
 const { TabPane } = Tabs;
@@ -99,12 +99,15 @@ function ExamEnv(props) {
 export default ExamEnv;
 
 
-const MainContainer = styled.div`
+const MainContainer = styled(Row)`
 display: flex;
 align-items: center;
 justify-content: center;
 min-height: 100vh;
-width: 100%;
+padding: 4vh 4vw 4vh 4vw !important;
+@media  (max-width: 576px) {
+    padding: 0 !important;
+}
 overflow: hidden;
 background: linear-gradient(-45deg, #000000, #242424, #484848, #6C6C6C);
 background-size: 400% 400%;
@@ -125,7 +128,15 @@ animation: gradient1 15s ease infinite;
 const MyTabs = styled(Tabs)`
 position: relative;
 background-color: white;
-margin: 30px;
+width: 100%;
+width: 85vw;
+@media  (max-width: 876px) {
+   width: 95vw;
+}
+@media  (max-width: 576px) {
+   width: 100vw;
+   padding: 2vh 2vw 2vh 2vw;
+}
 &>*:nth-child(1){
     padding-left: 2vw;
     padding-top: 1vh;

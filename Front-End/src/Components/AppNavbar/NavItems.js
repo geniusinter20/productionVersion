@@ -5,29 +5,30 @@ export const navItems = [
       path: "/pmpcertificate",
       cName: "nav-item",
     },
-    {
-      id: 2,
-      title: "Online Training",
-      path: "/services",
-      cName: "nav-item",
-    },
+    // {
+    //   id: 2,
+    //   title: "Online Training",
+    //   path: "/services",
+    //   cName: "nav-item",
+    // },
     {
       id: 3,
-      title: "Practice Test",
+      title: "Practice Tests",
       path: "/practicetests",
       cName: "nav-item",
     },
-    {
-      id: 4,
-      title: "Exams",
-      path: "/contactus",
-      cName: "nav-item",
-    },{
-      id: 5,
-      title: "Blog",
-      path: "/contactus",
-      cName: "nav-item",
-    },
+    // {
+    //   id: 4,
+    //   title: "Exams",
+    //   path: "/contactus",
+    //   cName: "nav-item",
+    // }
+    // ,{
+    //   id: 5,
+    //   title: "Blog",
+    //   path: "/contactus",
+    //   cName: "nav-item",
+    // },
     {
       id: 6,
       title: "About",
@@ -65,24 +66,24 @@ export const navItems = [
     
   ];
   export const aboutMenu = [
-    {
-      id: 1,
-      title: "About Us",
-      path: "/aboutus",
-      cName: "submenu-item",
-    },
-    {
-      id: 2,
-      title: "What We Do",
-      path: "/whatwedo",
-      cName: "submenu-item",
-    },
-    {
-      id: 3,
-      title: "FAQs",
-      path: "/faqs",
-      cName: "submenu-item",
-    },
+    // {
+    //   id: 1,
+    //   title: "About Us",
+    //   path: "/aboutus",
+    //   cName: "submenu-item",
+    // },
+    // {
+    //   id: 2,
+    //   title: "What We Do",
+    //   path: "/whatwedo",
+    //   cName: "submenu-item",
+    // },
+    // {
+    //   id: 3,
+    //   title: "FAQs",
+    //   path: "/faqs",
+    //   cName: "submenu-item",
+    // },
     {
       id: 4,
       title: "Contact Us",

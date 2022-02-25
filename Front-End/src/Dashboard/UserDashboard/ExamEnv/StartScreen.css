@@ -1,6 +1,8 @@
 .icon{
-    width: clamp(25px, 4.5vw, 65px);
-    height: clamp(25px, 4.5vw, 65px);
+    min-width: 40px;
+    min-height: 40px;
+    width: 4.5vw;
+    height: 4.5vw;
     color: #30b8c7;
 }
 .subTitle{

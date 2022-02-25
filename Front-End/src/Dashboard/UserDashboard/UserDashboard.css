@@ -9,8 +9,9 @@
     align-items: center;
     justify-content: space-between;
     background-color: #F8F8F8;
-    height: 10vh;
-    padding: 3vw;
+    min-height: 10vh;
+    padding: 20px;
+    flex-wrap: wrap-reverse; 
 }
 
 .footer{

@@ -15,7 +15,7 @@ import Rating from '@mui/material/Rating';
 import { LeftOutlined, RightOutlined, UpOutlined } from "@ant-design/icons";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
-import { Form, Input, Checkbox, } from 'antd';
+import { Form, Input, Checkbox, Modal } from 'antd';
 import { BsPhone } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiHome3Line } from "react-icons/ri";
@@ -23,7 +23,7 @@ import { IoChevronUpOutline } from "react-icons/io5";
 import { useLocation } from 'react-router-dom';
 import * as Scroll from 'react-scroll'
 import { useSelector } from "react-redux"
-
+import emailjs from '@emailjs/browser';
 
 const fadeInAnimation = keyframes`${fadeIn}`;
 const scroller = Scroll.scroller;
@@ -64,6 +64,8 @@ export default function Home() {
     const [form] = Form.useForm();
     const location = useLocation();
     const auth = useSelector(state => state.auth)
+    const [sending, setSending] = useState(false);
+    const [showingEmailModal, setShowingEmailModal] = useState(false);
     const reviews = [{
         reviewTitle: "Best Developers",
         reviewText: "Outward clothes promise at gravity do excited. Sufficient particular impossible by reasonable oh expression is. Yet preference connection unpleasant yet melancholy but end appearance. And excellence partiality estimating terminated day everything.",
@@ -150,16 +152,38 @@ export default function Home() {
 
     }
     const onFinish = () => {
+
+        emailjs.init('user_IaBVTnHCVCYMiydvqFVna');
         form.validateFields()
             .then(
-                ({ email, password }) => {
-                    //console.log("fullname:", fullName)
+                ({ fullName, user_email, message_subject, message }) => {
+                    setSending(true);
+                    emailjs.send('service_thjel1d', 'template_mn9692h', {
+                        fullName: fullName,
+                        user_email: user_email,
+                        message_subject: message_subject,
+                        message: message
+                    })
+                        .then((response) => {
+                            setSending(false)
+                            console.log('SUCCESS!', response);
+                            setShowingEmailModal(true)
+                            form.setFieldsValue({
+                                fullName: fullName,
+                                user_email: user_email,
+                                message_subject: '',
+                                message: ''
+                            })
+                        }, (error) => {
+                            setSending(false)
+                            console.log('FAILED...', error);
+                        });
                 })
             .catch((errorInfo) => { });
     };
     return (
         <div>
-             <BackTop visibilityHeight={1500}><CrButton shape="circle" icon={<IoChevronUpOutline/>} size="large" /></BackTop>
+            <BackTop visibilityHeight={1500}><CrButton shape="circle" icon={<IoChevronUpOutline />} size="large" /></BackTop>
             <Navbar></Navbar>
             <MainContainer>
                 <Header gutter={[0, 20]}>
@@ -167,9 +191,9 @@ export default function Home() {
                         <div style={{ fontSize: "80%", fontWeight: "200", lineHeight: "80px", color: "#444444" }}>We Deliver</div>
                         <div style={{ fontSize: "80%", fontWeight: "500", lineHeight: "80px", color: "#5BCAD6" }}>Value</div>
                         <div style={{ fontSize: "20%", fontWeight: "300", color: "#6c6c6c", maxWidth: "600px", marginTop: "4vh" }}>
-                        Build skills required for passing PMI certifications with courses, practice tests, and exams from PMI accredited instructors.
+                            Build skills required for passing PMI certifications with courses, practice tests, and exams from PMI accredited instructors.
                         </div>
-                        <Button type="primary" shape="round" size="lg" style={{ maxWidth: "155px", height: "45px", marginTop: "3vh", fontWeight: "500", fontSize: "17.5px" }}>Our Services</Button>
+                        {/* <Button type="primary" shape="round" size="lg" style={{ maxWidth: "155px", height: "45px", marginTop: "3vh", fontWeight: "500", fontSize: "17.5px" }}>Our Services</Button> */}
                     </ColAni>
                     <Col xs={{ span: 20, offset: 0 }} lg={{ span: 9, offset: 0 }} ref={containerRef}>
                         <Slide direction="up" in={true} container={containerRef.current}>
@@ -186,10 +210,10 @@ export default function Home() {
                                 Project Management Training Provider
                             </div>
                             <div style={{ fontSize: "18px", fontWeight: "200", color: "white", maxWidth: "530px", marginTop: "2vh" }}>
-                            Here in ExporaGenius, we strongly believe that everything is achievable if you have the motivation and opportunity to 
-                            put effort into that direction. We understand that motivation and putting effort go hand-in-hand, however, it's also 
-                            obvious for us that motivation has crucial meaning. Therefore,
-                            we create our program that way to encourage our users and keep them motivated in preparation for PMI certification.
+                                Here in ExporaGenius, we strongly believe that everything is achievable if you have the motivation and opportunity to
+                                put effort into that direction. We understand that motivation and putting effort go hand-in-hand, however, it's also
+                                obvious for us that motivation has crucial meaning. Therefore,
+                                we create our program that way to encourage our users and keep them motivated in preparation for PMI certification.
                             </div>
                         </ColAni>
                         <Col xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 13, offset: 0 }}>
@@ -265,18 +289,18 @@ export default function Home() {
                         </MidPic>
                     </div>
 
-                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex",color:"#3c3c3c", padding: "30px 40px 30px 30px",gap:"15px" ,flexDirection:"column" }}>
+                    <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex", color: "#3c3c3c", padding: "30px 40px 30px 30px", gap: "15px", flexDirection: "column" }}>
                         <div style={{ fontSize: "30px", fontWeight: "500" }}>
                             What makes us one of the top rated Online Training companies
                         </div>
                         <div style={{ fontSize: "21px", fontWeight: "300" }}>
-                        Accordingly to our research and personal experience, even senior-level Project Managers tend to feel 
-                        anxiety and self-doubt after deciding to take PMI certification. These emotions are caused by the uncertainty 
-                        that exists around PMI certification and the lack of high-quality preparation materials. But what if, you can 
-                        change the rules and get access to high-quality material? What if, you can change the amount of uncertainty that
-                         goes along with PMI certification? These were two main issues that we wanted to address in our product. Therefore,
-                          in our online courses, practice tests, and exams we are using only the latest available information and 
-                        test question to keep our users prepared for any surprises during taking the exam.
+                            Accordingly to our research and personal experience, even senior-level Project Managers tend to feel
+                            anxiety and self-doubt after deciding to take PMI certification. These emotions are caused by the uncertainty
+                            that exists around PMI certification and the lack of high-quality preparation materials. But what if, you can
+                            change the rules and get access to high-quality material? What if, you can change the amount of uncertainty that
+                            goes along with PMI certification? These were two main issues that we wanted to address in our product. Therefore,
+                            in our online courses, practice tests, and exams we are using only the latest available information and
+                            test question to keep our users prepared for any surprises during taking the exam.
                         </div>
                     </Col>
                 </Segment4>}
@@ -285,9 +309,9 @@ export default function Home() {
                     <div style={{ fontSize: "60px", lineHeight: "55px", color: "white" }}>Why join us?</div>
                     <div style={{ fontSize: "25px", color: "white", textAlign: "center", margin: "0 6vw 0 6vw", fontWeight: "300" }}>
                         Our programs were developed in collaboration with world-class experts in Project Management,
-                     PMI acknowledged Project Managers, and PMP certificated Project Managers.
+                        PMI acknowledged Project Managers, and PMP certificated Project Managers.
                     </div>
-                    <WButton shape="round" size="lg">Read more</WButton>
+                    {/* <WButton shape="round" size="lg">Read more</WButton> */}
                 </Segment5>
                 <Segment6 ref={containerRef}>
                     <div>
@@ -407,7 +431,7 @@ export default function Home() {
                             </Form.Item>
                             <Form.Item
                                 style={{ marginBottom: 25 }}
-                                name="email"
+                                name="user_email"
                                 label="Email Address"
                                 rules={[
                                     {
@@ -420,11 +444,11 @@ export default function Home() {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Enter E-mail Subject" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
+                                <Input placeholder="Enter your E-mail" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
                             </Form.Item>
                             <Form.Item
                                 style={{ marginBottom: 25 }}
-                                name="subject"
+                                name="message_subject"
                                 label="Subject"
                                 rules={[
                                     {
@@ -433,7 +457,7 @@ export default function Home() {
                                     },
                                 ]}
                             >
-                                <Input placeholder="Enter your E-mail" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
+                                <Input placeholder="Enter your Message Subject" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", borderRadius: "6px", height: "36px" }} />
                             </Form.Item>
 
                             <Form.Item
@@ -447,17 +471,38 @@ export default function Home() {
                                     },
                                 ]}
                             >
-                                <Input.TextArea maxLength={150} style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "150px", borderRadius: "6px" }} />
+                                <Input.TextArea placeholder='Enter your Message' maxLength={150} style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "150px", borderRadius: "6px" }} />
                             </Form.Item>
 
                             <Form.Item style={{ marginBottom: 5 }} >{
-                                <WButton style={{ width: "100px", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} size="lg" htmlType="submit">
+                                <WButton loading={sending} style={{ width: "100px", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} size="lg" htmlType="submit">
                                     Send
                                 </WButton>
                             }
                             </Form.Item>
                         </MyForm>
                     </Col>
+                    <Modal
+                        title="Message Sent!"
+                        centered
+                        visible={showingEmailModal}
+                        onCancel={() => setShowingEmailModal(false)}
+                        footer={null}
+                    >
+                        {<div>
+                            Thanks so much for reaching out! This auto-reply is just to let you know…
+                            <br />
+                            We received your email and will get back to you with a (human) response as soon as possible. usually within a couple of hours. Evenings and weekends may take us a little bit longer.
+                            <br />
+                            If you have any additional information that you think will help us to assist you, please feel free to send us more emails.
+                            <br />
+                            We look forward to chatting soon!
+                            <br />
+                            Cheers,
+                            <br />
+                            Genius Support team
+                        </div>}
+                    </Modal>
                     <Col2 xs={{ span: 24, offset: 0 }} lg={{ span: 11, offset: 0 }} style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
                         <div style={{ color: "white", fontWeight: "600", fontSize: "100%", lineHeight: "120px" }}>ENGAGE & <br /> EXPERINCE</div>
                         <div style={{ color: "white", display: "flex", flexDirection: "column", gap: "25px", fontSize: "20px", fontWeight: "200" }}>
@@ -481,7 +526,7 @@ export default function Home() {
         </div>
     );
 }
-const CrButton= styled(Button)`
+const CrButton = styled(Button)`
 font-weight: 600;
 background-color: #444444;
 border-color: #444444;
@@ -764,6 +809,14 @@ const WButton = styled(Button)`
 height: 45px;
 font-weight: 600;
 color: #444444;
+display: flex;
+align-items: center;
+justify-content: center;
+&>:nth-child(1){
+display: flex;
+align-items: center;
+justify-content: center;
+}
 &:hover{
     animation: mmm1 0.5s;
     animation-fill-mode: forwards;

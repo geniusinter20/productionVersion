@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Divider, Tag, Progress, Table } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Chip from '@mui/material/Chip';
 
 const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 export default function ScoreBoard(props) {
@@ -35,17 +36,13 @@ export default function ScoreBoard(props) {
                 <Divider type="vertical" style={{ borderWidth: "2px", height: "20px", backgroundColor: "#969696" }} />
                 {props.examInfo.examName}
             </div>
-            <div style={{ display: "flex", alignItems: 'center', gap: "3px", color: "#6c6c6c", fontWeight: "600" }}>
+            <div style={{ display: "flex", alignItems: 'center', gap: "10px", color: "#6c6c6c", fontWeight: "600" }}>
                 Your Overall Result:
                 {
                     score >= props.examInfo.examPasinRate ?
-                        <Tag className="tagPassed" icon={<CheckCircleOutlined style={{ color: "#52c41a" }} className="icon" />} color="success">
-                            PASSED
-                        </Tag>
+                        <Chip style={{ color: "white", borderColor: "#52c41a", backgroundColor: "#52c41a" }} variant="outlined" label="Passed" />
                         :
-                        <Tag className="tagNotPassed" icon={<CloseCircleOutlined style={{ color: "#ff4d4f" }} className="icon" />} color="error">
-                            NOT PASSED
-                        </Tag>
+                        <Chip style={{ color: "white", borderColor: "#ff4d4f", background: "#ff4d4f" }} label="Not Passed" color="error" />
                 }
             </div>
             <ProgressBar>
@@ -93,6 +90,7 @@ export default function ScoreBoard(props) {
                     title: 'Exam',
                     dataIndex: 'examName',
                     width: "40%",
+                    responsive: ['lg'],
                 },
                 {
                     title: 'No. Questions',
@@ -104,7 +102,8 @@ export default function ScoreBoard(props) {
                 },
                 {
                     title: '%Correct',
-                    dataIndex: "score"
+                    dataIndex: "score",
+                    responsive: ['md'],
                 },
                 {
                     title: 'Time Spent',
@@ -140,7 +139,6 @@ export default function ScoreBoard(props) {
 
 
 const MainContainer = styled.div`
-width: 75vw;
 position: relative;
 background-color: rgb(255, 255, 255, 0.95);
 display: flex;
@@ -150,9 +148,10 @@ padding: 2vh 2vw 2vh 2vw;
 gap: 2vh;
 `
 const ProgressBar = styled.div`
-display: grid;
-grid-template-columns: 86% 13%;
-grid-column-gap: 1%;
+display: flex;
+flex-direction: column;
+gap: 10px;
+align-items: flex-start;
 width: 100%;
 margin-top: 2vh;
 margin-bottom: 2vh;

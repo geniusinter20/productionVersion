@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
 import logo from "../../../Images/Logo1.svg";
-
 import { CgMouse } from 'react-icons/cg';
 import { IoIosLaptop } from 'react-icons/io';
 import { BsListCheck } from 'react-icons/bs';
 import { RiTerminalWindowLine } from 'react-icons/ri';
 import { ImConnection } from 'react-icons/im';
-import { BsPlusSquareDotted } from "react-icons/bs";
-import { Button } from "antd";
+import { Button, Row, Col } from "antd";
 import "./StartScreen.css"
 import { useNavigate } from 'react-router-dom';
 
@@ -17,12 +14,12 @@ function StartScreen (props) {
     const navigate= useNavigate();
         return (
             <MainContainer>
-                <div className='side1'>
+                <Col xs={{span: 0}} xl={{span: 8}} className='side1'>
                     <object className='logo' data={logo} type="image/svg+xml"></object>
                     <div className='background' >
                     </div>
-                </div>
-                <Side2>
+                </Col>
+                <Side2 xs={{span: 24}} md={{span: 20}} xl={{span: 14}}>
                     <Header>
                         Welcome to <div style={{ color: "#30b8c7", fontWeight: "600", fontSize: "2.4rem", textAlign: "center" }}>{props.examInfo.examName}</div>
                     </Header>
@@ -59,16 +56,16 @@ function StartScreen (props) {
 }
 export default StartScreen;
 
-const MainContainer = styled.div`
+const MainContainer = styled(Row)`
 display: flex;
 align-items: center;
 height: 100vh;
 overflow: hidden;
+justify-content: center;
 `
-const Side2 = styled.div`
+const Side2 = styled(Col)`
 background: rgb(241, 241, 241, 0.90);
-height: 90vh;
-width: 55vw;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+height: 90vh; 
 display: flex;
 justify-content: space-around;
 align-items: center;
@@ -76,6 +73,9 @@ flex-direction: column;
 padding-top: 3vh;
 padding-left: 1vw;
 padding-right: 1vw;
+@media  (max-width: 576px) {
+    height: 100%; 
+}
 `
 const Buttons = styled.div`
 display: flex;

@@ -20,9 +20,9 @@ export default function Segment() {
                                 <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 6, offset: 0 }} xl={{ span: 5, offset: 0 }} >
                                 <Button1 shape="round" onClick={()=>navigate("/practicetests")} type="primary">Practice Tests</Button1>
                                 </Col1>
-                                <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 6, offset: 0 }} xl={{ span: 5, offset: 0 }}>
+                                {/* <Col1 xs={{ span: 22, offset: 0 }} lg={{ span: 6, offset: 0 }} xl={{ span: 5, offset: 0 }}>
                                 <Button1 shape="round" type="primary">Our Courses</Button1>
-                                </Col1>
+                                </Col1> */}
                             </Buttons>
                         </HomeInformation>
                     </div>

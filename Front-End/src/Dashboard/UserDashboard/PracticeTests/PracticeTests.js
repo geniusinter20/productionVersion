@@ -6,6 +6,7 @@ import { Loading3QuartersOutlined, MinusCircleOutlined, CheckCircleOutlined, Clo
 import { Table, Progress, Button, Modal, Spin, Tag } from 'antd';
 import "./PracticeTests.css";
 import styled from "styled-components";
+import Chip from '@mui/material/Chip';
 
 function PracticeTests() {
     const practiceTests = useSelector(state => state.userPracticeTests.practiceTests)
@@ -62,8 +63,9 @@ function PracticeTests() {
             width: "40%",
             render: text => <div style={{ fontWeight: "600", color: "#6C6C6C" }}>
                 {text}
-            </div>
+            </div>,
         },
+
         {
             dataIndex: 'key',
             width: "15%",
@@ -72,53 +74,60 @@ function PracticeTests() {
                 //console.log("examr", record )
                 const activities = examsActivities.filter(x => x.examID === key)
                 const ind = activities.findIndex(x => x.testID === expanded[0])
-                //console.log()
+                //console.log(key)
                 var rateVal = -1;
                 var count = 0;
                 if (ind === -1) {
                     return (
-                        <Tag className="tagNotStarted" icon={<MinusCircleOutlined style={{ color: "#faad14" }} className="icon" />} color="warning">
-                            NOT STARTED
-                        </Tag>
+                        <Chip label="Not Started" color="warning" />
+                        // <Tag className="tagNotStarted" icon={<MinusCircleOutlined style={{ color: "#faad14" }} className="icon" />} color="warning">
+                        //     NOT STARTED
+                        // </Tag>
                     )
                 }
                 else {
-                    examsActivities[ind].finishedQuestionsIDsWithAnswers.forEach(
+                    activities[ind].finishedQuestionsIDsWithAnswers.forEach(
                         q => {
+                            //console.log(q)
                             if (q.answer.isAnswer) {
                                 count = count + 1;
                             }
                         })
-                    rateVal = (count / record.examQuestionsIDs.length) * 100
-                    //console.log(count)
+                    rateVal = (count / parseFloat(record.examQuestionsIDs.length)) * 100
+                    
                     if (rateVal >= record.examPasinRate) {
                         return (
-                            <Tag className="tagPassed" icon={<CheckCircleOutlined style={{ color: "#52c41a" }} className="icon" />} color="success">
-                                PASSED
-                            </Tag>
+                            <Chip style={{color:"white", borderColor: "#52c41a", backgroundColor: "#52c41a"}}  label="Passed" />
+                            // <Tag className="tagPassed" icon={<CheckCircleOutlined style={{ color: "#52c41a" }} className="icon" />} color="success">
+                            //     PASSED
+                            // </Tag>
                         )
                     }
                     else {
                         return (
-                            <Tag className="tagNotPassed" icon={<CloseCircleOutlined style={{ color: "#ff4d4f" }} className="icon" />} color="error">
-                                NOT PASSED
-                            </Tag>
+                            <Chip style={{color:"white", borderColor: "#ff4d4f", background:"#ff4d4f"}} label="Not Passed" color="error" />
+                            // <Tag className="tagNotPassed" icon={<CloseCircleOutlined style={{ color: "#ff4d4f", width:"10px", border: "solid" }} className="icon" />} color="error">
+                            //     NOT PASSED
+                            // </Tag>
                         )
                     }
                 }
             },
+            responsive: ['lg']
         },
         {
             dataIndex: 'examQuestionsIDs',
             width: "15%",
             align: "center",
-            render: ids => <div>{`${ids.length} Questions`}</div>
+            render: ids => <div>{`${ids.length} Questions`}</div>,
+            responsive: ['lg']
         },
         {
             dataIndex: 'examPeriod',
             width: "15%",
             align: "center",
-            render: text => <div>{`${text} Minutes`}</div>
+            render: text => <div>{`${text} Minutes`}</div>,
+            responsive: ['lg']
         },
         {
             dataIndex: 'key',
@@ -130,13 +139,11 @@ function PracticeTests() {
                     const activities = examsActivities.filter(x => x.examID === key)
                     const ind = activities.findIndex(x => x.testID === expanded[0])
                     if (ind === -1) {
-                        return (<Button onClick={() => handleExamStarting(key)} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" >Start</Button>)
+                        return (<WButton onClick={() => handleExamStarting(key)} shape="round" size="lg">Start</WButton>)
                     }
                     else {
                         return (
-                            <Button className="btnreview" onClick={() => handleExamReview(key)} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" >Review</Button>
-                        )
-
+                            <CrButton shape="round" size="lg" onClick={() => handleExamReview(key)}>Review</CrButton>)
                     }
                 },
         }
@@ -146,8 +153,8 @@ function PracticeTests() {
         {
             dataIndex: 'testTitle',
             width: "40%",
-            render: text => <div style={{ fontWeight: "600", fontSize: "17px", color: "#3c3c3c" }}>{text}</div>
-
+            render: text => <div style={{ fontWeight: "600", fontSize: "17px", color: "#3c3c3c" }}>{text}</div>,
+            
         },
         {
             dataIndex: 'key',
@@ -164,34 +171,38 @@ function PracticeTests() {
                 //console.log(num === record.testExamsIDs.length)
                 if (num === record.testExamsIDs.length) {
                     return (
-                        <Tag className="tagPassed" icon={<CheckCircleOutlined style={{ color: "#52c41a" }} className="icon" />} color="success">
-                            FINISHED
-                        </Tag>
+                        <Chip  label="Finished" style={{color:"white", borderColor: "#5BCAD6", background:"#5BCAD6"}} />
+                        // <Tag className="tagPassed" icon={<CheckCircleOutlined style={{ color: "#52c41a" }} className="icon" />} color="success">
+                        //     FINISHED
+                        // </Tag>
                     )
 
                 }
                 else {
                     return (
-                        <Tag className="tagProcessing" icon={<SyncOutlined style={{ color: "#096dd9" }} className="icon" />} color="processing">
-                            IN PROGRESS
-                        </Tag>
+                        <Chip label="In Progress"  />
+                        // <Tag className="tagProcessing" icon={<SyncOutlined style={{ color: "#096dd9" }} className="icon" />} color="processing">
+                        //     IN PROGRESS
+                        // </Tag>
                     )
                 }
-            }
-
+            },
+            
         },
         {
             dataIndex: 'testExamsIDs',
             width: "15%",
             align: "center",
-            render: ids => <div>{`${ids !== undefined ? ids.length : 0} Exams`}</div>
+            render: ids => <div>{`${ids !== undefined ? ids.length : 0} Exams`}</div>,
+            responsive: ['lg']
         },
         {
 
             dataIndex: 'key',
             width: "15%",
             align: "center",
-            render: key => <div>{`${practiceTestsExams.filter(e => e.testID === key)[0].totalExamsPeriod} Minutes`}</div>
+            render: key => <div>{`${practiceTestsExams.filter(e => e.testID === key)[0].totalExamsPeriod} Minutes`}</div>,
+            responsive: ['lg']
         },
         {
             dataIndex: 'lastInteract',
@@ -275,6 +286,52 @@ font-weight: 700;
 color:#303030
 `
 const TestsContainer = styled.div`
+`
+const WButton = styled(Button)`
+height: 35px;
+font-weight: 500;
+color: #444444;
+&:hover{
+    animation: mmm1 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes mmm1 {
+    0% {
+        color: #444444;
+    background-color: white;
+    border-color: white;
+   }
+     
+   100% {
+    color: white;
+    background-color: #444444;
+    border-color: #444444;
+   }
+}
+`
+const CrButton= styled(Button)`
+height: 35px;
+font-weight: 500;
+background-color: #444444;
+border-color: #444444;
+color: white;
+&:hover{
+    animation: mmm166 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes mmm166 {
+    0% {
+    color:white ;
+    background-color: #444444;
+    border-color: #444444;
+   }
+     
+   100% {
+    color: #444444;
+    background-color: white;
+    border-color: white;
+   }
+}
 `
 
 export default PracticeTests;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Progress } from 'antd';
+import { Progress, Row, Col } from 'antd';
 import { Button, Statistic } from 'antd';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -159,9 +159,8 @@ class QuestionsForm extends Component {
         //const questionSolved= this.state.answerwithid !== null || this.props.len.length> this.state.currentQuestionNo-1
         //console.log(questionSolved)
         return (
-            <MainContainer>
+            <MainContainer >
                 <ProgressBar>
-
                     <Progress
                         className="prog"
                         showInfo={false}
@@ -288,7 +287,6 @@ class QuestionsForm extends Component {
                         onChange={(value) => this.props.examSession.setItem("remainingTime", Math.floor(value / 1000))}
                         prefix={<div style={{ color: "#444444" }}>Remaining time:</div>} />
                 </SubHeader> */}
-
             </MainContainer>
         );
     }
@@ -298,16 +296,18 @@ export default connect(
     mapStateToProps, mapDispatchToProps
 )(QuestionsForm);
 
-
-const MainContainer = styled.div`
-width: 75vw;
+const MainContainer = styled(Row)`
+padding: 4vh 2vw 4vh 2vw !important;
+@media  (max-width: 576px) {
+    padding: 0 !important;
+}
 position: relative;
 background-color: rgb(255, 255, 255, 0.95);
 display: flex;
 justify-content: flex-start;
 align-items: center;
 flex-direction: column;
-padding: 2vh 2vw 2vh 2vw;
+padding:4vh 2vw 2vh 2vw ;
 gap: 2vh;
 `
 const Buttons = styled.div`
@@ -326,13 +326,13 @@ width: 100%;
 `
 const ProgressBar = styled.div`
 display: grid;
-grid-template-columns: 82% 15%;
+grid-template-columns: 80% 16%;
 grid-column-gap: 2%;
 width: 100%;
 &> .label{
     justify-self: start;
     align-self: center;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     color: #6c6c6c;
 }
