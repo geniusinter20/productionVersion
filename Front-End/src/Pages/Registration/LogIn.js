@@ -39,8 +39,8 @@ export default function Registreation() {
     };
     useEffect(() => {
         setLoggingIn(auth.loggingIn);
-        console.log("logged:", auth.loggedIn);
-        console.log("logging:", auth.loggingIn);
+        //console.log("logged:", auth.loggedIn);
+        //console.log("logging:", auth.loggingIn);
         setLoggedIn(auth.loggedIn);
         if (auth.loggedIn && !auth.loggingIn) {
             //console.log(state);

@@ -10,7 +10,7 @@
     justify-content: space-between;
     background-color: #F8F8F8;
     min-height: 10vh;
-    padding: 20px;
+    padding: 0 4vw 0 2vw;
     flex-wrap: wrap-reverse; 
 }
 

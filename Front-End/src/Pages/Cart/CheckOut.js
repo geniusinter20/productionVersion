@@ -273,7 +273,7 @@ export default function CheckOut() {
                                                 fontWeight: "500"
                                             },
                                         }}
-                                            id={1} primary={`$${getproductPrice(p.product) - 1}.99`}
+                                            id={1} primary={`$${parseFloat(getproductPrice(p.product)).toFixed(2)}`}
                                         />
                                     }
                                     sx={{
@@ -310,12 +310,12 @@ export default function CheckOut() {
                         </div>
                         <div style={{ fontSize: "15px", lineHeight: "15px", fontWeight: "500", display: "flex", justifyContent: "space-between", alignItems: "baseline", width: "100%" }}>
                             <div>Original Price:</div>
-                            {`$${total - 1}.99`}
+                            {`$${total}.00`}
                         </div>
                         <Divider light={true} />
                         <div style={{ fontSize: "20px", lineHeight: "18px", fontWeight: "500", color: "#444444", display: "flex", justifyContent: "space-between", alignItems: "baseline", width: "100%" }}>
                             <div>Total:</div>
-                            {`$${total - 1}.99`}
+                            {`$${total}.00`}
                         </div>
                         <div style={{ fontSize: "13px", fonWeight: "300", color: "#969696", alignSelf: "center", marginBottom: "10px" }}>
                             By completing your purchase you agree to these Terms of Service.

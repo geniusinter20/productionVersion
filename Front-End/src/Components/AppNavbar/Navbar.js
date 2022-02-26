@@ -16,6 +16,7 @@ import { signOut } from "../../Redux/Actions/UserAuthActions";
 import { Typography } from '@mui/material';
 import { MdOutlineShoppingCart } from "react-icons/md"
 import { DownOutlined } from '@ant-design/icons'
+import { IoChevronUpOutline, IoChevronDownOutline } from "react-icons/io5";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -113,7 +114,7 @@ function NavBar() {
         <div style={{ fontWeight: "600", color: "#6c6c6c" }} >
           Online Training
         </div>
-        <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggleMenu ? 180 : 0} />
+        {!toggleMenu ?<IoChevronDownOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />:<IoChevronUpOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />}
       </NavItemD>
 
       <Collapse isOpen={toggleMenu} style={{ background: "#F8F8F8" }}>
@@ -133,7 +134,7 @@ function NavBar() {
       <div style={{ fontWeight: "600", color: "#6c6c6c" }} >
         About
       </div>
-      <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggleMenu1 ? 180 : 0} />
+      {!toggleMenu1 ?<IoChevronDownOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />:<IoChevronUpOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />}
     </NavItemD>
       <Collapse isOpen={toggleMenu1} style={{ background: "#F8F8F8" }}>
 
@@ -298,6 +299,11 @@ function NavBar() {
           >
             Genius
           </NavbarBrand>
+          <div className="cartIcon" style={{ marginRight: "25px"}}>
+            <Badge count={JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).productsWithID.length : 0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "7px" }}>
+              <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "32px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
+            </Badge>
+          </div>
           {userLogged ? <div style={{ marginRight: "20px", display: "flex", gap: "5px", alignItems: "center", cursor: "pointer" }}
             onClick={() => toggleHandle(false, true)}>
             {
@@ -309,7 +315,7 @@ function NavBar() {
                 >
                   {userInfo.fullName.charAt(0).toUpperCase()}
                 </MyAvatar>}
-            <DownOutlined style={{ color: "#6c6c6c", fontSize: "15px", cursor: "pointer" }} rotate={toggle1 ? 180 : 0} />
+                {!toggle1 ?<IoChevronDownOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />:<IoChevronUpOutline style={{ color: "#6c6c6c", fontSize: "17px", cursor: "pointer" }} />}
           </div> :
             <WButton size="sm" onClick={() => navigate("/login")} >Sign In</WButton>}
           <NavbarToggler

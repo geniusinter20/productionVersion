@@ -476,7 +476,7 @@ export default function Home() {
 
                             <Form.Item style={{ marginBottom: 5 }} >{
                                 <WButton loading={sending} style={{ width: "100px", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} size="lg" htmlType="submit">
-                                    Send
+                                    {sending?`sending`:`Send`}
                                 </WButton>
                             }
                             </Form.Item>
@@ -500,7 +500,8 @@ export default function Home() {
                             <br />
                             Cheers,
                             <br />
-                            Genius Support team
+                            <br />
+                            <div style={{fontWeight: 500}}>Genius Support team</div>
                         </div>}
                     </Modal>
                     <Col2 xs={{ span: 24, offset: 0 }} lg={{ span: 11, offset: 0 }} style={{ display: "flex", flexDirection: "column", gap: "40px" }}>

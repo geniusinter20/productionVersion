@@ -143,7 +143,7 @@ export default function SelectedTest() {
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
         <div style={{ fontSize: "30px", fontWeight: "600", color: "#444444" }}>
-          {`$${test.testPrice -1}.99`}
+          {`$${ parseFloat(test.testPrice).toFixed(2)}`}
         </div>
         <TButton onClick={() => setApplyingCoupon(true)} style={{ fontSize: "17px", fontWeight: "500", color: "#444444", textDecoration: "underline" }}>
           Apply Coupon
