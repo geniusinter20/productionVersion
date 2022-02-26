@@ -201,7 +201,7 @@ export default function SelectedTest() {
       <MainContainer>
         <Section1>
           <Background>
-            <img src={test.testImageID ? `http://localhost:5000/image/${test.testImageID}` : noImage}></img>
+            <img src={test.testImageID ? `https://exporagenius.com:5000/image/${test.testImageID}` : noImage}></img>
             <Fill></Fill>
           </Background>
           <Row style={{ position: "absolute", top: 0, padding: "8vh 0 0 4vw", width: "100%" }}>
@@ -294,7 +294,7 @@ export default function SelectedTest() {
                             testID: item.key,
                           }
                         })}
-                        ><img alt="example" src={item.testImageID ? `http://localhost:5000/image/${item.testImageID}` : noImage} /></Image>}
+                        ><img alt="example" src={item.testImageID ? `https://exporagenius.com:5000/image/${item.testImageID}` : noImage} /></Image>}
                       >
                         <ProductDtails onClick={() => navigate(`/practicetests/${item.testTitle}`, {
                           state: {

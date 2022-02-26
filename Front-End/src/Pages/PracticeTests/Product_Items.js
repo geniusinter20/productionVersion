@@ -70,7 +70,7 @@ function Products(props) {
                     testID: product.key,
                   }
                 })}
-                ><img alt="example" src={product.testImageID!=="no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>}
+                ><img alt="example" src={product.testImageID!=="no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>}
               >
                 <ProductDtails onClick={() => navigate(`/practicetests/${product.testTitle}`, {
                   state: {

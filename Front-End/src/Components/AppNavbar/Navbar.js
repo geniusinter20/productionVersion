@@ -165,7 +165,7 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-          {userLogged ? auth.userData.imageID ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`} size={35}
+          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={35}
           >
 
           </Avatar>
@@ -272,7 +272,7 @@ function NavBar() {
                 </li>
                 <li key="2" >
                   <Dropdown overlay={userMenu} placement="bottomRight">
-                    {auth.userData.imageID ? <Avatar style={{ cursor: "pointer" }} src={`http://localhost:5000/image/${auth.userData.imageID}`} size={45}
+                    {auth.userData.imageID ? <Avatar style={{ cursor: "pointer" }} src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={45}
                     >
 
                     </Avatar>
@@ -307,7 +307,7 @@ function NavBar() {
           {userLogged ? <div style={{ marginRight: "20px", display: "flex", gap: "5px", alignItems: "center", cursor: "pointer" }}
             onClick={() => toggleHandle(false, true)}>
             {
-              auth.userData.imageID ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`} size={40}
+              auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={40}
               >
 
               </Avatar>

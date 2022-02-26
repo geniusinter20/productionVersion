@@ -84,7 +84,7 @@ export default function Cart() {
                             state: {
                                 testID: product.key,
                             }
-                        })}><img alt="example" src={product.testImageID !== "no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>
+                        })}><img alt="example" src={product.testImageID !== "no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>
                         <Information onClick={() => navigate(`/practicetests/${product.testTitle}`, {
                             state: {
                                 testID: product.key,
@@ -124,7 +124,7 @@ export default function Cart() {
                                 testID: product.key,
                             }
                         })}
-                        ><img alt="example" src={product.testImageID !== "no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} />
+                        ><img alt="example" src={product.testImageID !== "no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} />
                         </Image1>}
                     >
                         <ProductDtails onClick={() => navigate(`/practicetests/${product.testTitle}`, {

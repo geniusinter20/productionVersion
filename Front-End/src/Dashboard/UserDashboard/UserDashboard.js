@@ -161,7 +161,7 @@ function UserDashboard(props) {
                             <div className="vl"></div>
                             <div> {userInfo.fullName.toUpperCase()}</div>
                             {
-                                userInfo.imageID ? <Avatar src={`http://localhost:5000/image/${userInfo.imageID}`} size={50}
+                                userInfo.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${userInfo.imageID}`} size={50}
                                 >
                                 </Avatar>
                                     : <MyAvatar style={{ border: "solid #F8F8F8" }} size={50}
