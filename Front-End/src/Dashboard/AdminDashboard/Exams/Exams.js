@@ -51,7 +51,7 @@ class Exams extends Component {
     this.columns = [
       {
         dataIndex: 'examImageID',
-        render: id => <Image width={80} height={45} src={id?`https://exporagenius.com:5000/image/${id}`:noImage}></Image>
+        render: id => <Image width={80} height={45} src={id!=="no image"?`http://localhost:5000/image/${id}`:noImage}></Image>
       },
       {
         title: 'Exam',
@@ -82,20 +82,20 @@ class Exams extends Component {
         },
         render: x => x ? new Date(x).toLocaleDateString("en-US", options) : null
       },
-      {
-        title: 'Status',
-        key: 'status',
-        dataIndex: 'examStatus',
-        render: status => (
-          <>
-            {
-              <Tag className={status === true ? "tag" : "tag1"} icon={status === false ? <MinusCircleOutlined className="icon" /> : <CheckCircleOutlined className="icon" />} color={status === false ? "warning" : 'blue'}>
-                {status === true ? "ACTIVE" : "PENDING"}
-              </Tag>
-            }
-          </>
-        ),
-      },
+      // {
+      //   title: 'Status',
+      //   key: 'status',
+      //   dataIndex: 'examStatus',
+      //   render: status => (
+      //     <>
+      //       {
+      //         <Tag className={status === true ? "tag" : "tag1"} icon={status === false ? <MinusCircleOutlined className="icon" /> : <CheckCircleOutlined className="icon" />} color={status === false ? "warning" : 'blue'}>
+      //           {status === true ? "ACTIVE" : "PENDING"}
+      //         </Tag>
+      //       }
+      //     </>
+      //   ),
+      // },
       {
         title: 'QuestionNo',
         dataIndex: 'examQuestionsIDs',

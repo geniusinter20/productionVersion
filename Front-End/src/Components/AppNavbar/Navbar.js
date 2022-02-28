@@ -39,7 +39,7 @@ function NavBar() {
   const loggedIn = useSelector(state => state.auth.loggedIn)
   const userInfo = useSelector(state => state.auth.userData)
   const navigate = useNavigate()
-  const products = useSelector(state => state.cart.products)
+  const cart = useSelector(state => state.cart)
   const auth = useSelector(state => state.auth)
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   const location = useLocation();
@@ -165,7 +165,7 @@ function NavBar() {
     <UserMenu onClick={({ item, key, keyPath, domEvent }) => handleUserMenuClick(key)}>
       <UserMenueItem key="manageYourAccount">
         <MyCon>
-          {userLogged ? auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={35}
+          {userLogged ? auth.userData.imageID && auth.userData.imageID!=="no image" ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`} size={35}
           >
 
           </Avatar>
@@ -261,18 +261,18 @@ function NavBar() {
                 <Link to="/login" state={{ previousPage: location.pathname }}>Log in</Link>
               </li>
               <li key="3" className="Navbatn1">
-                <Link to="/register">Get started</Link>
+                <Link to="/getstarted">Get started</Link>
               </li>
             </ul> :
               <ul className="Nav-batns-logged">
                 <li key="1" className="cartIcon">
-                  <Badge count={JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")).productsWithID.length : 0} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
+                  <Badge count={cart.productsWithID.length} style={{ backgroundColor: "#5BCAD6", position: "absolute", top: "5px" }}>
                     <MdOutlineShoppingCart onClick={() => navigate("/cart")} id="icon" style={{ marginTop: "3px", cursor: "pointer", fontSize: "35px", display: "flex", justifyContent: "space-around", color: "#6C6C6C" }} />
                   </Badge>
                 </li>
                 <li key="2" >
                   <Dropdown overlay={userMenu} placement="bottomRight">
-                    {auth.userData.imageID ? <Avatar style={{ cursor: "pointer" }} src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={45}
+                    {auth.userData.imageID && auth.userData.imageID!=="no image" ? <Avatar style={{ cursor: "pointer" }} src={`http://localhost:5000/image/${auth.userData.imageID}`} size={45}
                     >
 
                     </Avatar>
@@ -307,7 +307,7 @@ function NavBar() {
           {userLogged ? <div style={{ marginRight: "20px", display: "flex", gap: "5px", alignItems: "center", cursor: "pointer" }}
             onClick={() => toggleHandle(false, true)}>
             {
-              auth.userData.imageID ? <Avatar src={`https://exporagenius.com:5000/image/${auth.userData.imageID}`} size={40}
+              auth.userData.imageID && auth.userData.imageID!=="no image" ? <Avatar src={`http://localhost:5000/image/${auth.userData.imageID}`} size={40}
               >
 
               </Avatar>

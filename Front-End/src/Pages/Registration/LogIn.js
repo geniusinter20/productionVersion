@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { useNavigate, useLocation } from "react-router-dom"
 import { Helmet } from 'react-helmet';
+import logo from "../../Images/Logo1.svg"
 import {
     Form,
     Input,
@@ -61,6 +62,7 @@ export default function Registreation() {
             </div>
             <Row style={{ minHeight: "90vh", position: "relative", width: "100%", alignItems: "center", justifyContent: "center" }}>
                 <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }} >
+                    <object className='logo' data={logo} type="image/svg+xml"></object>
                     <div className='background' />
                 </Side1>
                 <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 9, offset: 0 }}>
@@ -129,10 +131,10 @@ export default function Registreation() {
                                     <Input.Password placeholder="Enter your Password" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
                                 </Form.Item>
                                 <Form.Item style={{ marginBottom: 5 }} >{
-                                    !loggingIn ? <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                                    !loggingIn ? <Button style={{ width: "100%", borderRadius: "200px", height: "35px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
                                         Sign in
                                     </Button> :
-                                        <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+                                        <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", height: "35px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
                                             Signing in...
                                         </Button>
                                 }

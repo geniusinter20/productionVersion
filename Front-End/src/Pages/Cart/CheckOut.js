@@ -90,9 +90,9 @@ export default function CheckOut() {
     }
     const finishCheckout = (order) => {
         setfinishedCheckingOut(true);
-        axios.post("https://exporagenius.com:5000/checkout/add", order).then(res => {
+        axios.post("http://localhost:5000/checkout/add", order).then(res => {
             products.forEach((p, i) => {
-                axios.post("https://exporagenius.com:5000/purchasedproduct/add",
+                axios.post("http://localhost:5000/purchasedproduct/add",
                     {
                         clientID: auth.userData._id,
                         purchasedProductID: p.product.key,
@@ -288,7 +288,7 @@ export default function CheckOut() {
                                     }}
                                 >
                                     <Image fallback={noImage} width={39} height={24}
-                                        src={`https://exporagenius.com:5000/image/${getImageID(p.product)}`}></Image>
+                                        src={`http://localhost:5000/image/${getImageID(p.product)}`}></Image>
                                     <ListItemText sx={{
                                         '& .MuiListItemText-primary': {
                                             fontSize: 17,

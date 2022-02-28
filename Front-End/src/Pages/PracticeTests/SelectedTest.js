@@ -69,7 +69,8 @@ export default function SelectedTest() {
     if (!state || !state.testID) navigate(-1)
   }, [])
   useEffect(() => {
-    dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+    if (auth.loggedIn) dispatch(fetchPurchasedPracticeTests(auth.userData._id))
+    //console.log(auth)
   }, [auth.loggedIn])
   
   useEffect(() => {
@@ -195,13 +196,14 @@ export default function SelectedTest() {
         Buy Now
       </Button1>
     </div> : <div></div>
+    //console.log(test)
   if (test.testLoaded) return (
     <div>
       <Navbar></Navbar>
       <MainContainer>
         <Section1>
           <Background>
-            <img src={test.testImageID ? `https://exporagenius.com:5000/image/${test.testImageID}` : noImage}></img>
+            <img src={test.testImageID ? `http://localhost:5000/image/${test.testImageID}` : noImage}></img>
             <Fill></Fill>
           </Background>
           <Row style={{ position: "absolute", top: 0, padding: "8vh 0 0 4vw", width: "100%" }}>
@@ -257,9 +259,9 @@ export default function SelectedTest() {
                     <div style={{ minWidth: "350px", wordWrap: "break-word", fontSize: "16px", fontWeight: 500, color: "#444444" }}>{item.examName}</div>
                     <div>
                       <div></div>
-                      <ul style={{ display: "flex", gap: 30, color: "#6c6c6c" }}>
-                        <li>{item.examQuestionsIDs.length} Qestions</li>
-                        <li>{item.examPeriod} Minutes</li>
+                      <ul style={{ display: "flex", gap: 20, color: "#6c6c6c" }}>
+                        <li style={{width:105}}>{item.examQuestionsIDs.length} Qestions</li>
+                        <li style={{width:105}}>{item.examPeriod} Minutes</li>
                       </ul>
                     </div>
                   </List.Item>
@@ -270,7 +272,6 @@ export default function SelectedTest() {
               <Header>Related Tests</Header>
               <CSplide
                 options={{
-                  type: 'loop',
                   perPage: 2,
                   perMove: 1,
                   breakpoints: {
@@ -294,7 +295,7 @@ export default function SelectedTest() {
                             testID: item.key,
                           }
                         })}
-                        ><img alt="example" src={item.testImageID ? `https://exporagenius.com:5000/image/${item.testImageID}` : noImage} /></Image>}
+                        ><img alt="example" src={item.testImageID ? `http://localhost:5000/image/${item.testImageID}` : noImage} /></Image>}
                       >
                         <ProductDtails onClick={() => navigate(`/practicetests/${item.testTitle}`, {
                           state: {
@@ -313,7 +314,7 @@ export default function SelectedTest() {
 
               </CSplide>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            {/* <div style={{ display: "flex", flexDirection: "column" }}>
               <Header>Reviews</Header>
               <List
                 className="demo-loadmore-list"
@@ -341,7 +342,7 @@ export default function SelectedTest() {
                   </List.Item>
                 )}
               />
-            </div>
+            </div> */}
           </Col>
           <Col xs={{ span: 24, offset: 0 }} lg={{ span: 7, offset: 3 }} style={{ marginBottom: "20px" }}  >
             {windowDimensions.width > 1000 ? <Affix offsetTop={80} >

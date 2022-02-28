@@ -62,7 +62,7 @@ export const practiceTestsReducer = (state = initialState, { type, payload }) =>
         case PracticeTestActionTypes.DELETE_PRACTICETEST: {
             const temp = state.practiceTests.filter((e) => e._id !== payload);
             //console.log(temp)
-            axios.delete(`https://exporagenius.com:5000/practicetests/delete/${payload}`)
+            axios.delete(`http://localhost:5000/practicetests/delete/${payload}`)
             return {
                 ...state,
                 practiceTests: temp

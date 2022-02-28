@@ -70,7 +70,7 @@ function Products(props) {
                     testID: product.key,
                   }
                 })}
-                ><img alt="example" src={product.testImageID!=="no image" ? `https://exporagenius.com:5000/image/${product.testImageID}` : noImage} /></Image>}
+                ><img alt="example" src={product.testImageID!=="no image" ? `http://localhost:5000/image/${product.testImageID}` : noImage} /></Image>}
               >
                 <ProductDtails onClick={() => navigate(`/practicetests/${product.testTitle}`, {
                   state: {
@@ -79,7 +79,7 @@ function Products(props) {
                 })}>
                   <PTitle>{product.testTitle}</PTitle>
                   <PType>{product.testType}</PType>
-                  <Rating size="small" name="read-only" value={4} readOnly />
+                  {/* <Rating size="small" name="read-only" value={4} readOnly /> */}
                   <PPrice>{"$ "}{parseFloat(product.testPrice).toFixed(2)}</PPrice>
                 </ProductDtails>
                 {
@@ -126,11 +126,11 @@ min-height: 220px;
 const Image = styled.div`
 position: relative;
  width: 100%;
- height:15.5vh;
+ height:140px;
  overflow: hidden;
  border-radius:5px 5px 0 0;
  & > img{
-    width:100%;
+    height:100%;
     position: absolute;
     top: -9999px;
     left: -9999px;
@@ -167,10 +167,9 @@ const PTitle = styled.div`
  font-weight: 600;
  width: 100%;
  word-wrap: break-word;
- margin-bottom: 3px;
 `
 const PPrice = styled.div`
-font-size: 13px;
+font-size: 15px;
  font-weight: 600;
  
 `

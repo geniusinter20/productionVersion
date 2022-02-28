@@ -12,6 +12,7 @@ import 'react-phone-input-2/lib/high-res.css'
 import ReactFlagsSelect from 'react-flags-select';
 import { Countries } from './Countries';
 import { Helmet } from 'react-helmet';
+import logo from "../../Images/Logo1.svg"
 
 const tailFormItemLayout = {
     wrapperCol: {
@@ -81,17 +82,17 @@ export default function Registreation() {
     //console.log(localStorage.getItem("userToken"))
     const renderButton = () => {
         if (!registering && !loggingIn) return (
-            <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+            <Button style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "35px" }} type="primary" htmlType="submit">
                 Register now
             </Button>
         )
         else if (registering && !loggingIn) return (
-            <Button loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+            <Button loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "35px" }} type="primary" htmlType="submit">
                 Registering...
             </Button>
         )
         else if (!registering && loggingIn) return (
-            <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} type="primary" htmlType="submit">
+            <Button className='buttona' loading style={{ width: "100%", borderRadius: "200px", boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "35px" }} type="primary" htmlType="submit">
                 Signing in...
             </Button>
         )
@@ -107,7 +108,10 @@ export default function Registreation() {
                 <img src={examEnvBackground} />
             </div>
             <Row style={{ minHeight: "100vh", position: "relative", width: "100%", alignItems: "center", justifyContent: "center" }}>
-                <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }}><div className='background' /></Side1>
+                <Side1 xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 8, offset: 0 }} xl={{ span: 7, offset: 0 }}>
+                    <object className='logo' data={logo} type="image/svg+xml"></object>
+                    <div className='background' />
+                </Side1>
 
                 <Side2 xs={{ span: 24, offset: 0 }} sm={{ span: 18, offset: 0 }} lg={{ span: 11, offset: 0 }} xl={{ span: 10, offset: 0 }}>
                     <div style={{ fontSize: "23px", fontWeight: "700", color: "#6C6C6C", marginBottom: "2vh", marginTop: "1vh" }}>Register Individual Account!</div>
@@ -188,7 +192,7 @@ export default function Registreation() {
                                     }),
                                 ]}
                             >
-                                <Input.Password placeholder="Re enter your fullname" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
+                                <Input.Password placeholder="Re-enter your Password" style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)" }} />
                             </Form.Item>
                             {/* <Form.Item
                                 style={{ marginBottom: 12 }}

@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import { Row, Col, Button, Carousel, BackTop } from 'antd';
 import HomeHeader from "../../Images/HomeHeader.png"
 import Slide from '@mui/material/Slide';
-import { fadeInRightBig, fadeIn } from 'react-animations';
+import { fadeIn } from 'react-animations';
 import pmp1 from "../../Images/pmp1.jpg"
 import pmp2 from "../../Images/pmp2.jpeg"
 import HomeImage1 from "../../Images/HomeImage1.png"
@@ -20,7 +20,7 @@ import { BsPhone } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiHome3Line } from "react-icons/ri";
 import { IoChevronUpOutline } from "react-icons/io5";
-import { useLocation } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import * as Scroll from 'react-scroll'
 import { useSelector } from "react-redux"
 import emailjs from '@emailjs/browser';
@@ -64,6 +64,7 @@ export default function Home() {
     const [form] = Form.useForm();
     const location = useLocation();
     const auth = useSelector(state => state.auth)
+    const navigate= useNavigate();
     const [sending, setSending] = useState(false);
     const [showingEmailModal, setShowingEmailModal] = useState(false);
     const reviews = [{
@@ -193,7 +194,8 @@ export default function Home() {
                         <div style={{ fontSize: "20%", fontWeight: "300", color: "#6c6c6c", maxWidth: "600px", marginTop: "4vh" }}>
                             Build skills required for passing PMI certifications with courses, practice tests, and exams from PMI accredited instructors.
                         </div>
-                        {/* <Button type="primary" shape="round" size="lg" style={{ maxWidth: "155px", height: "45px", marginTop: "3vh", fontWeight: "500", fontSize: "17.5px" }}>Our Services</Button> */}
+                         {/* <Button onClick={()=>navigate("./getstarted")}
+                         type="primary" shape="round" size="lg" style={{ maxWidth: "155px", height: "45px", marginTop: "3vh", fontWeight: "500", fontSize: "17.5px" }}>Get Started</Button>  */}
                     </ColAni>
                     <Col xs={{ span: 20, offset: 0 }} lg={{ span: 9, offset: 0 }} ref={containerRef}>
                         <Slide direction="up" in={true} container={containerRef.current}>
@@ -313,7 +315,7 @@ export default function Home() {
                     </div>
                     {/* <WButton shape="round" size="lg">Read more</WButton> */}
                 </Segment5>
-                <Segment6 ref={containerRef}>
+                {/* <Segment6 ref={containerRef}>
                     <div>
                         <BackRec1></BackRec1>
                         <BackRec2></BackRec2>
@@ -360,7 +362,7 @@ export default function Home() {
                         <RButton onClick={() => reviewsLoop("previous")} shape="circle" size="lg"><LeftOutlined style={{ fontSize: "20px" }} /></RButton>
                         <RButton onClick={() => reviewsLoop("next")} shape="circle" size="lg"><RightOutlined style={{ fontSize: "20px" }} /></RButton>
                     </div>
-                </Segment6>
+                </Segment6> */}
                 <Segment7>
                     <div style={{ display: "flex", gap: "10px", fontSize: "30%", lineHeight: "60px", fontWeight: "100", marginBottom: "20px", color: "#444444", width: "100%", alignItems: "baseline", justifyContent: "center" }}>
                         Our<div style={{ fontWeight: "500", color: "#5BCAD6" }}>Happy</div>Customers</div>
@@ -471,7 +473,7 @@ export default function Home() {
                                     },
                                 ]}
                             >
-                                <Input.TextArea placeholder='Enter your Message' maxLength={150} style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", height: "150px", borderRadius: "6px" }} />
+                                <Input.TextArea placeholder='Enter your Message' style={{ boxShadow: "1px 3px 5px 1px rgba(0, 0, 0, 0.12)", minHeight: "170px", borderRadius: "6px" }} />
                             </Form.Item>
 
                             <Form.Item style={{ marginBottom: 5 }} >{
@@ -583,7 +585,7 @@ transform: ${props => props.transform};
 filter: blur(2px);
 `;
 const Segment7 = styled.div`
-margin: 10vh 0 0vh 0;
+//margin: 10vh 0 0vh 0;
 padding:25px 4vw 0 4vw;
 background-color: #F3F3F3;
 height: 320px;
@@ -627,7 +629,7 @@ overflow: hidden;
 background-color: black;
 `;
 const Segment6 = styled.div`
-    margin: 6vh 0 4vh 0;
+    margin: 6vh 0 14vh 0;
     padding:0 4vw 0 4vw;
     display: flex;
     flex-direction: column;

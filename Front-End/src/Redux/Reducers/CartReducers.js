@@ -19,12 +19,20 @@ export const cartReducer = (state = cartInitialState, { type, payload }) => {
                 productsWithID: [...state.productsWithID, payload]
             }
         }
+        // case CartActionTypes.CART_PRODUCTNOTFOUND: {
+        //     var tempProductsWithID = state.productsWithID.filter(p=>p.productID!==payload.ID)
+        //     var tempProducts = state.products.filter(p=>p.product.key!==payload.ID)
+        //     return {
+        //         cartLoaded: payload.cartLoaded,
+        //         productID: tempProducts,
+        //         productsWithID: tempProductsWithID
+        //     }
+        // }
         case CartActionTypes.CART_REMOVEPRODUCT: {
             //console.log([...state.products, payload])
             const newProducts = state.products.filter(x => x.product.key !== payload.productID)
             const newProductsWithID = state.productsWithID.filter(x => x.productID !== payload.productID)
             localStorage.setItem("cart", JSON.stringify({
-                ...state,
                 productsWithID: newProductsWithID
             }))
             //console.log(newProducts);

@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import PhoneInput from 'react-phone-input-2'
 import ReactFlagsSelect from 'react-flags-select';
 import { Helmet } from 'react-helmet'
+import {  IoClose } from "react-icons/io5";
 
 const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 const formItemLayout = {
@@ -54,8 +55,8 @@ export default function Profile() {
     const [editingPassword, setEditingPassword] = useState(false)
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const dispatch = useDispatch()
-    const [imageID, setImageID] = useState(userInfo && userInfo.imageID ? userInfo.imageID : "no image");
-    const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID ? `https://exporagenius.com:5000/image/${userInfo.imageID}` : profilePic)
+    const [imageID, setImageID] = useState(userInfo && userInfo.imageID && userInfo.imageID!=="no image" ? userInfo.imageID : "no image");
+    const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID && userInfo.imageID!=="no image" ? `http://localhost:5000/image/${userInfo.imageID}` : profilePic)
     //console.log(userInfo);
     const onFinish = () => {
         form.validateFields()
@@ -85,18 +86,22 @@ export default function Profile() {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`https://exporagenius.com:5000/image/${event.file.response.id}`)
+            setImageUrl(`http://localhost:5000/image/${event.file.response.id}`)
             dispatch(updateImage(event.file.response.id))
-            axios.post(`https://exporagenius.com:5000/client/updateimage/${auth.userData._id}`, { imageID: event.file.response.id })
+            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`, { imageID: event.file.response.id })
         }
     }
-    const handleRemove = (imageID) => {
+    const handleRemove = (imageID, deleting) => {
         //console.log(imageID)
         setImageID("no image")
-        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        if(deleting){
+            setImageUrl(profilePic)
+            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`, { imageID:"no image" })
+        }
+        axios.post(`http://localhost:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID !== "no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
+        if (imageID !== "no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -132,10 +137,13 @@ export default function Profile() {
                         </Pic>
                         <ImgCrop aspect={1 / 1} minZoom={0.1} quality={0.8} grid>
                             <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
+                                beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
                                 <BsFillCameraFill style={{ width: "35px", height: "35px", color: "white", }}></BsFillCameraFill>
                             </CusUpload>
                         </ImgCrop>
+                        <CusClose onClick={() => handleRemove(imageID, true)}>
+                                <IoClose  style={{ width: "35px", height: "35px", color: "red", }}></IoClose>
+                            </CusClose>
                     </div>
                 </Col>
                 <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24, offset: 0 }} xl={{ span: 12 }} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -336,6 +344,33 @@ height: 40px;
    }
 }
 
+`
+const CusClose = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+position: absolute;
+width: 45px;
+height: 55px; 
+cursor: pointer;
+top:0;
+right: 0;
+&:hover >*{
+    animation: mytran 0.8s;
+    animation-fill-mode: forwards;
+}
+&:not(:hover)>*{
+    animation: mytran1 0.8s;
+    animation-fill-mode: forwards;
+}
+@keyframes mytran {
+    0%   {transform: scale(1);}
+    100% {transform: scale(1.2);}
+  }
+  @keyframes mytran1 {
+    0%   {transform: scale(1.2)}
+    100% {transform: scale(1)}
+  }
 `
 const CusUpload = styled(Upload)`
 display: flex;

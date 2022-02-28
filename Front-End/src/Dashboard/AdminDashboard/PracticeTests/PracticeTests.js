@@ -57,7 +57,7 @@ class PracticeTests extends Component {
         dataIndex: 'testImageID',
         render: id=>{
           //console.log(`imageID=${id}`)
-          return(<Image fallback={noImage} width={80} height={45} src={id?`https://exporagenius.com:5000/image/${id}`:noImage}></Image>)}
+          return(<Image fallback={noImage} width={80} height={45} src={id!=="no image"?`http://localhost:5000/image/${id}`:noImage}></Image>)}
       },
       {
         title: 'PracticeTest',
@@ -76,20 +76,20 @@ class PracticeTests extends Component {
         },
         render: x=> x? new Date(x).toLocaleDateString("en-US", options):null
       },
-      {
-        title: 'Status',
-        key: 'status',
-        dataIndex: 'status',
-        render: status => (
-          <>
-            {
-              <Tag className={status === true ? "tag" : "tag1"} icon={status === false ? <MinusCircleOutlined className="icon" /> : <CheckCircleOutlined className="icon" />} color={status === false ? "warning" : 'blue'}>
-                {status === true ? "ACTIVE" : "PENDING"}
-              </Tag>
-            }
-          </>
-        ),
-      },
+      // {
+      //   title: 'Status',
+      //   key: 'status',
+      //   dataIndex: 'status',
+      //   render: status => (
+      //     <>
+      //       {
+      //         <Tag className={status === true ? "tag" : "tag1"} icon={status === false ? <MinusCircleOutlined className="icon" /> : <CheckCircleOutlined className="icon" />} color={status === false ? "warning" : 'blue'}>
+      //           {status === true ? "ACTIVE" : "PENDING"}
+      //         </Tag>
+      //       }
+      //     </>
+      //   ),
+      // },
       {
         title: 'Exams',
         dataIndex: 'exams',

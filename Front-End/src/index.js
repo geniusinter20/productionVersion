@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from "./Redux/Store";
-import AppWithRouter from './AppWithRouter';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import { Helmet} from "react-helmet"
 
@@ -18,7 +17,7 @@ ReactDOM.render(
         <meta name="description" content="Project Management practice Tests Platform"/>
         <meta name="keywords" content="projectmanagement,pmp, practicetest,test"/>
       </Helmet>
-        <AppWithRouter />
+        <App/>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

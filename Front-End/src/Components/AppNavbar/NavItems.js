@@ -66,26 +66,32 @@ export const navItems = [
     
   ];
   export const aboutMenu = [
+    {
+      id: 1,
+      title: "Get Started",
+      path: "/getstarted",
+      cName: "submenu-item",
+    },
     // {
-    //   id: 1,
+    //   id: 2,
     //   title: "About Us",
     //   path: "/aboutus",
     //   cName: "submenu-item",
     // },
     // {
-    //   id: 2,
+    //   id: 3,
     //   title: "What We Do",
     //   path: "/whatwedo",
     //   cName: "submenu-item",
     // },
     // {
-    //   id: 3,
+    //   id: 4,
     //   title: "FAQs",
     //   path: "/faqs",
     //   cName: "submenu-item",
     // },
     {
-      id: 4,
+      id: 5,
       title: "Contact Us",
       path: "/#contactus",
       cName: "submenu-item",

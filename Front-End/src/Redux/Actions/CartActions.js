@@ -45,22 +45,34 @@ export const loadCart = () => {
                 case "practiceTest": {
                     //console.log(p);
                     axios
-                        .get(`https://exporagenius.com:5000/practicetests/${p.productID}`)
+                        .get(`http://localhost:5000/practicetests/${p.productID}`)
                         .then(({ data }) => {
-                            products.push({
-                                productType: p.productType,
-                                product: data[0],
-                            })
-                            //
-                            if (products.length === productsWithID.length) {
-                                //console.log(products);
-                                dispatch({
-                                    type: CartActionTypes.CART_LOADCART_FINISH,
+                            if (data.msg === "not found") {
+                                dispatch ({
+                                    type: CartActionTypes.CART_REMOVEPRODUCT,
                                     payload: {
-                                        products: products,
-                                        productsWithID: productsWithID,
+                                        productType: p.productType,
+                                        productID: p.productID,
                                     }
                                 })
+                            }
+                            else {
+                                //console.log("asafag")
+                                products.push({
+                                    productType: p.productType,
+                                    product: data[0],
+                                })
+                                //
+                                if (products.length === productsWithID.length) {
+                                    //console.log(products);
+                                    dispatch({
+                                        type: CartActionTypes.CART_LOADCART_FINISH,
+                                        payload: {
+                                            products: products,
+                                            productsWithID: productsWithID,
+                                        }
+                                    })
+                                }
                             }
                         })
 

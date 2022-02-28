@@ -30,7 +30,7 @@ export const fetchPracticeTestsSuccess = () => {
     return (dispatch) => {
         dispatch(fetchPracticeTests());
         axios
-            .get("https://exporagenius.com:5000/practicetests")
+            .get("http://localhost:5000/practicetests")
             .then(({ data }) => {
                 dispatch({
                     type: PracticeTestActionTypes.FETCH_PRACTICETESTS_SUCCESS,
@@ -51,7 +51,7 @@ const fetchPracticeTestsFailure = (error) => {
 export const fetchPurchasedPracticeTests = (clientID) => {
     return (dispatch) => {
         axios
-            .get(`https://exporagenius.com:5000/purchasedproduct/clienttype/practiceTest/${clientID}`)
+            .get(`http://localhost:5000/purchasedproduct/clienttype/practiceTest/${clientID}`)
             .then(({ data }) => {
                 //console.log(data)
                 dispatch({
@@ -80,7 +80,7 @@ export const createPracticeTest = (test) => {
             dispatch({
                 type: PracticeTestActionTypes.CREATE_PRACTICETEST_START,
             })
-            axios.post("https://exporagenius.com:5000/practicetests/add"
+            axios.post("http://localhost:5000/practicetests/add"
                 , test)
                 .then(res => {
                     if (res.data.msg === "test created") {
@@ -117,12 +117,23 @@ export const selectedPracticeTest = (id) => {
                 type: PracticeTestActionTypes.SELECTED_PRACTICETEST_REQUESTED
             })
             axios
-                .get(`https://exporagenius.com:5000/practicetests/${id}`)
+                .get(`http://localhost:5000/practicetests/${id}`)
                 .then(({ data }) => {
                     //console.log(data);
                     var test = data[0]
-                    test.testExamsIDs.forEach(i => {
-                        axios.get(`https://exporagenius.com:5000/exams/${i}`).then(({ data }) => {
+                    console.log(test.testExamsIDs)
+                    if(test.testExamsIDs.length===0){
+                        dispatch({
+                            type: PracticeTestActionTypes.SELECTED_PRACTICETEST_FETCHED,
+                            payload: {
+                                ...test,
+                                testExams: [],
+                            },
+                        })
+                    }
+                    else {
+                        test.testExamsIDs.forEach(i => {
+                        axios.get(`http://localhost:5000/exams/${i}`).then(({ data }) => {
                             exams.push(data[0])
                             if (exams.length === test.testExamsIDs.length) {
                                 dispatch({
@@ -136,6 +147,7 @@ export const selectedPracticeTest = (id) => {
                         })
 
                     })
+                }
                     //console.log("fetched:",data[0])
                 })
                 .catch(function (error) {
@@ -152,7 +164,7 @@ export const editSelectedPracticeTest = (test) => {
                 type: "SELECTED_PRACTICETEST_UPDATE_START",
             })
             console.log(test);
-            axios.post(`https://exporagenius.com:5000/practicetests/update/${test.key}`, test)
+            axios.post(`http://localhost:5000/practicetests/update/${test.key}`, test)
                 .then(res => {
                     if (res.data.msg === "test updated") {
                         message.success({ content: "Test Updated", className: "message" });
