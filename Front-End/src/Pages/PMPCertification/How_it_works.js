@@ -11,7 +11,7 @@ class HowItWorks extends Component{
         return(
             <MainContainer>
                 <Header>
-                    How It <div style={{color:"#3CA9E7", fontWeight:"600"}}>Works</div>
+                    How It <div style={{color:"#5BCAD6", fontWeight:"600"}}>Works</div>
                 </Header>
                 <Sections>
                     <SubSection><MdManageAccounts className='icon1'/><div className="subTitle1">Create an account</div>

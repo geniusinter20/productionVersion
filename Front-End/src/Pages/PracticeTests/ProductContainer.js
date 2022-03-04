@@ -67,15 +67,15 @@ function ProductContainer() {
                         defaultOpenKeys={['sub1']}
                         style={{ mawWidth: "200", height: '84vh' }}
                     >
-                        <SubMenu on key="sub1" icon={<AppstoreAddOutlined />} title="Type">
+                        <SubMenu defaultActiveKey={"ALL"} on key="sub1" icon={<AppstoreAddOutlined />} title="Type">
                             <MyMenueItem key="1" onClick={() => setType("ALL")}>All</MyMenueItem>
                             <MyMenueItem key="2" onClick={() => setType("FP")}>Full Package</MyMenueItem>
                             <MyMenueItem key="3" onClick={() => setType("PTO")}>Practice Test Only</MyMenueItem>
                         </SubMenu>
-                        <SubMenu key="sub2" icon={<StarOutlined />} title="Rating">
+                        {/* <SubMenu key="sub2" icon={<StarOutlined />} title="Rating">
                             <Menu.Item key="4">Ascending</Menu.Item>
                             <Menu.Item key="5">Descinding</Menu.Item>
-                        </SubMenu>
+                        </SubMenu> */}
                     </Menu>
                 </Sider>
                 <Layout style={{

@@ -56,7 +56,7 @@ export default function Profile() {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const dispatch = useDispatch()
     const [imageID, setImageID] = useState(userInfo && userInfo.imageID && userInfo.imageID!=="no image" ? userInfo.imageID : "no image");
-    const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID && userInfo.imageID!=="no image" ? `http://localhost:5000/image/${userInfo.imageID}` : profilePic)
+    const [imageUrl, setImageUrl] = useState(userInfo && userInfo.imageID && userInfo.imageID!=="no image" ? `https://exporagenius.com:5000/image/${userInfo.imageID}` : profilePic)
     //console.log(userInfo);
     const onFinish = () => {
         form.validateFields()
@@ -86,9 +86,9 @@ export default function Profile() {
         //console.log(event.file.response)
         if (event.file.response) {
             setImageID(event.file.response.id)
-            setImageUrl(`http://localhost:5000/image/${event.file.response.id}`)
+            setImageUrl(`https://exporagenius.com:5000/image/${event.file.response.id}`)
             dispatch(updateImage(event.file.response.id))
-            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`, { imageID: event.file.response.id })
+            axios.post(`https://exporagenius.com:5000/client/updateimage/${auth.userData._id}`, { imageID: event.file.response.id })
         }
     }
     const handleRemove = (imageID, deleting) => {
@@ -96,12 +96,12 @@ export default function Profile() {
         setImageID("no image")
         if(deleting){
             setImageUrl(profilePic)
-            axios.post(`http://localhost:5000/client/updateimage/${auth.userData._id}`, { imageID:"no image" })
+            axios.post(`https://exporagenius.com:5000/client/updateimage/${auth.userData._id}`, { imageID:"no image" })
         }
-        axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID !== "no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        if (imageID !== "no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -137,7 +137,7 @@ export default function Profile() {
                         </Pic>
                         <ImgCrop aspect={1 / 1} minZoom={0.1} quality={0.8} grid>
                             <CusUpload showUploadList={false} onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png">
+                                beforeUpload={beforeUpload} name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png">
                                 <BsFillCameraFill style={{ width: "35px", height: "35px", color: "white", }}></BsFillCameraFill>
                             </CusUpload>
                         </ImgCrop>

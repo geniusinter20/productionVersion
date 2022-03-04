@@ -72,12 +72,12 @@ export const navItems = [
       path: "/getstarted",
       cName: "submenu-item",
     },
-    // {
-    //   id: 2,
-    //   title: "About Us",
-    //   path: "/aboutus",
-    //   cName: "submenu-item",
-    // },
+    {
+      id: 2,
+      title: "About Us",
+      path: "/aboutus",
+      cName: "submenu-item",
+    },
     // {
     //   id: 3,
     //   title: "What We Do",

@@ -159,11 +159,11 @@ export default function AddPracticeTests(props) {
         if (event.file.response) setImageID(event.file.response.id)
     }
     const handleRemove = (imageID) => {
-        console.log(imageID)
-        axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        //console.log(imageID)
+        axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
     }
     const beforeUpload = () => {
-        if (imageID !=="no image") axios.post(`http://localhost:5000/image/delete/${imageID}`)
+        if (imageID !=="no image") axios.post(`https://exporagenius.com:5000/image/delete/${imageID}`)
         return true
     }
     const onPreview = async file => {
@@ -285,7 +285,7 @@ export default function AddPracticeTests(props) {
                             <Form.Item name="uploadImage" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
                                 <ImgCrop aspect={16 / 9} minZoom={0.1} quality={1} grid>
                                     <Upload.Dragger onRemove={() => handleRemove(imageID)} onChange={onUploadChange} listType="picture" maxCount={1}
-                                        name="file" onPreview={onPreview} action='http://localhost:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
+                                        name="file" onPreview={onPreview} action='https://exporagenius.com:5000/image/upload' accept=".jpg, .jpeg, .png" beforeUpload={beforeUpload}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
                                         </p>

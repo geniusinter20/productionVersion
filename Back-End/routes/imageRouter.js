@@ -139,7 +139,7 @@ imageRouter.route('/:id').get(timeout('12s', { respond: false }), bodyParser.jso
       process.exit(0);
     }
     console.log("imid", req.params.id);
-    if(req.params.id!=="no image") {
+    if(req.params.id && req.params.id!=="no image") {
       gfs.files.findOne({ _id: ObjectId(req.params.id) }, (err, file) => {
         // Check if file
         if (!file || file.length === 0) {

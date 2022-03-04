@@ -20,7 +20,8 @@ import NotFound from './NotFound';
 import SelectedTest from './Pages/PracticeTests/SelectedTest';
 import { useDispatch, useSelector } from "react-redux";
 import { loadCart } from "./Redux/Actions/CartActions";
-import GetStarted from "./Pages/GetStarted/GetStarted";
+import GetStarted from "./Pages/About/GetStarted";
+import Aboutus from "./Pages/About/Aboutus";
 
 function App(props) {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function App(props) {
           <Route exact path='/cart/checkout' element={<CheckOut />} />
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/getstarted' element={<GetStarted />} />
+          <Route exact path='/aboutus' element={<Aboutus />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       }

@@ -24,6 +24,7 @@ import {  useLocation, useNavigate } from 'react-router-dom';
 import * as Scroll from 'react-scroll'
 import { useSelector } from "react-redux"
 import emailjs from '@emailjs/browser';
+import axios from 'axios';
 
 const fadeInAnimation = keyframes`${fadeIn}`;
 const scroller = Scroll.scroller;
@@ -67,6 +68,7 @@ export default function Home() {
     const navigate= useNavigate();
     const [sending, setSending] = useState(false);
     const [showingEmailModal, setShowingEmailModal] = useState(false);
+    const [homeStatistics, setHomeStatistics] = useState({});
     const reviews = [{
         reviewTitle: "Best Developers",
         reviewText: "Outward clothes promise at gravity do excited. Sufficient particular impossible by reasonable oh expression is. Yet preference connection unpleasant yet melancholy but end appearance. And excellence partiality estimating terminated day everything.",
@@ -102,6 +104,13 @@ export default function Home() {
         }
     }, [location])
     useEffect(() => {
+      axios.get("https://exporagenius.com:5000/home/statistics")
+      .then(({data})=>{
+          setHomeStatistics(data)
+      })
+    }, [])
+    
+    useEffect(() => {
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
@@ -112,7 +121,7 @@ export default function Home() {
     useEffect(() => {
         window.onscroll = () => {
             //console.log(window.pageYOffset)
-            if (window.pageYOffset > 700) {
+            if (window.pageYOffset > 500) {
                 setAnimateSeg2(true)
             }
             if (window.pageYOffset > 2300) {
@@ -153,7 +162,6 @@ export default function Home() {
 
     }
     const onFinish = () => {
-
         emailjs.init('user_IaBVTnHCVCYMiydvqFVna');
         form.validateFields()
             .then(
@@ -229,7 +237,7 @@ export default function Home() {
                 </div>
                 <Segment3>
                     {animateSeg2 && <FContainer>
-                        <SVG order={"1s"} width="120" height="95" viewBox="0 0 639 512" fill="none" xmlns="https://www.w3.org/2000/svg">
+                        {/* <SVG order={"1s"} width="120" height="95" viewBox="0 0 639 512" fill="none" xmlns="https://www.w3.org/2000/svg">
                             <path d="M95 224C130.3 224 159 195.3 159 160C159 124.7 130.3 96 95 96C59.7 96 31 124.7 31 160C31 195.3
                                 59.7 224 95 224ZM543 224C578.3 224 607 195.3 607 160C607 124.7 578.3 96 543 96C507.7
                                  96 479 124.7 479 160C479 195.3 507.7 224 543 224ZM575 256H511C493.4 256 477.5 263.1
@@ -240,14 +248,15 @@ export default function Home() {
                              458.5 148.5 480 175 480H463C489.5 480 511 458.5 511 432V403.2C511 339.6 459.4 288 395.8 288ZM172.1
                             274.6C160.5 263.1 144.6 256 127 256H63C27.7 256 -1 284.7 -1 320V352C-1 369.7 13.3 384 31 384H96.9C103.2 
                             336.6 131.8 296.7 172.1 274.6Z" fill="#5BCAD6" />
-                        </SVG>
+                        </SVG> */}
 
-                        <div style={{ fontSize: "25px", fontWeight: "500", color: "#444444", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                            <Countup prefix="+" suffix=" Students" style={{ paddingRight: "8px" }} end={500} duration={2} />
+                        <div style={{ fontSize: "80px", fontWeight: "500", color: "#444444", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                            <Countup delay={1} suffix="+"  end={homeStatistics.clientsCount} duration={1} />
+                            <div style={{ fontSize: "20px", fontWeight: "400", marginRight: 15}}>Students</div>
                         </div>
                     </FContainer>}
                     {animateSeg2 && <FContainer>
-                        <SVG order={"2s"} width="95" height="100" viewBox="0 0 27 27" xmlns="https://www.w3.org/2000/svg" fill="#5BCAD6"><path d="M14.6362 0.00137843C13.1129 
+                        {/* <SVG order={"2s"} width="95" height="100" viewBox="0 0 27 27" xmlns="https://www.w3.org/2000/svg" fill="#5BCAD6"><path d="M14.6362 0.00137843C13.1129 
                     -0.0256216 11.6234 0.342253 10.3364 1.26138C6.40679 3.71163 5.46854 9.11388 7.90304 13.5689C8.40029 8.16888 12.331 3.71163 
                     17.533 2.7655C19.9687 2.4865 21.7405 2.7655 21.7405 2.7655C19.801 1.20175 17.1719 0.0486284 14.6362 0.00137843ZM8.73442 
                     1.03975C4.97017 2.26488 1.03942 5.71638 1.53779 9.6145C1.53779 14.0695 5.96467 17.5233 10.3364 18.9711C6.90517 15.0168 
@@ -259,23 +268,25 @@ export default function Home() {
                      14.5724 0.541042 19.4718 3.47504 21.4776C7.40467 24.4296 12.7754 22.9806 16.705 19.528C11.3354 20.5315 5.46742 19.528 2.48054 
                      14.6838C1.15192 12.4 0.596167 10.6743 0.596167 10.6743H0.597292ZM20.5233 14.2383C18.5849 19.6383 14.2132 23.4273 8.56792 
                      23.7063C5.96692 23.5386 4.13992 22.9818 4.13992 22.9818C6.85117 26.323 11.7775 27.7158 15.7072 26.2128C18.3644 25.1553 20.3568 22.2573
-                     20.7989 18.9711C21.0757 17.3005 20.7449 15.9078 20.5233 14.2383Z" /></SVG>
-                        <div style={{ fontSize: "25px", fontWeight: "500", color: "#444444", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                            <Countup prefix="+" suffix=" Practice Tests" style={{ paddingRight: "8px" }} end={1000} duration={2} />
+                     20.7989 18.9711C21.0757 17.3005 20.7449 15.9078 20.5233 14.2383Z" /></SVG> */}
+                        <div style={{ fontSize: "80px", fontWeight: "500", color: "#3c3c3c", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                            <Countup delay={1} suffix="+"  end={homeStatistics.testsCount} duration={1} />
+                            <div style={{ fontSize: "20px", fontWeight: "400", marginRight: 15}}>Practice Tests</div>
                         </div>
                     </FContainer>}
                     {animateSeg2 && <FContainer>
-                        <SVG order={"3s"} width="110" height="95" viewBox="0 0 23 29" fill="none" xmlns="https://www.w3.org/2000/svg">
-                            <path d="M3.375 1H14.1084L21.5833 8.22838V25.3567C21.5833 25.9104 21.3331 26.4414 20.8877 26.833C20.4423 27.2245 19.8382 27.4444 19.2083 27.4444H3.375C2.74511 27.4444 2.14102 27.2245 1.69562 26.833C1.25022 26.4414 1 25.9104 1 25.3567V3.08772C1 2.53402 1.25022 2.003 1.69562 1.61148C2.14102 1.21996 2.74511 1 3.375 1V1Z" stroke="#5BCAD6" stroke-width="2" stroke-linejoin="round" />
-                            <path d="M4.16675 19.6182H18.4167" stroke="#5BCAD6" stroke-width="2" stroke-linecap="round" />
-                            <path d="M4.16675 23.5347H13.6667" stroke="#5BCAD6" stroke-width="2" stroke-linecap="round" />
-                            <path d="M4.16675 15.1943L8.12508 6.44434L12.0834 15.1943M5.15633 13.0068H11.0938" stroke="#5BCAD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16.0417 11.5972V15.9722" stroke="#5BCAD6" stroke-width="2" stroke-linecap="round" />
-                            <path d="M13.6667 13.7847H18.4167" stroke="#5BCAD6" stroke-width="2" stroke-linecap="round" />
-                        </SVG>
+                        {/* <SVG order={"3s"} width="110" height="95" viewBox="0 0 23 29" fill="none" xmlns="https://www.w3.org/2000/svg">
+                            <path d="M3.375 1H14.1084L21.5833 8.22838V25.3567C21.5833 25.9104 21.3331 26.4414 20.8877 26.833C20.4423 27.2245 19.8382 27.4444 19.2083 27.4444H3.375C2.74511 27.4444 2.14102 27.2245 1.69562 26.833C1.25022 26.4414 1 25.9104 1 25.3567V3.08772C1 2.53402 1.25022 2.003 1.69562 1.61148C2.14102 1.21996 2.74511 1 3.375 1V1Z" stroke="#5BCAD6" strokeWidth="2" strokeLinejoin="round" />
+                            <path d="M4.16675 19.6182H18.4167" stroke="#5BCAD6" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M4.16675 23.5347H13.6667" stroke="#5BCAD6" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M4.16675 15.1943L8.12508 6.44434L12.0834 15.1943M5.15633 13.0068H11.0938" stroke="#5BCAD6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M16.0417 11.5972V15.9722" stroke="#5BCAD6" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M13.6667 13.7847H18.4167" stroke="#5BCAD6" strokeWidth="2" strokeLinecap="round" />
+                        </SVG> */}
 
-                        <div style={{ fontSize: "25px", fontWeight: "500", color: "#444444", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                            <Countup prefix="+" suffix=" Exams" style={{ paddingRight: "8px" }} end={300} duration={2} />
+                        <div style={{ fontSize: "80px", fontWeight: "500", color: "#444444", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                            <Countup delay={1} suffix="+" end={homeStatistics.examsCount} duration={1} />
+                            <div style={{ fontSize: "20px", fontWeight: "400", marginRight: 15}}>Exams</div>
                         </div>
                     </FContainer>}
                 </Segment3>
@@ -511,15 +522,15 @@ export default function Home() {
                         <div style={{ color: "white", display: "flex", flexDirection: "column", gap: "25px", fontSize: "20px", fontWeight: "200" }}>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <BsPhone style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></BsPhone>
-                                <div>+971 55 409 0055</div>
+                                <div style={{fontWeight: "400", fontSize: "15" }}>+971 55 409 0055</div>
                             </div>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <HiOutlineMail style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></HiOutlineMail>
-                                <div>info@exporagenius.com</div>
+                                <div style={{fontWeight: "400", fontSize: "15" }}>info@exporagenius.com</div>
                             </div>
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <RiHome3Line style={{ width: "30px", height: "30px", color: "#5BCAD6" }}></RiHome3Line>
-                                <div>FoRK 0242, Compass Building, A Shohada Road, <br />AL Hamra Industrial Zone-F2,Ras A Khaimah, United Arab Emirates</div>
+                                <div style={{fontWeight: "400", fontSize: "15" }}>FoRK 0242, Compass Building, A Shohada Road, <br />AL Hamra Industrial Zone-F2,Ras A Khaimah, United Arab Emirates</div>
                             </div>
                         </div>
                     </Col2>
@@ -752,8 +763,8 @@ const Segment2 = styled(Row)`
 const Segment3 = styled(Row)`
   justify-content: center;
   display: flex;
-  min-height: 180px;
-  padding: 8vh 4vw 8vh 4vw;
+  min-height: 150px;
+  padding: 4vh 4vw 7vh 4vw;
   align-items: center;
   background-color: #F3F3F3;
   gap: 2vw;
