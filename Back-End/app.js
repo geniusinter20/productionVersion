@@ -145,9 +145,9 @@ const certificate = fs.readFileSync('./cert.pem').toString();
 const ca = fs.readFileSync('./CABUNDLE.pem');
 const credentials = {key: privateKey, cert: certificate, ca:ca};
 
-const server = https.createServer(credentials, app).listen(PORT, () => console.log(`Server is running on https://localhost:${PORT}`));
+//const server = https.createServer(credentials, app).listen(PORT, () => console.log(`Server is running on https://localhost:${PORT}`));
 
-//app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
 /*
 https.createServer({
     key: fs.readFileSync('key.pem'),

@@ -220,10 +220,7 @@ export default function Home() {
                                 Project Management Training Provider
                             </div>
                             <div style={{ fontSize: "18px", fontWeight: "200", color: "white", maxWidth: "530px", marginTop: "2vh" }}>
-                                Here in ExporaGenius, we strongly believe that everything is achievable if you have the motivation and opportunity to
-                                put effort into that direction. We understand that motivation and putting effort go hand-in-hand, however, it's also
-                                obvious for us that motivation has crucial meaning. Therefore,
-                                we create our program that way to encourage our users and keep them motivated in preparation for PMI certification.
+                            Genius is a privately held company specializing in providing robust examination preparation materials used by individuals, businesses, academic institutions and government entities around the world. Each test is based on respective vendors' published exam objectives and designed to help attain certification. Several question types are supported to provide actual exam experience to the Users.
                             </div>
                         </ColAni>
                         <Col xs={{ span: 0, offset: 0 }} sm={{ span: 0, offset: 0 }} lg={{ span: 13, offset: 0 }}>
@@ -303,26 +300,24 @@ export default function Home() {
                     </div>
 
                     <Col lg={{ span: 12, offset: 0 }} style={{ backgroundColor: "white", display: "flex", color: "#3c3c3c", padding: "30px 40px 30px 30px", gap: "15px", flexDirection: "column" }}>
-                        <div style={{ fontSize: "30px", fontWeight: "500" }}>
-                            What makes us one of the top rated Online Training companies
+                        <div style={{ fontSize: "32px", fontWeight: "500" }}>
+                        5 benefits of Professional certification
                         </div>
-                        <div style={{ fontSize: "21px", fontWeight: "300" }}>
-                            Accordingly to our research and personal experience, even senior-level Project Managers tend to feel
-                            anxiety and self-doubt after deciding to take PMI certification. These emotions are caused by the uncertainty
-                            that exists around PMI certification and the lack of high-quality preparation materials. But what if, you can
-                            change the rules and get access to high-quality material? What if, you can change the amount of uncertainty that
-                            goes along with PMI certification? These were two main issues that we wanted to address in our product. Therefore,
-                            in our online courses, practice tests, and exams we are using only the latest available information and
-                            test question to keep our users prepared for any surprises during taking the exam.
-                        </div>
+                        <ul style={{ fontSize: "28px", fontWeight: "300", display: "flex", flexDirection: "column", gap: 15 }}>
+                            <li>Add value</li>
+                            <li>prestige Skills</li>
+                            <li>knowledge proficiency</li>
+                            <li>Effective Productivity</li>
+                            <li>Increase self-confidence</li>
+                            <li>Increase earning potential</li>
+                        </ul>
                     </Col>
                 </Segment4>}
                 <Segment5>
                     <img src={HomeImage2}></img>
                     <div style={{ fontSize: "60px", lineHeight: "55px", color: "white" }}>Why join us?</div>
                     <div style={{ fontSize: "25px", color: "white", textAlign: "center", margin: "0 6vw 0 6vw", fontWeight: "300" }}>
-                        Our programs were developed in collaboration with world-class experts in Project Management,
-                        PMI acknowledged Project Managers, and PMP certificated Project Managers.
+                    Our consultants and advisors come from a wide range of expert’s background working in the professional field understanding the current trends and future needs of business operation while integrating people and technology to the process model.
                     </div>
                     {/* <WButton shape="round" size="lg">Read more</WButton> */}
                 </Segment5>

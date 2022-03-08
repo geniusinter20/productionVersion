@@ -21,6 +21,7 @@ import { Helmet } from "react-helmet"
 import axios from 'axios';
 import Modal from '@mui/material/Modal';
 import { LoadingOutlined } from '@ant-design/icons';
+import { uuid } from 'uuidv4';
 
 export default function CheckOut() {
     const paypal = useRef();
@@ -142,6 +143,16 @@ export default function CheckOut() {
         })
     }
     const checkOut = () => {
+        if(total==0){
+            setCheckingOut(true)
+            finishCheckout(
+                {
+                    create_time: new Date(),
+                    id: uuid(),
+                }
+            )
+            return;
+        }
         setCheckingOut(true)
         window.paypal && window.paypal
             .Buttons({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, Upload, Form, Input, message, Button, Tooltip, Modal, Table } from 'antd';
 import { BsPlusSquareDotted } from "react-icons/bs";
@@ -91,6 +91,14 @@ export default function AddPracticeTests(props) {
         setSelectedExams([])
         setVisible(true);
     };
+    const handleDelete = (key) => {
+        //console.log("key", key)
+        const temp = addedExamsIDs.filter(e => e !== key)
+        setAddedExamsIDs(temp)
+        const temp1= addedExams.filter(e=>e.key!==key)
+        setAddedExams(temp1)
+        //dispatch({ type: "REMOVE_SELECTED_PRACTICETEST_EXAM", payload: key })
+    }
     const rowSelection = {
         onChange: (selectedRowIDs, selectedRows) => {
             setSelectedExams(selectedRows)
@@ -380,7 +388,7 @@ export default function AddPracticeTests(props) {
                                                         {item.examDescription}
                                                     </Text>}
                                             />
-                                            <Button style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" danger>
+                                            <Button onClick={() => handleDelete(item.key)} style={{ marginLeft: "1vw", fontWeight: "600" }} type="text" danger>
                                                 Delete
                                             </Button>
                                         </List.Item>
